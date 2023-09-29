@@ -58,7 +58,6 @@ def fetch_degree_list(url):
 
         for degree in link_degrees:
             degrees.append(parse_degree_page(degree))
-            break
     else:
         print("Failed to fetch the web page. Status code:", response.status_code)
     end = time.time()
