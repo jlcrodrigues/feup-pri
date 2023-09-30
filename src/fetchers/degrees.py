@@ -63,11 +63,13 @@ def fetch_degree_list(url):
     end = time.time()
     print(f"Fetched {len(degrees)} degrees in {round(end - start, 1)}s.")
 
-fetch_degree_list(bachelorsListUrl)
-fetch_degree_list(mastersListUrl)
+def __main__():
+    fetch_degree_list(bachelorsListUrl)
+    fetch_degree_list(mastersListUrl)
 
+    with open('../data/degrees.csv', 'w') as my_file:
+        my_file.write('title; description; exits; url\n')
+        for degree in degrees:
+            my_file.write(degree.toCsv() + '\n')
 
-with open('../data/degrees.csv', 'w') as my_file:
-    my_file.write('title; description; exits; url\n')
-    for degree in degrees:
-        my_file.write(degree.toCsv() + '\n')
+__main__()
