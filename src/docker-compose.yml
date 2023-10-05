@@ -1,0 +1,29 @@
+version: "3"
+services:
+  # PostgreSQL database service
+  db:
+    image: postgres:latest
+    container_name: my_postgres_db
+    environment:
+      POSTGRES_USER: pri
+      POSTGRES_PASSWORD: pri
+      POSTGRES_DB: pri23
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # pgAdmin service
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: my_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pri@outlook.com
+      PGADMIN_DEFAULT_PASSWORD: pri
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  pg_data:
