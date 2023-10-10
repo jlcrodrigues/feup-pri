@@ -36,13 +36,13 @@ def get_course_list(degree_id, faculty):
 
         for row in rows:
             aHtml = row.findChildren("a" , recursive=False)
-            if len(aHtml) > 0: courses.append(aHtml[0].get('href').strip())
+            if len(aHtml) > 0: courses.append(f"https://sigarra.up.pt/{faculty}/pt/" + aHtml[0].get('href').strip())
 
         page += 1
 
     return courses
 
-def __main__():
+'''def __main__():
     degree_id = 454
     courses = get_course_list(degree_id, 'feup')
 
@@ -52,4 +52,4 @@ def __main__():
 
     print(f"Fetched {len(courses)} curricular units.")
 
-__main__()
+__main__()'''

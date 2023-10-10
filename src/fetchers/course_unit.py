@@ -3,8 +3,11 @@ from bs4 import BeautifulSoup
 
 base_url = "https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id="
 
+
 class CourseUnit:
-    def __init__(self, name, code, credits, main_professor, tp_professors, t_professors, ot_professors, pl_professors, p_professors, s_professors, language, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements):
+    def __init__(self, name, code, credits, main_professor, tp_professors, t_professors, ot_professors, pl_professors,
+                 p_professors, s_professors, language, objectives, results, working_method, pre_requirements, program,
+                 evaluation_type, passing_requirements):
         self.name = name
         self.code = code
         self.credits = credits
@@ -12,8 +15,8 @@ class CourseUnit:
         self.tp_professors = tp_professors,
         self.t_professors = t_professors,
         self.ot_professors = ot_professors,
-        self.pl_professors = pl_professors, 
-        self.p_professors = p_professors, 
+        self.pl_professors = pl_professors,
+        self.p_professors = p_professors,
         self.s_professors = s_professors,
         self.language = language
         self.objectives = objectives
@@ -26,6 +29,7 @@ class CourseUnit:
 
     def to_csv(self):
         return f'{self.name}; {self.code}; {self.credits}; {self.main_professor}; {self.tp_professors}; {self.t_professors}; {self.ot_professors}; {self.pl_professors}; {self.p_professors}; {self.s_professors}; {self.language}; {self.objectives}; {self.results}; {self.working_method}; {self.pre_requirements}; {self.program}; {self.evaluation_type}; {self.passing_requirements}'
+
 
 def parse_unit_page(url):
     response = requests.get(url)
@@ -72,7 +76,8 @@ def parse_unit_page(url):
     print('WORKING METHODS: ' + working_method)
     print('-----------------------')
 
-    pre_requirements_header = soup.find('h3', string='Pré-requisitos (conhecimentos prévios) e co-requisitos (conhecimentos simultâneos)')
+    pre_requirements_header = soup.find('h3',
+                                        string='Pré-requisitos (conhecimentos prévios) e co-requisitos (conhecimentos simultâneos)')
     if pre_requirements_header:
         pre_requirements = get_text(pre_requirements_header)
     else:
@@ -137,7 +142,7 @@ def parse_unit_page(url):
     else:
         ot_professors = []
 
-    print('OT: ') 
+    print('OT: ')
     print(ot_professors)
     print('-----------------------')
 
@@ -161,7 +166,7 @@ def parse_unit_page(url):
     print(p_professors)
     print('-----------------------')
 
-    s_class = get_professor(soup, 'Seminários')  
+    s_class = get_professor(soup, 'Seminários')
     if (s_class != -1):
         s_professors = s_class
     else:
@@ -177,20 +182,28 @@ def parse_unit_page(url):
 
     print('PROGRAM: ' + program) 
 
-    return CourseUnit(name, code, credits, main_professors, tp_professors, t_professors, ot_professors, pl_professors, p_professors, s_professors, language, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements)
+    return CourseUnit(name, code, credits, main_professors, tp_professors, t_professors, ot_professors, pl_professors,
+                      p_professors, s_professors, language, objectives, results, working_method, pre_requirements,
+                      program, evaluation_type, passing_requirements)
+
 
 def print_list(list):
-    for x in range(len(list)):  
-        print (list[x])
+    for x in range(len(list)):
+        print(list[x])
+
 
 def get_text(header):
-    text = header.find_next_sibling(string=True).text.strip()
+    try:
+        text = header.find_next_sibling(string=True).text.strip()
+    except:
+        return ""
     if text != '':
         return text
     text = header.find_next_sibling().text.strip()
     if text != '':
         return text
     return ''
+
 
 
 def get_professor(soup, type):
@@ -209,18 +222,20 @@ def get_professor(soup, type):
             return professors_urls
     return -1
 
+
 def get_program(soup):
     sections = soup.find_all('h3', string='Programa')
 
     text = ''
     for section in sections:
-        if(section.text.strip() == 'Programa'):
+        if (section.text.strip() == 'Programa'):
             siblings = section.find_next_siblings()
             for sibling in siblings:
-                if(sibling.name == 'h3'):
+                if (sibling.name == 'h3'):
                     return text
                 text += sibling.text.strip() + '\n'
     return text
+
 
 def main():
     # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=519377")
@@ -233,10 +248,12 @@ def main():
 
     urls = ["https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520223"]
     with open('../data/course_units.csv', 'w', encoding="utf-8") as my_file:
-        my_file.write('name; code; acronym; main_professor; tp_professors; t_professors; ot_professors; pl_professors; p_professors; s_professors; language; objectives; results; working_method; pre_requirements; program; evaluation_type; hours; passing_requirements\n')
+        my_file.write(
+            'name; code; acronym; main_professor; tp_professors; t_professors; ot_professors; pl_professors; p_professors; s_professors; language; objectives; results; working_method; pre_requirements; program; evaluation_type; hours; passing_requirements\n')
         for url in urls:
             course_unit = parse_unit_page(url)
             # my_file.write(course_unit.to_csv() + '\n')
+
 
 if __name__ == '__main__':
     main()
