@@ -2,10 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-baseUrl = "https://www.up.pt"
-bachelorsListUrl = "/portal/pt/estudar/licenciaturas-e-mestrados-integrados/oferta-formativa"
-mastersListUrl = "/portal/pt/estudar/mestrados/oferta-formativa"
-
 class Degree:
     def __init__(self, title, description, exits, url):
         self.title = title
@@ -47,29 +43,30 @@ def get_degrees(soup):
     return a
 
 
-degrees = []
 def fetch_degree_list(url):
+    degrees_urls = []
     start = time.time()
-    response = requests.get(baseUrl + url)
+    response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, "html.parser")
 
         link_degrees = get_degrees(soup)
 
         for degree in link_degrees:
-            degrees.append(parse_degree_page(degree))
+            degrees_urls.append(parse_degree_page(degree))
     else:
         print("Failed to fetch the web page. Status code:", response.status_code)
     end = time.time()
-    print(f"Fetched {len(degrees)} degrees in {round(end - start, 1)}s.")
+    print(f"Fetched {len(degrees_urls)} degrees in {round(end - start, 1)}s.")
+    return degrees_urls
 
-def __main__():
-    fetch_degree_list(bachelorsListUrl)
-    fetch_degree_list(mastersListUrl)
+def fetch_degrees(urls):
+    degrees_urls = []
+    degrees = []
+    for url in urls:
+        degrees_urls += fetch_degree_list(url)
+    
+    for degree_url in degrees_urls:
+        degrees.append(parse_degree_page(degree_url))
 
-    with open('../data/degrees.csv', 'w') as my_file:
-        my_file.write('title; description; exits; url\n')
-        for degree in degrees:
-            my_file.write(degree.toCsv() + '\n')
-
-__main__()
+    return degrees

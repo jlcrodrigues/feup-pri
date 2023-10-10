@@ -42,7 +42,7 @@ def get_course_list(degree_id, faculty):
 
     return courses
 
-def __main__():
+'''def __main__():
     degree_id = 454
     courses = get_course_list(degree_id, 'feup')
 
@@ -52,4 +52,4 @@ def __main__():
 
     print(f"Fetched {len(courses)} curricular units.")
 
-__main__()
+__main__()'''
