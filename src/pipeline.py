@@ -143,11 +143,16 @@ def get_urls_courses(degree_url):
 def insert_courses(db, degree_id, degree_url):
     urls_courses = get_urls_courses(degree_url)
     for url_course in urls_courses:
-        id_course = db.execute("SELECT id FROM CourseUnit WHERE url = %s", (url_course,), fetch="one")
+        id_course = db.execute(
+            "SELECT id FROM CourseUnit WHERE url = %s", (url_course,), fetch="one"
+        )
         if id_course != None:
             try:
-                db.execute("INSERT INTO DegreeCourse (degree_id, course_id) VALUES (%s, %s)", (degree_id, id_course[0]),
-                           "none", )
+                db.execute(
+                    "INSERT INTO DegreeCourse (degree_id, course_id) VALUES (%s, %s)",
+                    (degree_id, id_course[0]),
+                    "none",
+                )
             finally:
                 print("Course already exists")
                 pass
@@ -156,11 +161,25 @@ def insert_courses(db, degree_id, degree_url):
             try:
                 db.execute(
                     "INSERT INTO CourseUnit (name, url, code, language, ects, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (course.name, url_course, course.code, course.language, course.credits, course.objectives,
-                     course.results, course.working_method, course.pre_requirements, course.program,
-                     course.evaluation_type, course.passing_requirements), "none")
-            finally:
-                print("Error adding course!")
+                    (
+                        course.name,
+                        url_course,
+                        course.code,
+                        course.language,
+                        course.credits,
+                        course.objectives,
+                        course.results,
+                        course.working_method,
+                        course.pre_requirements,
+                        course.program,
+                        course.evaluation_type,
+                        course.passing_requirements,
+                    ),
+                    "none",
+                )
+            except Exception as e:
+                print(e)
+                print("Error adding course! URL: " + url_course)
                 pass
 
 
