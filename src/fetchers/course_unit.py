@@ -43,9 +43,9 @@ def parse_unit_page(url):
 
     credits_header = soup.find('h3', string='Ciclos de Estudo/Cursos')
     credits_table = credits_header.find_next_sibling(class_='dados')
-    credits = credits_table.find('tr', class_='d').find_all('td', class_='n', rowspan='1')[1].text
+    credits = int(credits_table.find('tr', class_='d').find_all('td', class_='n', rowspan='1')[1].text)
 
-    print('CREDITS: ' + credits)
+    print('CREDITS: ' + str(credits))
     print('-----------------------')
 
     language_header = soup.find('h3', string='Língua de trabalho')
@@ -111,7 +111,7 @@ def parse_unit_page(url):
         if (tp_class != -1):
             tp_professors = tp_class
         else:
-            tp_professors = ''
+            tp_professors = []
 
     print('TP: ')
     print_list(tp_professors)
@@ -125,7 +125,7 @@ def parse_unit_page(url):
         if (t_class != -1):
             t_professors = t_class
         else:
-            t_professors = ''
+            t_professors = []
 
     print('T: ')
     print_list(t_professors)
@@ -135,7 +135,7 @@ def parse_unit_page(url):
     if (ot_class != -1):
         ot_professors = ot_class
     else:
-        ot_professors = ''
+        ot_professors = []
 
     print('OT: ') 
     print(ot_professors)
@@ -145,7 +145,7 @@ def parse_unit_page(url):
     if (pl_class != -1):
         pl_professors = pl_class
     else:
-        pl_professors = '' 
+        pl_professors = [] 
 
     print('PL: ')
     print(pl_professors)
@@ -155,7 +155,7 @@ def parse_unit_page(url):
     if (p_class != -1):
         p_professors = p_class
     else:
-        p_professors = '' 
+        p_professors = [] 
 
     print('P: ')
     print(p_professors)
@@ -165,15 +165,17 @@ def parse_unit_page(url):
     if (s_class != -1):
         s_professors = s_class
     else:
-        s_professors = ''
+        s_professors = []
 
     print('S: ')
     print(s_professors)
     print('-----------------------')
 
     program = get_program(info)
+    if(program.isspace()):
+        program = ''
 
-    print('PROGRAM: ' + program)
+    print('PROGRAM: ' + program) 
 
     return CourseUnit(name, code, credits, main_professors, tp_professors, t_professors, ot_professors, pl_professors, p_professors, s_professors, language, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements)
 
@@ -185,7 +187,11 @@ def get_text(header):
     text = header.find_next_sibling(string=True).text.strip()
     if text != '':
         return text
-    return header.find_next_sibling().text.strip()
+    text = header.find_next_sibling().text.strip()
+    if text != '':
+        return text
+    return ''
+
 
 def get_professor(soup, type):
     professors_header = soup.find('h3', string='Docência - Horas')
