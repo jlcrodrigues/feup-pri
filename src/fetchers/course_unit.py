@@ -66,78 +66,103 @@ def parse_unit_page(url):
     # print('NAME: ' + name)
     # print('CODE: ' + code)
     # print('-----------------------')
-
-    credits_header = soup.find("h3", string="Ciclos de Estudo/Cursos")
-    credits_table = credits_header.find_next_sibling(class_="dados")
-    credits = int(
-        credits_table.find("tr", class_="d")
-        .find_all("td", class_="n", rowspan="1")[1]
-        .text
-    )
+    try:
+        credits_header = soup.find("h3", string="Ciclos de Estudo/Cursos")
+        credits_table = credits_header.find_next_sibling(class_="dados")
+        credits = int(
+            credits_table.find("tr", class_="d")
+            .find_all("td", class_="n", rowspan="1")[1]
+            .text
+        )
+    except:
+        credits = -1
 
     # print('CREDITS: ' + str(credits))
     # print('-----------------------')
 
-    language_header = soup.find("h3", string="Língua de trabalho")
-    language = get_text(language_header)
+    try:
+        language_header = soup.find("h3", string="Língua de trabalho")
+        language = get_text(language_header)
+    except:
+        language = ""
 
     # print('LANGUAGE: ' + language)
     # print('-----------------------')
 
-    objectives_header = soup.find("h3", string="Objetivos")
-    objectives = get_text(objectives_header)
+    try:
+        objectives_header = soup.find("h3", string="Objetivos")
+        objectives = get_text(objectives_header)
+    except:
+        objectives = ""
 
     # print('OBJECTIVES: ' + objectives)
     # print('-----------------------')
-
-    results_header = soup.find("h3", string="Resultados de aprendizagem e competências")
-    results = get_text(results_header)
+    try:
+        results_header = soup.find("h3", string="Resultados de aprendizagem e competências")
+        results = get_text(results_header)
+    except:
+        results = ""
 
     # print('RESULTS: ' + results)
     # print('-----------------------')
-
-    working_method_header = soup.find("h3", string="Modo de trabalho")
-    working_method = get_text(working_method_header)
+    
+    try:
+        working_method_header = soup.find("h3", string="Modo de trabalho")
+        working_method = get_text(working_method_header)
+    except:
+        working_method = ""
 
     # print('WORKING METHODS: ' + working_method)
     # print('-----------------------')
 
-    pre_requirements_header = soup.find(
-        "h3",
-        string="Pré-requisitos (conhecimentos prévios) e co-requisitos (conhecimentos simultâneos)",
-    )
-    if pre_requirements_header:
-        pre_requirements = get_text(pre_requirements_header)
-    else:
+    try:
+        pre_requirements_header = soup.find(
+            "h3",
+            string="Pré-requisitos (conhecimentos prévios) e co-requisitos (conhecimentos simultâneos)",
+        )
+        if pre_requirements_header:
+            pre_requirements = get_text(pre_requirements_header)
+        else:
+            pre_requirements = ""
+    except:
         pre_requirements = ""
 
     # print('PRE REQUIREMENTS: ' + pre_requirements)
     # print('-----------------------')
 
-    evaluation_type_header = soup.find("h3", string="Tipo de avaliação")
-    evaluation_type = get_text(evaluation_type_header)
+    try:
+        evaluation_type_header = soup.find("h3", string="Tipo de avaliação")
+        evaluation_type = get_text(evaluation_type_header)
+    except:
+        evaluation_type = ""
 
     # print('EVAL TYPES: ' + evaluation_type)
     # print('-----------------------')
 
     # hours_header = soup.find('h3', string='Componentes de Ocupação')
     # hours = hours_header.find_next_sibling().find(class_="totais").find(class_="n").text.strip()
-
-    passing_requirements_header = soup.find("h3", string="Obtenção de frequência")
-    passing_requirements = get_text(passing_requirements_header)
+    
+    try:
+        passing_requirements_header = soup.find("h3", string="Obtenção de frequência")
+        passing_requirements = get_text(passing_requirements_header)
+    except:
+        passing_requirements = ""
 
     # print('PASSING REQUIREMENTS: ' + passing_requirements)
     # print('-----------------------')
 
-    main_professors = []
-    main_professor_section = soup.find(class_="responsabilidades")
-    if(main_professor_section != None):
+    try:
+        main_professors = []
+        main_professor_section = soup.find(class_="responsabilidades")
         main_professor_sections = main_professor_section.find(class_="dados").find_all(
-            "tr", class_="d"
+                "tr", class_="d"
         )
         for section in main_professor_sections:
             main_professor = section.find("a")["href"]
             main_professors.append(main_professor)
+    except:
+        main_professors = []
+
 
     tp_class = get_professor(soup, "Teórico-Práticas")
     if tp_class != -1:
@@ -254,36 +279,39 @@ def get_text(header):
 
 
 def get_professor(soup, type):
-    professors_header = soup.find("h3", string="Docência - Horas")
-    if(professors_header == None):
-        return -1
-    professors_table = professors_header.find_next_sibling(class_="dados")
-    class_types = professors_table.find_all(class_="k t")
+    try:
+        professors_header = soup.find("h3", string="Docência - Horas")
+        professors_table = professors_header.find_next_sibling(class_="dados")
+        class_types = professors_table.find_all(class_="k t")
 
-    professors_urls = []
-    for class_type in class_types:
-        if class_type.get_text() == type:
-            professors_list = class_type.find_next_siblings(class_="d")
-            for professor in professors_list:
-                professor_info = professor.find("td", class_="t")
-                url = professor_info.find("a", href=True)["href"]
-                professors_urls.append(url)
-            return professors_urls
-    return -1
+        professors_urls = []
+        for class_type in class_types:
+            if class_type.get_text() == type:
+                professors_list = class_type.find_next_siblings(class_="d")
+                for professor in professors_list:
+                    professor_info = professor.find("td", class_="t")
+                    url = professor_info.find("a", href=True)["href"]
+                    professors_urls.append(url)
+                return professors_urls
+    finally:
+        return -1
 
 
 def get_program(soup):
-    sections = soup.find_all("h3", string="Programa")
+    try:
+        sections = soup.find_all("h3", string="Programa")
 
-    text = ""
-    for section in sections:
-        if section.text.strip() == "Programa":
-            siblings = section.find_next_siblings()
-            for sibling in siblings:
-                if sibling.name == "h3":
-                    return text
-                text += sibling.text.strip() + "\n"
-    return text
+        text = ""
+        for section in sections:
+            if section.text.strip() == "Programa":
+                siblings = section.find_next_siblings()
+                for sibling in siblings:
+                    if sibling.name == "h3":
+                        return text
+                    text += sibling.text.strip() + "\n"
+        return text
+    except:
+        return ""
 
 
 def main():
