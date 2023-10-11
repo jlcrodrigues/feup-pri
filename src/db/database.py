@@ -23,10 +23,10 @@ class Database:
         self.connection.close()
 
     def execute(self, query, params=None, fetch="all"):
-        self.cursor.execute(query, params)
-        self.connection.commit()
-        
         try:
+            self.cursor.execute(query, params)
+            self.connection.commit()
+        
             match fetch:
                 case "all":
                     return self.cursor.fetchall()

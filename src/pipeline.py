@@ -82,15 +82,12 @@ def terminate(db, message=""):
 
 def insert_university(db, name, url):
     try:
-        db.execute(
-            "INSERT INTO University (name, url) VALUES (%s, %s)", (name, url), "none"
-        )
+        university_id = db.execute(
+            "INSERT INTO University (name, url) VALUES (%s, %s) RETURNING id",
+            (name, url),
+            "one",
+        )[0]
     except psycopg2.errors.UniqueViolation:
-        pass
-    except Exception as e:
-        terminate(db, e)
-
-    try:
         university_id = db.execute(
             "SELECT id FROM University WHERE name = %s", (name,), "one"
         )[0]
@@ -102,25 +99,19 @@ def insert_university(db, name, url):
 
 def insert_degree(db, university_id, degree):
     try:
-        db.execute(
-            "INSERT INTO Degree (url, name, description, outings, academic_degree, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (degree.url, degree.title, degree.description, degree.exits, "", "", 1),
-            "none",
-        )
-    except psycopg2.errors.UniqueViolation:
-        pass
-    except Exception as e:
-        terminate(db, e)
-
-    try:
         degree_id = db.execute(
-            "SELECT id FROM Degree WHERE url = %s", (degree.url,), fetch="one"
+            "INSERT INTO Degree (url, name, description, outings, academic_degree, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id",
+            (degree.url, degree.title, degree.description, degree.exits, "", "", 1),
+            "one",
         )[0]
+
         db.execute(
             "INSERT INTO UniversityDegree (university_id, degree_id) VALUES (%s, %s)",
             (university_id, degree_id),
             "none",
         )
+    except psycopg2.errors.UniqueViolation:
+        return -1
     except Exception as e:
         terminate(db, e)
 
@@ -143,44 +134,44 @@ def get_urls_courses(degree_url):
 def insert_courses(db, degree_id, degree_url):
     urls_courses = get_urls_courses(degree_url)
     for url_course in urls_courses:
-        id_course = db.execute(
-            "SELECT id FROM CourseUnit WHERE url = %s", (url_course,), fetch="one"
-        )
-        if id_course != None:
-            try:
-                db.execute(
-                    "INSERT INTO DegreeCourse (degree_id, course_id) VALUES (%s, %s)",
-                    (degree_id, id_course[0]),
-                    "none",
-                )
-            finally:
-                print("Course already exists")
-                pass
-        else:
+        try:
             course = parse_unit_page(url_course)
-            try:
-                db.execute(
-                    "INSERT INTO CourseUnit (name, url, code, language, ects, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (
-                        course.name,
-                        url_course,
-                        course.code,
-                        course.language,
-                        course.credits,
-                        course.objectives,
-                        course.results,
-                        course.working_method,
-                        course.pre_requirements,
-                        course.program,
-                        course.evaluation_type,
-                        course.passing_requirements,
-                    ),
-                    "none",
-                )
-            except Exception as e:
-                print(e)
-                print("Error adding course! URL: " + url_course)
-                pass
+            course_id = db.execute(
+                "INSERT INTO CourseUnit (name, url, code, language, ects, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id",
+                (
+                    course.name,
+                    url_course,
+                    course.code,
+                    course.language,
+                    course.credits,
+                    course.objectives,
+                    course.results,
+                    course.working_method,
+                    course.pre_requirements,
+                    course.program,
+                    course.evaluation_type,
+                    course.passing_requirements,
+                ),
+                "one",
+            )[0]
+
+            db.execute(
+                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id) VALUES (%s, %s)",
+                (degree_id, course_id),
+                "none",
+            )
+
+        except psycopg2.errors.UniqueViolation:
+            print("Course " + course.name + " already exists")
+            course_id = db.execute(
+                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id) VALUES (%s, (SELECT id FROM CourseUnit WHERE url = %s)) RETURNING course_unit_id",
+                (degree_id, url_course),
+                "one",
+            )[0]
+        except Exception as e:
+            print(e)
+            print("Error adding course! URL: " + url_course)
+            pass
 
 
 def main(args):
@@ -192,6 +183,9 @@ def main(args):
     university_id = insert_university(db, args.university_name, args.university_url)
     for degree in fetch_degrees(args.url, args.university_url):
         degree_id = insert_degree(db, university_id, degree)
+        if degree_id == -1:
+            print("Degree " + degree.title + " already exists")
+            continue
         insert_courses(db, degree_id, degree.url)
 
 

@@ -51,7 +51,6 @@ class CourseUnit:
 
 def parse_unit_page(url):
     response = requests.get(url)
-    print("URL: " + url)
     if response.status_code != 200:
         print("Error fetching page - " + url)
         return
@@ -75,7 +74,7 @@ def parse_unit_page(url):
             .text
         )
     except:
-        credits = -1
+        credits = None
 
     # print('CREDITS: ' + str(credits))
     # print('-----------------------')
@@ -84,7 +83,7 @@ def parse_unit_page(url):
         language_header = soup.find("h3", string="Língua de trabalho")
         language = get_text(language_header)
     except:
-        language = ""
+        language = None
 
     # print('LANGUAGE: ' + language)
     # print('-----------------------')
@@ -93,7 +92,7 @@ def parse_unit_page(url):
         objectives_header = soup.find("h3", string="Objetivos")
         objectives = get_text(objectives_header)
     except:
-        objectives = ""
+        objectives = None
 
     # print('OBJECTIVES: ' + objectives)
     # print('-----------------------')
@@ -101,7 +100,7 @@ def parse_unit_page(url):
         results_header = soup.find("h3", string="Resultados de aprendizagem e competências")
         results = get_text(results_header)
     except:
-        results = ""
+        results = None
 
     # print('RESULTS: ' + results)
     # print('-----------------------')
@@ -110,7 +109,7 @@ def parse_unit_page(url):
         working_method_header = soup.find("h3", string="Modo de trabalho")
         working_method = get_text(working_method_header)
     except:
-        working_method = ""
+        working_method = None
 
     # print('WORKING METHODS: ' + working_method)
     # print('-----------------------')
@@ -123,9 +122,9 @@ def parse_unit_page(url):
         if pre_requirements_header:
             pre_requirements = get_text(pre_requirements_header)
         else:
-            pre_requirements = ""
+            pre_requirements = None
     except:
-        pre_requirements = ""
+        pre_requirements = None
 
     # print('PRE REQUIREMENTS: ' + pre_requirements)
     # print('-----------------------')
@@ -134,7 +133,7 @@ def parse_unit_page(url):
         evaluation_type_header = soup.find("h3", string="Tipo de avaliação")
         evaluation_type = get_text(evaluation_type_header)
     except:
-        evaluation_type = ""
+        evaluation_type = None
 
     # print('EVAL TYPES: ' + evaluation_type)
     # print('-----------------------')
@@ -146,7 +145,7 @@ def parse_unit_page(url):
         passing_requirements_header = soup.find("h3", string="Obtenção de frequência")
         passing_requirements = get_text(passing_requirements_header)
     except:
-        passing_requirements = ""
+        passing_requirements = None
 
     # print('PASSING REQUIREMENTS: ' + passing_requirements)
     # print('-----------------------')
@@ -234,7 +233,7 @@ def parse_unit_page(url):
 
     program = get_program(info)
     if program.isspace():
-        program = ""
+        program = None
 
     # print('PROGRAM: ' + program)
 
