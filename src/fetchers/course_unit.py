@@ -30,12 +30,12 @@ class CourseUnit:
         self.code = code
         self.credits = credits
         self.main_professor = main_professor
-        self.tp_professors = (tp_professors,)
-        self.t_professors = (t_professors,)
-        self.ot_professors = (ot_professors,)
-        self.pl_professors = (pl_professors,)
-        self.p_professors = (p_professors,)
-        self.s_professors = (s_professors,)
+        self.tp_professors = tp_professors
+        self.t_professors = t_professors
+        self.ot_professors = ot_professors
+        self.pl_professors = pl_professors
+        self.p_professors = p_professors
+        self.s_professors = s_professors
         self.language = language
         self.objectives = objectives
         self.results = results
@@ -54,6 +54,8 @@ def parse_unit_page(url):
     if response.status_code != 200:
         print("Error fetching page - " + url)
         return
+    
+    base_url = url[:url.find("/pt/")+4]
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -151,81 +153,81 @@ def parse_unit_page(url):
     # print('-----------------------')
 
     try:
-        main_professors = []
+        main_professors = set()
         main_professor_section = soup.find(class_="responsabilidades")
         main_professor_sections = main_professor_section.find(class_="dados").find_all(
                 "tr", class_="d"
         )
         for section in main_professor_sections:
             main_professor = section.find("a")["href"]
-            main_professors.append(main_professor)
+            main_professors.add(base_url + main_professor)
     except:
-        main_professors = []
+        main_professors = set()
 
 
-    tp_class = get_professor(soup, "Teórico-Práticas")
+    tp_class = get_professor(soup, "Teórico-Práticas", base_url)
     if tp_class != -1:
         tp_professors = tp_class
     else:
-        tp_class = get_professor(soup, "Teorico-Prática")
+        tp_class = get_professor(soup, "Teorico-Prática", base_url)
         if tp_class != -1:
             tp_professors = tp_class
         else:
-            tp_professors = []
+            tp_professors = set()
 
     # print('TP: ')
     # print_list(tp_professors)
     # print('-----------------------')
 
-    t_class = get_professor(soup, "Teóricas")
+    t_class = get_professor(soup, "Teóricas", base_url)
     if t_class != -1:
         t_professors = t_class
     else:
-        t_class = get_professor(soup, "Teórica")
+        t_class = get_professor(soup, "Teórica", base_url)
         if t_class != -1:
             t_professors = t_class
         else:
-            t_professors = []
+            t_professors = set()
 
     # print('T: ')
     # print_list(t_professors)
     # print('-----------------------')
 
-    ot_class = get_professor(soup, "Orientação Tutorial")
+    ot_class = get_professor(soup, "Orientação Tutorial", base_url)
     if ot_class != -1:
         ot_professors = ot_class
     else:
-        ot_professors = []
+        ot_professors = set()
 
     # print('OT: ')
     # print(ot_professors)
     # print('-----------------------')
 
-    pl_class = get_professor(soup, "Práticas Laboratoriais")
+    pl_class = get_professor(soup, "Práticas Laboratoriais", base_url)
     if pl_class != -1:
         pl_professors = pl_class
     else:
-        pl_professors = []
+        pl_professors = set()
 
     # print('PL: ')
     # print(pl_professors)
     # print('-----------------------')
 
-    p_class = get_professor(soup, "Práticas")
+    p_class = get_professor(soup, "Práticas", base_url)
     if p_class != -1:
         p_professors = p_class
     else:
-        p_professors = []
+        p_professors = set()
 
     # print('P: ')
     # print(p_professors)
     # print('-----------------------')
 
-    s_class = get_professor(soup, "Seminários")
+    s_class = get_professor(soup, "Seminários", base_url)
     if s_class != -1:
         s_professors = s_class
     else:
-        s_professors = []
+        s_professors = set()
 
     # print('S: ')
     # print(s_professors)
@@ -277,23 +279,25 @@ def get_text(header):
     return ""
 
 
-def get_professor(soup, type):
+def get_professor(soup, type, base_url):
     try:
         professors_header = soup.find("h3", string="Docência - Horas")
         professors_table = professors_header.find_next_sibling(class_="dados")
         class_types = professors_table.find_all(class_="k t")
 
-        professors_urls = []
+        professors_urls = set()
         for class_type in class_types:
             if class_type.get_text() == type:
                 professors_list = class_type.find_next_siblings(class_="d")
                 for professor in professors_list:
                     professor_info = professor.find("td", class_="t")
                     url = professor_info.find("a", href=True)["href"]
-                    professors_urls.append(url)
+                    professors_urls.add(base_url + url)
                 return professors_urls
-    finally:
+    except Exception as e:
         return -1
+    return -1
+
 
 
 def get_program(soup):
@@ -323,7 +327,7 @@ def main():
     # https://sigarra.up.pt/icbas/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520513
 
     urls = [
-        "https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520223"
+        "https://sigarra.up.pt/faup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=514990"
     ]
     with open("../data/course_units.csv", "w", encoding="utf-8") as my_file:
         my_file.write(
@@ -331,7 +335,7 @@ def main():
         )
         for url in urls:
             course_unit = parse_unit_page(url)
-            # my_file.write(course_unit.to_csv() + '\n')
+            my_file.write(course_unit.to_csv() + '\n')
 
 
 if __name__ == "__main__":

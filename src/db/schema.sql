@@ -13,18 +13,18 @@ DROP TABLE IF EXISTS DegreeCourseUnit CASCADE;
 
 CREATE TABLE University (
     id SERIAL PRIMARY KEY,
-    url VARCHAR(350) NOT NULL UNIQUE,
-    name VARCHAR(150) NOT NULL UNIQUE
+    url VARCHAR NOT NULL UNIQUE,
+    name VARCHAR NOT NULL UNIQUE
 );
 
 CREATE TABLE Degree (
     id SERIAL PRIMARY KEY,
-    url VARCHAR(350) NOT NULL UNIQUE,
-    name VARCHAR(150) NOT NULL,
+    url VARCHAR NOT NULL UNIQUE,
+    name VARCHAR NOT NULL,
     description TEXT,
     outings TEXT,
-    academic_degree VARCHAR(150),
-    type_of_course VARCHAR(150) NOT NULL,
+    academic_degree VARCHAR,
+    type_of_course VARCHAR NOT NULL,
     duration INT CHECK (duration > 0)
 );
 
@@ -36,15 +36,15 @@ CREATE TABLE UniversityDegree (
 
 CREATE TABLE Professor (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    personal_website VARCHAR(350),
-    institutional_website VARCHAR(350) NOT NULL UNIQUE,
-    abbreviation VARCHAR(20),
-    status VARCHAR(50),
+    name VARCHAR NOT NULL,
+    personal_website VARCHAR,
+    institutional_website VARCHAR NOT NULL UNIQUE,
+    abbreviation VARCHAR,
+    status VARCHAR,
     code INT,
     institutional_email VARCHAR(150) UNIQUE,
-    phone VARCHAR(20) UNIQUE,
-    rank VARCHAR(50),
+    phone VARCHAR UNIQUE,
+    rank VARCHAR,
     personal_presentation TEXT,
     fields_of_interest TEXT
 );
@@ -52,16 +52,16 @@ CREATE TABLE Professor (
 CREATE TABLE ProfessorDegree (
     professor_id INT NOT NULL REFERENCES Professor(id),
     degree_id INT NOT NULL REFERENCES Degree(id),
-    role VARCHAR(100) NOT NULL,
+    role VARCHAR NOT NULL,
     PRIMARY KEY (professor_id, degree_id)
 );
 
 CREATE TABLE CourseUnit (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    url VARCHAR(350) NOT NULL UNIQUE,
-    code VARCHAR(50),
-    language VARCHAR(50),
+    name VARCHAR NOT NULL,
+    url VARCHAR NOT NULL UNIQUE,
+    code VARCHAR,
+    language VARCHAR,
     ects INT CHECK (ects > 0),
     objectives TEXT,
     results TEXT,
@@ -75,8 +75,8 @@ CREATE TABLE CourseUnit (
 CREATE TABLE ProfessorCourseUnit (
     professor_id INT NOT NULL REFERENCES Professor(id),
     course_unit_id INT NOT NULL REFERENCES CourseUnit(id),
-    type VARCHAR(50) NOT NULL,
-    PRIMARY KEY (professor_id, course_unit_id)
+    type VARCHAR NOT NULL,
+    PRIMARY KEY (professor_id, course_unit_id, type)
 );
 
 CREATE TABLE DegreeCourseUnit (

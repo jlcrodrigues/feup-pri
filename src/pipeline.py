@@ -161,17 +161,80 @@ def insert_courses(db, degree_id, degree_url):
                 "none",
             )
 
+            for teacher_url in course.main_professor:
+                link_professor_course(db, teacher_url, course_id, "Regente")
+
+            for teacher_url in course.t_professors:
+                link_professor_course(db, teacher_url, course_id, "Teóricas")
+
+            for teacher_url in course.tp_professors:
+                link_professor_course(db, teacher_url, course_id, "Teórico-Práticas")
+
+            for teacher_url in course.p_professors:
+                link_professor_course(db, teacher_url, course_id, "Práticas")
+
+            for teacher_url in course.ot_professors:
+                link_professor_course(db, teacher_url, course_id, "Orientação Tutorial")
+
+            for teacher_url in course.pl_professors:
+                link_professor_course(
+                    db, teacher_url, course_id, "Práticas Laboratoriais"
+                )
+
+            for teacher_url in course.s_professors:
+                link_professor_course(db, teacher_url, course_id, "Seminário")
+
+
         except psycopg2.errors.UniqueViolation:
             print("Course " + course.name + " already exists")
-            course_id = db.execute(
+            db.execute(
                 "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id) VALUES (%s, (SELECT id FROM CourseUnit WHERE url = %s)) RETURNING course_unit_id",
                 (degree_id, url_course),
-                "one",
-            )[0]
+                "none",
+            )
         except Exception as e:
             print(e)
             print("Error adding course! URL: " + url_course)
-            pass
+
+
+def insert_professor(db, url_professor):
+    professor_id = db.execute(
+        "SELECT id FROM Professor WHERE institutional_website = %s",
+        (url_professor,),
+        "one",
+    )
+
+    if professor_id is None:
+        professor = parse_teacher_page(url_professor)
+        professor_id = db.execute(
+            "INSERT INTO Professor (name, personal_website, institutional_website, abbreviation, status, code, institutional_email, phone, rank, personal_presentation, fields_of_interest) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id",
+            (
+                professor.name,
+                professor.personal_website,
+                professor.sigarra_website,
+                professor.abbreviation,
+                professor.status,
+                professor.code,
+                professor.email,
+                professor.phone,
+                professor.rank,
+                professor.personal_presentation,
+                professor.fields_of_interest,
+            ),
+            "one",
+        )
+
+    return professor_id[0]
+
+
+def link_professor_course(db, url_professor, course_id, type):
+    professor_id = insert_professor(db, url_professor)
+    db.execute(
+        "INSERT INTO ProfessorCourseUnit (professor_id, course_unit_id, type) VALUES (%s, %s, %s)",
+        (professor_id, course_id, type),
+        "none",
+    )
 
 
 def main(args):
