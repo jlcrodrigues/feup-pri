@@ -45,7 +45,7 @@ def arguments():
         nargs="+",
         default=[
             "https://www.up.pt//portal/pt/estudar/licenciaturas-e-mestrados-integrados/oferta-formativa",
-            # "https://www.up.pt/portal/pt/estudar/mestrados/oferta-formativa",
+            "https://www.up.pt/portal/pt/estudar/mestrados/oferta-formativa",
         ],
         help="Entry point links. Provide one or more URLs separated by spaces. These URLs will be used as the starting points for the web crawler. If no URLs are provided, the default URLs will be used.",
     )
