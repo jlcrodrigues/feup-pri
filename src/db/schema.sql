@@ -43,7 +43,7 @@ CREATE TABLE Professor (
     status VARCHAR,
     code INT,
     institutional_email VARCHAR(150) UNIQUE,
-    phone VARCHAR UNIQUE,
+    phone VARCHAR,
     rank VARCHAR,
     personal_presentation TEXT,
     fields_of_interest TEXT

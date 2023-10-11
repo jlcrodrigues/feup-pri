@@ -55,7 +55,7 @@ def parse_unit_page(url):
         print("Error fetching page - " + url)
         return
 
-    base_url = url[: url.find("/pt/") + 4]
+    base_url = url[: url.find("ucurr_geral.ficha_uc_view")]
     soup = BeautifulSoup(response.text, "html.parser")
 
     info = soup.find(id="conteudoinner")

@@ -130,11 +130,25 @@ def get_urls_courses(degree_url):
     faculty = degree_url[start_pos:end_pos]
     return get_course_list(id_degree, faculty)
 
+def verify_url_redirect(url):
+    response = requests.get(url)
+    if response.status_code != 200:
+        print("Error fetching page - " + url)
+        return None
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    try:
+        meta = soup.find("meta")
+        if meta["http-equiv"] == "Refresh":
+            url = meta["content"].split("url=")[1]
+    finally:
+        return url
 
 def insert_courses(db, degree_id, degree_url):
     urls_courses = get_urls_courses(degree_url)
     for url_course in urls_courses:
         try:
+            url_course = verify_url_redirect(url_course)
             course = parse_unit_page(url_course)
             course_id = db.execute(
                 "INSERT INTO CourseUnit (name, url, code, language, ects, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id",
