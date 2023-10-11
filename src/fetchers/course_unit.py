@@ -54,9 +54,8 @@ def parse_unit_page(url):
     if response.status_code != 200:
         print("Error fetching page - " + url)
         return
-    
-    base_url = url[:url.find("/pt/")+4]
 
+    base_url = url[: url.find("/pt/") + 4]
     soup = BeautifulSoup(response.text, "html.parser")
 
     info = soup.find(id="conteudoinner")
@@ -99,14 +98,16 @@ def parse_unit_page(url):
     # print('OBJECTIVES: ' + objectives)
     # print('-----------------------')
     try:
-        results_header = soup.find("h3", string="Resultados de aprendizagem e competências")
+        results_header = soup.find(
+            "h3", string="Resultados de aprendizagem e competências"
+        )
         results = get_text(results_header)
     except:
         results = None
 
     # print('RESULTS: ' + results)
     # print('-----------------------')
-    
+
     try:
         working_method_header = soup.find("h3", string="Modo de trabalho")
         working_method = get_text(working_method_header)
@@ -142,7 +143,7 @@ def parse_unit_page(url):
 
     # hours_header = soup.find('h3', string='Componentes de Ocupação')
     # hours = hours_header.find_next_sibling().find(class_="totais").find(class_="n").text.strip()
-    
+
     try:
         passing_requirements_header = soup.find("h3", string="Obtenção de frequência")
         passing_requirements = get_text(passing_requirements_header)
@@ -156,14 +157,13 @@ def parse_unit_page(url):
         main_professors = set()
         main_professor_section = soup.find(class_="responsabilidades")
         main_professor_sections = main_professor_section.find(class_="dados").find_all(
-                "tr", class_="d"
+            "tr", class_="d"
         )
         for section in main_professor_sections:
             main_professor = section.find("a")["href"]
             main_professors.add(base_url + main_professor)
     except:
         main_professors = set()
-
 
     tp_class = get_professor(soup, "Teórico-Práticas", base_url)
     if tp_class != -1:
@@ -299,7 +299,6 @@ def get_professor(soup, type, base_url):
     return -1
 
 
-
 def get_program(soup):
     try:
         sections = soup.find_all("h3", string="Programa")
@@ -327,7 +326,7 @@ def main():
     # https://sigarra.up.pt/icbas/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520513
 
     urls = [
-        "https://sigarra.up.pt/faup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=514990"
+        "https://sigarra.up.pt/fcup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=531702"
     ]
     with open("../data/course_units.csv", "w", encoding="utf-8") as my_file:
         my_file.write(
@@ -335,7 +334,7 @@ def main():
         )
         for url in urls:
             course_unit = parse_unit_page(url)
-            my_file.write(course_unit.to_csv() + '\n')
+            my_file.write(course_unit.to_csv() + "\n")
 
 
 if __name__ == "__main__":
