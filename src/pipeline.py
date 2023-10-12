@@ -8,6 +8,7 @@ from db.database import *
 from db import database
 import psycopg2
 import re
+import sys
 
 
 def arguments():
@@ -130,6 +131,7 @@ def get_urls_courses(degree_url):
     faculty = degree_url[start_pos:end_pos]
     return get_course_list(id_degree, faculty)
 
+
 def verify_url_redirect(url):
     response = requests.get(url)
     if response.status_code != 200:
@@ -143,6 +145,7 @@ def verify_url_redirect(url):
             url = meta["content"].split("url=")[1]
     finally:
         return url
+
 
 def insert_courses(db, degree_id, degree_url):
     urls_courses = get_urls_courses(degree_url)
@@ -198,9 +201,8 @@ def insert_courses(db, degree_id, degree_url):
             for teacher_url in course.s_professors:
                 link_professor_course(db, teacher_url, course_id, "Seminário")
 
-
         except psycopg2.errors.UniqueViolation:
-            print("Course " + course.name + " already exists")
+            #print("Course " + course.name + " already exists")
             db.execute(
                 "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id) VALUES (%s, (SELECT id FROM CourseUnit WHERE url = %s)) RETURNING course_unit_id",
                 (degree_id, url_course),
@@ -209,12 +211,14 @@ def insert_courses(db, degree_id, degree_url):
         except Exception as e:
             print(e)
             print("Error adding course! URL: " + url_course)
+            pass
 
 
 def insert_professor(db, url_professor):
+    code = url_professor.split("p_codigo=")[1]
     professor_id = db.execute(
-        "SELECT id FROM Professor WHERE institutional_website = %s",
-        (url_professor,),
+        "SELECT id FROM Professor WHERE code = %s",
+        (code,),
         "one",
     )
 
@@ -250,7 +254,6 @@ def link_professor_course(db, url_professor, course_id, type):
         "none",
     )
 
-
 def main(args):
     db = database.Database(args.host, args.port, args.user, args.pwd, args.db)
     db.connect()
@@ -258,13 +261,15 @@ def main(args):
         db.exec_file(args.schema)
 
     university_id = insert_university(db, args.university_name, args.university_url)
-    for degree in fetch_degrees(args.url, args.university_url):
+    degrees = fetch_degrees(args.url, args.university_url)
+    counter = 0
+    for degree in degrees:
+        print(f"Inserting degree {counter} of {len(degrees)}")
         degree_id = insert_degree(db, university_id, degree)
         if degree_id == -1:
-            print("Degree " + degree.title + " already exists")
             continue
         insert_courses(db, degree_id, degree.url)
-
+        counter += 1
 
 if __name__ == "__main__":
     args = arguments()

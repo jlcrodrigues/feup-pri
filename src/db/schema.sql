@@ -41,7 +41,7 @@ CREATE TABLE Professor (
     institutional_website VARCHAR NOT NULL UNIQUE,
     abbreviation VARCHAR,
     status VARCHAR,
-    code INT,
+    code INT NOT NULL UNIQUE,
     institutional_email VARCHAR(150) UNIQUE,
     phone VARCHAR,
     rank VARCHAR,
