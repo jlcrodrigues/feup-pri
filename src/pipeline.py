@@ -259,7 +259,7 @@ def main(args):
     db.connect()
     if args.reset:
         db.exec_file(args.schema)
-
+    
     university_id = insert_university(db, args.university_name, args.university_url)
     degrees = fetch_degrees(args.url, args.university_url)
     counter = 0
