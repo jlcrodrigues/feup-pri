@@ -3,18 +3,39 @@ from bs4 import BeautifulSoup
 
 base_url = "https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id="
 
+
 class CourseUnit:
-    def __init__(self, name, code, credits, main_professor, tp_professors, t_professors, ot_professors, pl_professors, p_professors, s_professors, language, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements):
+    def __init__(
+        self,
+        name,
+        code,
+        credits,
+        main_professor,
+        tp_professors,
+        t_professors,
+        ot_professors,
+        pl_professors,
+        p_professors,
+        s_professors,
+        language,
+        objectives,
+        results,
+        working_method,
+        pre_requirements,
+        program,
+        evaluation_type,
+        passing_requirements,
+    ):
         self.name = name
         self.code = code
         self.credits = credits
         self.main_professor = main_professor
-        self.tp_professors = tp_professors,
-        self.t_professors = t_professors,
-        self.ot_professors = ot_professors,
-        self.pl_professors = pl_professors, 
-        self.p_professors = p_professors, 
-        self.s_professors = s_professors,
+        self.tp_professors = tp_professors
+        self.t_professors = t_professors
+        self.ot_professors = ot_professors
+        self.pl_professors = pl_professors
+        self.p_professors = p_professors
+        self.s_professors = s_professors
         self.language = language
         self.objectives = objectives
         self.results = results
@@ -25,197 +46,275 @@ class CourseUnit:
         self.passing_requirements = passing_requirements
 
     def to_csv(self):
-        return f'{self.name}; {self.code}; {self.credits}; {self.main_professor}; {self.tp_professors}; {self.t_professors}; {self.ot_professors}; {self.pl_professors}; {self.p_professors}; {self.s_professors}; {self.language}; {self.objectives}; {self.results}; {self.working_method}; {self.pre_requirements}; {self.program}; {self.evaluation_type}; {self.passing_requirements}'
+        return f"{self.name}; {self.code}; {self.credits}; {self.main_professor}; {self.tp_professors}; {self.t_professors}; {self.ot_professors}; {self.pl_professors}; {self.p_professors}; {self.s_professors}; {self.language}; {self.objectives}; {self.results}; {self.working_method}; {self.pre_requirements}; {self.program}; {self.evaluation_type}; {self.passing_requirements}"
+
 
 def parse_unit_page(url):
     response = requests.get(url)
+    if response.status_code != 200:
+        print("Error fetching page - " + url)
+        return
+
+    base_url = url[: url.find("ucurr_geral.ficha_uc_view")]
     soup = BeautifulSoup(response.text, "html.parser")
 
-    info = soup.find(id='conteudoinner')
+    info = soup.find(id="conteudoinner")
 
-    name = info.find_all('h1')[1].text.strip()
-    code = info.find_all('td')[1].text.strip()
+    name = info.find_all("h1")[1].text.strip()
+    code = info.find_all("td")[1].text.strip()
 
-    print('NAME: ' + name)
-    print('CODE: ' + code)
+    # print('NAME: ' + name)
+    # print('CODE: ' + code)
+    # print('-----------------------')
+    try:
+        credits_header = soup.find("h3", string="Ciclos de Estudo/Cursos")
+        credits_table = credits_header.find_next_sibling(class_="dados")
+        credits = int(
+            credits_table.find("tr", class_="d")
+            .find_all("td", class_="n", rowspan="1")[1]
+            .text
+        )
+    except:
+        credits = None
 
-    print('-----------------------')
+    # print('CREDITS: ' + str(credits))
+    # print('-----------------------')
 
-    credits_header = soup.find('h3', string='Ciclos de Estudo/Cursos')
-    credits_table = credits_header.find_next_sibling(class_='dados')
-    credits = credits_table.find('tr', class_='d').find_all('td', class_='n', rowspan='1')[1].text
+    try:
+        language_header = soup.find("h3", string="Língua de trabalho")
+        language = get_text(language_header)
+    except:
+        language = None
 
-    print('CREDITS: ' + credits)
-    print('-----------------------')
+    # print('LANGUAGE: ' + language)
+    # print('-----------------------')
 
-    language_header = soup.find('h3', string='Língua de trabalho')
-    language = get_text(language_header)
+    try:
+        objectives_header = soup.find("h3", string="Objetivos")
+        objectives = get_text(objectives_header)
+    except:
+        objectives = None
 
-    print('LANGUAGE: ' + language)
-    print('-----------------------')
+    # print('OBJECTIVES: ' + objectives)
+    # print('-----------------------')
+    try:
+        results_header = soup.find(
+            "h3", string="Resultados de aprendizagem e competências"
+        )
+        results = get_text(results_header)
+    except:
+        results = None
 
-    objectives_header = soup.find('h3', string='Objetivos')
-    objectives = get_text(objectives_header)
+    # print('RESULTS: ' + results)
+    # print('-----------------------')
 
-    print('OBJECTIVES: ' + objectives)
-    print('-----------------------')
+    try:
+        working_method_header = soup.find("h3", string="Modo de trabalho")
+        working_method = get_text(working_method_header)
+    except:
+        working_method = None
 
-    results_header = soup.find('h3', string='Resultados de aprendizagem e competências')
-    results = get_text(results_header)
+    # print('WORKING METHODS: ' + working_method)
+    # print('-----------------------')
 
-    print('RESULTS: ' + results)
-    print('-----------------------')
+    try:
+        pre_requirements_header = soup.find(
+            "h3",
+            string="Pré-requisitos (conhecimentos prévios) e co-requisitos (conhecimentos simultâneos)",
+        )
+        if pre_requirements_header:
+            pre_requirements = get_text(pre_requirements_header)
+        else:
+            pre_requirements = None
+    except:
+        pre_requirements = None
 
-    working_method_header = soup.find('h3', string='Modo de trabalho')
-    working_method = get_text(working_method_header)
+    # print('PRE REQUIREMENTS: ' + pre_requirements)
+    # print('-----------------------')
 
-    print('WORKING METHODS: ' + working_method)
-    print('-----------------------')
+    try:
+        evaluation_type_header = soup.find("h3", string="Tipo de avaliação")
+        evaluation_type = get_text(evaluation_type_header)
+    except:
+        evaluation_type = None
 
-    pre_requirements_header = soup.find('h3', string='Pré-requisitos (conhecimentos prévios) e co-requisitos (conhecimentos simultâneos)')
-    if pre_requirements_header:
-        pre_requirements = get_text(pre_requirements_header)
-    else:
-        pre_requirements = ''
+    # print('EVAL TYPES: ' + evaluation_type)
+    # print('-----------------------')
 
-    print('PRE REQUIREMENTS: ' + pre_requirements)
-    print('-----------------------')
+    # hours_header = soup.find('h3', string='Componentes de Ocupação')
+    # hours = hours_header.find_next_sibling().find(class_="totais").find(class_="n").text.strip()
 
-    print('PRE REQUIREMENTS: ' + pre_requirements)
+    try:
+        passing_requirements_header = soup.find("h3", string="Obtenção de frequência")
+        passing_requirements = get_text(passing_requirements_header)
+    except:
+        passing_requirements = None
 
-    evaluation_type_header = soup.find('h3', string='Tipo de avaliação')
-    evaluation_type = get_text(evaluation_type_header)
+    # print('PASSING REQUIREMENTS: ' + passing_requirements)
+    # print('-----------------------')
 
-    print('EVAL TYPES: ' + evaluation_type)
-    print('-----------------------')
+    try:
+        main_professors = set()
+        main_professor_section = soup.find(class_="responsabilidades")
+        main_professor_sections = main_professor_section.find(class_="dados").find_all(
+            "tr", class_="d"
+        )
+        for section in main_professor_sections:
+            main_professor = section.find("a")["href"]
+            main_professors.add(base_url + main_professor)
+    except:
+        main_professors = set()
 
-    passing_requirements_header = soup.find('h3', string='Obtenção de frequência')
-    passing_requirements = get_text(passing_requirements_header)
-
-    print('PASSING REQUIREMENTS: ' + passing_requirements)
-    print('-----------------------')
-
-    main_professors = []
-    main_professor_section = soup.find(class_='responsabilidades')
-    main_professor_sections = main_professor_section.find(class_='dados').find_all('tr', class_='d')
-    for section in main_professor_sections:
-        main_professor = section.find('a')['href']
-        main_professors.append(main_professor)
-
-    tp_class = get_professor(soup, 'Teórico-Práticas')
-    if (tp_class != -1):
+    tp_class = get_professor(soup, "Teórico-Práticas", base_url)
+    if tp_class != -1:
         tp_professors = tp_class
     else:
-        tp_class = get_professor(soup, 'Teorico-Prática')
-        if (tp_class != -1):
+        tp_class = get_professor(soup, "Teorico-Prática", base_url)
+        if tp_class != -1:
             tp_professors = tp_class
         else:
-            tp_professors = []
+            tp_professors = set()
 
-    print('TP: ')
-    print_list(tp_professors)
-    print('-----------------------')
+    # print('TP: ')
+    # print_list(tp_professors)
+    # print('-----------------------')
 
-    t_class = get_professor(soup, 'Teóricas')
-    if (t_class != -1):
+    t_class = get_professor(soup, "Teóricas", base_url)
+    if t_class != -1:
         t_professors = t_class
     else:
-        t_class = get_professor(soup, 'Teórica')
-        if (t_class != -1):
+        t_class = get_professor(soup, "Teórica", base_url)
+        if t_class != -1:
             t_professors = t_class
         else:
-            t_professors = []
+            t_professors = set()
 
+    # print('T: ')
+    # print_list(t_professors)
+    # print('-----------------------')
 
-    print('T: ')
-    print_list(t_professors)
-    print('-----------------------')
-
-    ot_class = get_professor(soup, 'Orientação Tutorial')
-    if (ot_class != -1):
+    ot_class = get_professor(soup, "Orientação Tutorial", base_url)
+    if ot_class != -1:
         ot_professors = ot_class
     else:
-        ot_professors = []
+        ot_professors = set()
 
+    # print('OT: ')
+    # print(ot_professors)
+    # print('-----------------------')
 
-    print('OT: ') 
-    print(ot_professors)
-    print('-----------------------')
-
-    pl_class = get_professor(soup, 'Práticas Laboratoriais')
-    if (pl_class != -1):
+    pl_class = get_professor(soup, "Práticas Laboratoriais", base_url)
+    if pl_class != -1:
         pl_professors = pl_class
     else:
-        pl_professors = []
+        pl_professors = set()
 
+    # print('PL: ')
+    # print(pl_professors)
+    # print('-----------------------')
 
-    print('PL: ')
-    print(pl_professors)
-    print('-----------------------')
-
-    p_class = get_professor(soup, 'Práticas')
-    if (p_class != -1):
+    p_class = get_professor(soup, "Práticas", base_url)
+    if p_class != -1:
         p_professors = p_class
     else:
-        p_professors = []
-    print('P: ')
-    print(p_professors)
-    print('-----------------------')
+        p_professors = set()
 
-    s_class = get_professor(soup, 'Seminários')  
-    if (s_class != -1):
+    # print('P: ')
+    # print(p_professors)
+    # print('-----------------------')
+
+    s_class = get_professor(soup, "Seminários", base_url)
+    if s_class != -1:
         s_professors = s_class
     else:
-        s_professors = []
+        s_professors = set()
 
-    print('S: ')
-    print_list(s_professors)
-    print('-----------------------')
+    # print('S: ')
+    # print(s_professors)
+    # print('-----------------------')
 
     program = get_program(info)
+    if program.isspace():
+        program = None
 
-    print('PROGRAM: ' + program)
+    # print('PROGRAM: ' + program)
 
-    return CourseUnit(name, code, credits, main_professors, tp_professors, t_professors, ot_professors, pl_professors, p_professors, s_professors, language, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements)
+    return CourseUnit(
+        name,
+        code,
+        credits,
+        main_professors,
+        tp_professors,
+        t_professors,
+        ot_professors,
+        pl_professors,
+        p_professors,
+        s_professors,
+        language,
+        objectives,
+        results,
+        working_method,
+        pre_requirements,
+        program,
+        evaluation_type,
+        passing_requirements,
+    )
+
 
 def print_list(list):
-    for x in range(len(list)):  
-        print (list[x])
+    for x in range(len(list)):
+        print(list[x])
+
 
 def get_text(header):
-    text = header.find_next_sibling(string=True).text.strip()
-    if text != '':
+    try:
+        text = header.find_next_sibling(string=True).text.strip()
+    except:
+        return ""
+    if text != "":
         return text
-    return header.find_next_sibling().text.strip()
+    text = header.find_next_sibling().text.strip()
+    if text != "":
+        return text
+    return ""
 
-def get_professor(soup, type):
-    professors_header = soup.find('h3', string='Docência - Horas')
-    professors_table = professors_header.find_next_sibling(class_='dados')
-    class_types = professors_table.find_all(class_='k t')
 
-    professors_urls = []
-    for class_type in class_types:
-        if (class_type.get_text() == type):
-            professors_list = class_type.find_next_siblings(class_='d')
-            for professor in professors_list:
-                professor_info = professor.find('td', class_='t')
-                url = professor_info.find('a', href=True)['href']
-                professors_urls.append(url)
-            return professors_urls
+def get_professor(soup, type, base_url):
+    try:
+        professors_header = soup.find("h3", string="Docência - Horas")
+        professors_table = professors_header.find_next_sibling(class_="dados")
+        class_types = professors_table.find_all(class_="k t")
+
+        professors_urls = set()
+        for class_type in class_types:
+            if class_type.get_text() == type:
+                professors_list = class_type.find_next_siblings(class_="d")
+                for professor in professors_list:
+                    professor_info = professor.find("td", class_="t")
+                    url = professor_info.find("a", href=True)["href"]
+                    professors_urls.add(base_url + url)
+                return professors_urls
+    except Exception as e:
+        return -1
     return -1
 
-def get_program(soup):
-    sections = soup.find_all('h3', string='Programa')
 
-    text = ''
-    for section in sections:
-        if(section.text.strip() == 'Programa'):
-            siblings = section.find_next_siblings()
-            for sibling in siblings:
-                if(sibling.name == 'h3'):
-                    return text
-                text += sibling.text.strip() + '\n'
-    return text
+def get_program(soup):
+    try:
+        sections = soup.find_all("h3", string="Programa")
+
+        text = ""
+        for section in sections:
+            if section.text.strip() == "Programa":
+                siblings = section.find_next_siblings()
+                for sibling in siblings:
+                    if sibling.name == "h3":
+                        return text
+                    text += sibling.text.strip() + "\n"
+        return text
+    except:
+        return ""
+
 
 def main():
     # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=519377")
@@ -226,13 +325,17 @@ def main():
     # parse_unit_page("https://sigarra.up.pt/flup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=518101")
     # https://sigarra.up.pt/icbas/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520513
 
-
-    urls = ["https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520223"]
-    with open('../data/course_units.csv', 'w', encoding="utf-8") as my_file:
-        my_file.write('name; code; acronym; main_professor; tp_professors; t_professors; ot_professors; pl_professors; p_professors; s_professors; language; objectives; results; working_method; pre_requirements; program; evaluation_type; hours; passing_requirements\n')
+    urls = [
+        "https://sigarra.up.pt/fcup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=531702"
+    ]
+    with open("../data/course_units.csv", "w", encoding="utf-8") as my_file:
+        my_file.write(
+            "name; code; acronym; main_professor; tp_professors; t_professors; ot_professors; pl_professors; p_professors; s_professors; language; objectives; results; working_method; pre_requirements; program; evaluation_type; hours; passing_requirements\n"
+        )
         for url in urls:
             course_unit = parse_unit_page(url)
-            # my_file.write(course_unit.to_csv() + '\n')
+            my_file.write(course_unit.to_csv() + "\n")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

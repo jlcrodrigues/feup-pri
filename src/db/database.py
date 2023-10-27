@@ -23,18 +23,22 @@ class Database:
         self.connection.close()
 
     def execute(self, query, params=None, fetch="all"):
-        self.cursor.execute(query, params)
-        self.connection.commit()
+        try:
+            self.cursor.execute(query, params)
+            self.connection.commit()
         
-        match fetch:
-            case "all":
-                return self.cursor.fetchall()
-            case "one":
-                return self.cursor.fetchone()
-            case "many":
-                return self.cursor.fetchmany()
-            case _:
-                return None
+            match fetch:
+                case "all":
+                    return self.cursor.fetchall()
+                case "one":
+                    return self.cursor.fetchone()
+                case "many":
+                    return self.cursor.fetchmany()
+                case _:
+                    return None
+        except Exception as e:
+            self.connection.rollback()
+            raise e
             
     def exec_file(self, file):
         with open(file, 'r') as f:

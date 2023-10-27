@@ -30,22 +30,22 @@ def parse_teacher_page(url):
     try:
         name = info_table.find_all("td")[1].find("b").text.strip()
     except:
-        name = ""
+        name = None
 
     try:
         personal_website = info_table.find_all("td")[1].find("a")['href'].strip()
     except:
-        personal_website = ""
+        personal_website = None
 
     try:
         abbreviation = info_table.find_all("tr")[1].find_all("td")[1].find("b").text.strip()
     except:
-        abbreviation = ""
+        abbreviation = None
 
     try:
         status = info_table.find_all("tr")[2].find_all("td")[1].text.strip()
     except:
-        status = ""
+        status = None
 
     code = url.split("=")[1]
 
@@ -53,27 +53,27 @@ def parse_teacher_page(url):
         email_parts = list(soup.find("td", string="Email Institucional:").find_next_sibling().find("a").stripped_strings)
         email = email_parts[0] + "@" + email_parts[1]
     except:
-        email = ""
+        email = None
 
     try:
         phone = soup.find("td", string="Telf.Alt.:").find_next_sibling().text.strip()
     except:
-        phone = ""
+        phone = None
 
     try:
         rank = soup.find(class_="informacao-pessoal-funcoes").find_all("td")[2].text.strip()
     except:
-        rank = ""
+        rank = None
 
     try:
         personal_presentation = soup.find(class_="informacao-pessoal-apresentacao").text.replace('\n', '').strip()
     except:
-        personal_presentation = ""
+        personal_presentation = None
     
     try:
         fields_of_interest = soup.find(class_="informacao-pessoal-apresentacao").find("ol").text.strip()
     except:
-        fields_of_interest = ""
+        fields_of_interest = None
 
     return Teacher(name, personal_website, url, abbreviation, status, code, email, phone, rank, personal_presentation, fields_of_interest)
 
