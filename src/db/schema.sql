@@ -49,13 +49,6 @@ CREATE TABLE Professor (
     fields_of_interest TEXT
 );
 
-CREATE TABLE ProfessorDegree (
-    professor_id INT NOT NULL REFERENCES Professor(id),
-    degree_id INT NOT NULL REFERENCES Degree(id),
-    role VARCHAR NOT NULL,
-    PRIMARY KEY (professor_id, degree_id)
-);
-
 CREATE TABLE CourseUnit (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
