@@ -4,14 +4,16 @@ import time
 
 
 class Degree:
-    def __init__(self, title, description, exits, url):
+    def __init__(self, title, description, exits, url, course_type, duration):
         self.title = title
         self.description = description
         self.url = url
         self.exits = exits
+        self.course_type = course_type
+        self.duration = duration
 
     def toCsv(self):
-        return f"{self.title}; {self.description}; {self.exits}; {self.url}"
+        return f"{self.title}; {self.description}; {self.exits}; {self.url}; {self.course_type}; {self.duration}"
 
 
 def check_text(result_html):
@@ -34,13 +36,14 @@ def parse_degree_page(degree, baseUrl):
     exits_html = soup.select(".exits p")
     exits = check_text(exits_html)
 
+    course_type= soup.find(string="Tipo de Curso").find_next('dd').text
+    duration= soup.find(string="Duração").find_next('dd').text
+
     sig_link = soup.select(".course-description > div > a")[0].get("href").strip()
-    return Degree(title, description, exits, sig_link)
+    return Degree(title, description, exits, sig_link, course_type, duration)
 
 
 """Gets the list of links to all UP degrees"""
-
-
 def get_degrees(soup):
     a = soup.select("#facultyList a")
     a = [x.get("href") for x in a]
@@ -71,7 +74,7 @@ def fetch_degrees(urls, baseUrl):
         try:
             degrees += fetch_degree_list(url, baseUrl)
         except Exception as e:
-            print("Failed to fetch the web page")
+            print("Failed to fetch the web page: ", e)
             continue
 
     return degrees

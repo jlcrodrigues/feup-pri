@@ -25,7 +25,7 @@ CREATE TABLE Degree (
     outings TEXT,
     academic_degree VARCHAR,
     type_of_course VARCHAR NOT NULL,
-    duration INT CHECK (duration > 0)
+    duration VARCHAR NOT NULL
 );
 
 CREATE TABLE UniversityDegree (

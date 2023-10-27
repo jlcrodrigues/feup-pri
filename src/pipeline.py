@@ -102,7 +102,7 @@ def insert_degree(db, university_id, degree):
     try:
         degree_id = db.execute(
             "INSERT INTO Degree (url, name, description, outings, academic_degree, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id",
-            (degree.url, degree.title, degree.description, degree.exits, "", "", 1),
+            (degree.url, degree.title, degree.description, degree.exits, degree.course_type, degree.duration, 1),
             "one",
         )[0]
 
