@@ -167,14 +167,14 @@ def insert_courses(db, degree_id, degree_url):
                     course.pre_requirements,
                     course.program,
                     course.evaluation_type,
-                    course.passing_requirements,
+                    course.passing_requirements
                 ),
                 "one",
             )[0]
 
             db.execute(
-                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id) VALUES (%s, %s)",
-                (degree_id, course_id),
+                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
+                (degree_id, course_id, course.year),
                 "none",
             )
 

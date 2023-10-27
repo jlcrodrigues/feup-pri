@@ -25,6 +25,7 @@ class CourseUnit:
         program,
         evaluation_type,
         passing_requirements,
+        year
     ):
         self.name = name
         self.code = code
@@ -44,6 +45,7 @@ class CourseUnit:
         self.program = program
         self.evaluation_type = evaluation_type
         self.passing_requirements = passing_requirements
+        self.year = year
 
     def to_csv(self):
         return f"{self.name}; {self.code}; {self.credits}; {self.main_professor}; {self.tp_professors}; {self.t_professors}; {self.ot_professors}; {self.pl_professors}; {self.p_professors}; {self.s_professors}; {self.language}; {self.objectives}; {self.results}; {self.working_method}; {self.pre_requirements}; {self.program}; {self.evaluation_type}; {self.passing_requirements}"
@@ -77,8 +79,19 @@ def parse_unit_page(url):
     except:
         credits = None
 
-    # print('CREDITS: ' + str(credits))
-    # print('-----------------------')
+    try:
+        year_header = soup.find("h3", string="Ciclos de Estudo/Cursos")
+        year_table = year_header.find_next_sibling(class_="dados")
+        year = int(
+            year_table.find("tr", class_="d")
+            .find_all("td", class_="l", rowspan="1")[0]
+            .text
+        )
+    except:
+        year = None
+
+    print('YEAR:' + str(year))
+    print('-----------------------')
 
     try:
         language_header = soup.find("h3", string="Língua de trabalho")
@@ -258,6 +271,7 @@ def parse_unit_page(url):
         program,
         evaluation_type,
         passing_requirements,
+        year
     )
 
 
@@ -317,24 +331,24 @@ def get_program(soup):
 
 
 def main():
-    # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=519377")
-    # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=519369")
-    # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520306")
-    # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520223")
-    # parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520324")
-    # parse_unit_page("https://sigarra.up.pt/flup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=518101")
+    parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=519377")
+    parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=519369")
+    parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520306")
+    parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520223")
+    parse_unit_page("https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520324")
+    parse_unit_page("https://sigarra.up.pt/flup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=518101")
     # https://sigarra.up.pt/icbas/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=520513
 
     urls = [
         "https://sigarra.up.pt/fcup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=531702"
     ]
-    with open("../data/course_units.csv", "w", encoding="utf-8") as my_file:
-        my_file.write(
-            "name; code; acronym; main_professor; tp_professors; t_professors; ot_professors; pl_professors; p_professors; s_professors; language; objectives; results; working_method; pre_requirements; program; evaluation_type; hours; passing_requirements\n"
-        )
-        for url in urls:
-            course_unit = parse_unit_page(url)
-            my_file.write(course_unit.to_csv() + "\n")
+    # with open("../data/course_units.csv", "w", encoding="utf-8") as my_file:
+    #     my_file.write(
+    #         "name; code; acronym; main_professor; tp_professors; t_professors; ot_professors; pl_professors; p_professors; s_professors; language; objectives; results; working_method; pre_requirements; program; evaluation_type; hours; passing_requirements\n"
+    #     )
+    #     for url in urls:
+    #         course_unit = parse_unit_page(url)
+    #         my_file.write(course_unit.to_csv() + "\n")
 
 
 if __name__ == "__main__":

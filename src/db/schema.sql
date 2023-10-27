@@ -82,7 +82,6 @@ CREATE TABLE ProfessorCourseUnit (
 CREATE TABLE DegreeCourseUnit (
     degree_id INT NOT NULL REFERENCES Degree(id),
     course_unit_id INT NOT NULL REFERENCES CourseUnit(id),
-    year INT CHECK (year > 0), --NOT NULL,
-    semester INT,-- CHECK (semester > 0 AND semester < 3) NOT NULL,
+    year INT CHECK (year > 0) NOT NULL,
     PRIMARY KEY (degree_id, course_unit_id)
 );
