@@ -2,7 +2,7 @@
 
 # Beatriz
 
-- [ ] Guardar a informação do ano da cadeira
+- [X] Guardar a informação do ano da cadeira
 
 # Daniel
 
