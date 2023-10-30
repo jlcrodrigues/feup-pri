@@ -25,5 +25,17 @@ services:
     depends_on:
       - db
 
+  solr:
+    image: solr
+    container_name: my_solr
+    ports:
+     - "8983:8983"
+    volumes:
+      - data:/var/solr
+      - ./startup.sh:/bin/startup.sh
+      - ./.env:/bin/.env
+      - ./json:/data
+
 volumes:
+  data:
   pg_data:
