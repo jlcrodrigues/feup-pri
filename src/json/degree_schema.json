@@ -107,51 +107,27 @@
             "type": "text"
         },
         {
-            "name": "name",
-            "type": "text"
-        },
-        {
-            "name": "personalWebsite",
+            "name": "url",
             "type": "urlEmail"
         },
         {
-            "name": "institutionalWebsite",
-            "type": "urlEmail"
-        },
-        {
-            "name": "abbreviation",
+            "name": "description",
             "type": "text"
         },
         {
-            "name": "status",
+            "name": "outings",
             "type": "text"
         },
         {
-            "name": "code",
-            "type": "int"
-        },
-        {
-            "name": "institutionalEmail",
-            "type": "urlEmail"
-        },
-        {
-            "name": "phone",
+            "name": "typeOfCourse",
             "type": "text"
         },
         {
-            "name": "rank",
+            "name": "duration",
             "type": "text"
         },
         {
-            "name": "personalPresentation",
-            "type": "urlEmail"
-        },
-        {
-            "name": "fieldsOfInterest",
-            "type": "text"
-        },
-        {
-            "name": "courses",
+            "name": "course_units",
             "type": "nestedDoc",
             "multiValued": true
         },
@@ -160,7 +136,7 @@
             "type": "int"
         },
         {
-            "name": "type",
+            "name": "year",
             "type": "text"
         }
     ]

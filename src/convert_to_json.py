@@ -1,5 +1,5 @@
 import argparse
-from src.db import database
+from db import database
 import json
 
 
@@ -119,9 +119,7 @@ def course_units_to_json(db):
             "program": course_unit[10],
             "evaluationType": course_unit[11],
             "passingRequirements": course_unit[12],
-            "degrees": get_course_unit_degrees(course_unit, course_degrees),
-            "professors": get_course_unit_professors(course_unit, course_professors)
-        })
+            })
 
     return courses_units_json
 
@@ -159,11 +157,11 @@ def main(args):
     professors_json = professors_to_json(db)
     db.disconnect()
 
-    with open("../json/degrees.json", "w") as outfile:
+    with open("json/degrees.json", "w") as outfile:
         outfile.write(json.dumps(degrees_json))
-    with open("../json/course_units.json", "w") as outfile:
+    with open("json/course_units.json", "w") as outfile:
         outfile.write(json.dumps(course_units_json))
-    with open("../json/professors.json", "w") as outfile:
+    with open("json/professors.json", "w") as outfile:
         outfile.write(json.dumps(professors_json))
     print("JSON files created. Exiting...")
     exit(0)

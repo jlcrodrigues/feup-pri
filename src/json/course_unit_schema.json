@@ -111,56 +111,47 @@
             "type": "text"
         },
         {
-            "name": "personalWebsite",
+            "name": "url",
             "type": "urlEmail"
-        },
-        {
-            "name": "institutionalWebsite",
-            "type": "urlEmail"
-        },
-        {
-            "name": "abbreviation",
-            "type": "text"
-        },
-        {
-            "name": "status",
-            "type": "text"
         },
         {
             "name": "code",
-            "type": "int"
-        },
-        {
-            "name": "institutionalEmail",
-            "type": "urlEmail"
-        },
-        {
-            "name": "phone",
             "type": "text"
         },
         {
-            "name": "rank",
+            "name": "language",
             "type": "text"
         },
         {
-            "name": "personalPresentation",
-            "type": "urlEmail"
-        },
-        {
-            "name": "fieldsOfInterest",
+            "name": "ects",
             "type": "text"
         },
         {
-            "name": "courses",
-            "type": "nestedDoc",
-            "multiValued": true
+            "name": "objective",
+            "type": "text"
         },
         {
-            "name": "id_course",
-            "type": "int"
+            "name": "results",
+            "type": "text"
         },
         {
-            "name": "type",
+            "name": "workingMethod",
+            "type": "text"
+        },
+        {
+            "name": "preRequirements",
+            "type": "text"
+        },
+        {
+            "name": "program",
+            "type": "text"
+        },
+        {
+            "name": "evaluationType",
+            "type": "text"
+        },
+        {
+            "name": "passingRequirements",
             "type": "text"
         }
     ]
