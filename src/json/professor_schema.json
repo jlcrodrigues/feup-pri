@@ -1,108 +1,167 @@
 {
-	"add-field-type": [
+    "add-field-type": [
         {
-            "name":"generalText",
-            "class":"solr.TextField",
-            "indexAnalyzer":{
-                "tokenizer":{
-                    "class":"solr.StandardTokenizerFactory"
+            "name": "text",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
+                "tokenizer": {
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                "filters": [
+                    {
+                        "class": "solr.ASCIIFoldingFilterFactory",
+                        "preserveOriginal": true
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    }
                 ]
             },
-            "queryAnalyzer":{
-                "tokenizer":{
-                    "class":"solr.StandardTokenizerFactory"
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                "filters": [
+                    {
+                        "class": "solr.ASCIIFoldingFilterFactory",
+                        "preserveOriginal": true
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    }
                 ]
             }
         },
         {
-            "name":"urlEmail",
-            "class":"solr.TextField",
-            "indexAnalyzer":{
-                "tokenizer":{
-                    "class":""
+            "name": "urlEmail",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
+                "tokenizer": {
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                "filters": [
+                    {
+                        "class": "solr.ASCIIFoldingFilterFactory",
+                        "preserveOriginal": true
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    }
                 ]
             },
-            "queryAnalyzer":{
-                "tokenizer":{
-                    "class":""
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                "filters": [
+                    {
+                        "class": "solr.ASCIIFoldingFilterFactory",
+                        "preserveOriginal": true
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    }
                 ]
             }
         },
         {
-            "name":"generalInt",
-            "class":"solr.IntField",
-            "indexAnalyzer":{
-                "tokenizer":{
-                    "class":""
+            "name": "int",
+            "class": "solr.TextField",
+            "indexAnalyzer": {
+                "tokenizer": {
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                "filters": [
+                    {
+                        "class": "solr.ASCIIFoldingFilterFactory",
+                        "preserveOriginal": true
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    }
                 ]
             },
-            "queryAnalyzer":{
-                "tokenizer":{
-                    "class":""
+            "queryAnalyzer": {
+                "tokenizer": {
+                    "class": "solr.StandardTokenizerFactory"
                 },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                "filters": [
+                    {
+                        "class": "solr.ASCIIFoldingFilterFactory",
+                        "preserveOriginal": true
+                    },
+                    {
+                        "class": "solr.LowerCaseFilterFactory"
+                    }
                 ]
             }
         },
         {
-            "name":"phoneNumber",
-            "class":"solr.TextField",
-            "indexAnalyzer":{
-                "tokenizer":{
-                    "class":""
-                },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
-                ]
-            },
-            "queryAnalyzer":{
-                "tokenizer":{
-                    "class":""
-                },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
-                ]
-            }
+            "name": "nestedDoc",
+            "class": "solr.NestPathField"
         }
-
-
-
     ],
     "add-field": [
         {
-            "name": "id",
-            "type": "",
-            "required": true
+            "name": "id_db",
+            "type": "int"
         },
         {
             "name": "name",
-            "type": "",
-
+            "type": "text"
+        },
+        {
+            "name": "personalWebsite",
+            "type": "urlEmail"
+        },
+        {
+            "name": "institutionalWebsite",
+            "type": "urlEmail"
+        },
+        {
+            "name": "abbreviation",
+            "type": "text"
+        },
+        {
+            "name": "status",
+            "type": "text"
+        },
+        {
+            "name": "code",
+            "type": "int"
+        },
+        {
+            "name": "institutionalEmail",
+            "type": "urlEmail"
+        },
+        {
+            "name": "phone",
+            "type": "text"
+        },
+        {
+            "name": "rank",
+            "type": "text"
+        },
+        {
+            "name": "personalPresentation",
+            "type": "urlEmail"
+        },
+        {
+            "name": "fieldsOfInterest",
+            "type": "text"
+        },
+        {
+            "name": "courses",
+            "type": "nestedDoc",
+            "multiValued": true
+        },
+        {
+            "name": "id_course",
+            "type": "int"
+        },
+        {
+            "name": "type",
+            "type": "text"
         }
     ]
 }
-
