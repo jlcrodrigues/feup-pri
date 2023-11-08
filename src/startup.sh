@@ -36,7 +36,7 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
 
     # Post data
     curl -X POST -H 'Content-type:application/json' \
-        --data-binary "@./json/meic_courses.json" \
+        --data-binary "@./json/$file" \
         http://localhost:8983/solr/$core/update?commit=true
 done
 
