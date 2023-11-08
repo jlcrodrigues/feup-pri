@@ -21,7 +21,7 @@ IFS=',' read -ra files <<< "$DATA_FILES"
 for ((i = 0; i < ${#cores[@]}; i++)); do
     core="${cores[i]}"
     schema="${schemas[i]}"
-    file="${schemas[i]}"
+    file="${files[i]}"
 
     # Delete core
     curl -X DELETE "http://localhost:$SOLR_PORT/solr/admin/cores?action=UNLOAD&core=$core&deleteDataDir=true&deleteIndex=true&deleteInstanceDir=true"
@@ -37,6 +37,6 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
     # Post data
     curl -X POST -H 'Content-type:application/json' \
         --data-binary "@./json/$file" \
-        http://localhost:8983/solr/$core/update?commit=true
+        http://localhost:$SOLR_PORT/solr/$core/update?commit=true
 done
 
