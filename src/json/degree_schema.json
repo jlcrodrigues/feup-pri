@@ -14,6 +14,16 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.StopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
                     }
                 ]
             },
@@ -28,6 +38,16 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.SuggestStopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
                     }
                 ]
             }
@@ -37,7 +57,7 @@
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -51,7 +71,7 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -66,35 +86,7 @@
         },
         {
             "name": "int",
-            "class": "solr.TextField",
-            "indexAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    }
-                ]
-            },
-            "queryAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    }
-                ]
-            }
+            "class": "solr.IntPointField"
         },
         {
             "name": "nestedDoc",
@@ -103,12 +95,12 @@
     ],
     "add-field": [
         {
-            "name": "id_db",
-            "type": "text"
-        },
-        {
             "name": "url",
             "type": "urlEmail"
+        },
+        {
+            "name": "name",
+            "type": "text"
         },
         {
             "name": "description",
@@ -133,11 +125,13 @@
         },
         {
             "name": "id_course",
-            "type": "int"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "year",
-            "type": "text"
+            "type": "int",
+            "docValues": true
         }
     ]
 }
