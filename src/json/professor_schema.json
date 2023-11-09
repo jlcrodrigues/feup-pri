@@ -1,7 +1,7 @@
 {
     "add-field-type": [
         {
-            "name": "text",
+            "name": "stringText",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
@@ -135,11 +135,11 @@
     "add-field": [
         {
             "name": "id_db",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "name",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "personalWebsite",
@@ -155,7 +155,7 @@
         },
         {
             "name": "status",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "code",
@@ -169,19 +169,19 @@
         },
         {
             "name": "phone",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "rank",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "personalPresentation",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "fieldsOfInterest",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "courses",
@@ -195,7 +195,7 @@
         },
         {
             "name": "type",
-            "type": "text"
+            "type": "stringText"
         }
     ]
 }

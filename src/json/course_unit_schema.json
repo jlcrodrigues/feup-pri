@@ -1,7 +1,7 @@
 {
     "add-field-type": [
         {
-            "name": "text",
+            "name": "stringText",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
@@ -131,11 +131,11 @@
     "add-field": [
         {
             "name": "id_db",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "name",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "url",
@@ -147,7 +147,7 @@
         },
         {
             "name": "language",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "ects",
@@ -156,31 +156,31 @@
         },
         {
             "name": "objective",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "results",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "workingMethod",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "preRequirements",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "program",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "evaluationType",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "passingRequirements",
-            "type": "text"
+            "type": "stringText"
         }
     ]
 }

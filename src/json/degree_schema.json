@@ -1,7 +1,7 @@
 {
     "add-field-type": [
         {
-            "name": "text",
+            "name": "stringText",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
@@ -99,7 +99,7 @@
     "add-field": [
         {
             "name": "id_db",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "url",
@@ -107,23 +107,23 @@
         },
         {
             "name": "name",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "description",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "outings",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "typeOfCourse",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "duration",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "course_units",
