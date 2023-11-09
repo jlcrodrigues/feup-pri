@@ -24,6 +24,9 @@
                         "words": "lang/stopwords_pt.txt",
                         "format": "snowball",
                         "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.HyphenatedWordsFilterFactory"
                     }
                 ]
             },
