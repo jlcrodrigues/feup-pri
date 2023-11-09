@@ -98,6 +98,10 @@
     ],
     "add-field": [
         {
+            "name": "id_db",
+            "type": "text"
+        },
+        {
             "name": "url",
             "type": "urlEmail"
         },

@@ -14,6 +14,19 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.StopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.HyphenatedWordsFilterFactory"
                     }
                 ]
             },
@@ -28,6 +41,16 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.SuggestStopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
                     }
                 ]
             }
@@ -37,7 +60,7 @@
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -51,7 +74,7 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -66,10 +89,16 @@
         },
         {
             "name": "int",
+            "class": "solr.IntPointField"
+        },
+        {
+            "name": "stringCode",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.NGramTokenizerFactory",
+                    "minGramSize": 2,
+                    "maxGramSize": 15
                 },
                 "filters": [
                     {
@@ -83,7 +112,9 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.NGramTokenizerFactory",
+                    "minGramSize": 2,
+                    "maxGramSize": 13
                 },
                 "filters": [
                     {
@@ -95,10 +126,6 @@
                     }
                 ]
             }
-        },
-        {
-            "name": "nestedDoc",
-            "class": "solr.NestPathField"
         }
     ],
     "add-field": [
@@ -116,7 +143,7 @@
         },
         {
             "name": "code",
-            "type": "text"
+            "type": "stringCode"
         },
         {
             "name": "language",
@@ -124,7 +151,8 @@
         },
         {
             "name": "ects",
-            "type": "text"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "objective",

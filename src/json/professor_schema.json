@@ -134,6 +134,10 @@
     ],
     "add-field": [
         {
+            "name": "id_db",
+            "type": "text"
+        },
+        {
             "name": "name",
             "type": "text"
         },
@@ -155,7 +159,8 @@
         },
         {
             "name": "code",
-            "type": "int"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "institutionalEmail",
@@ -185,7 +190,8 @@
         },
         {
             "name": "id_course",
-            "type": "int"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "type",
