@@ -93,7 +93,6 @@ def degrees_to_json(db):
             "outings": degree[4],
             "typeOfCourse": degree[5],
             "duration": degree[6],
-            "courseUnits": get_degree_course_units(degree, degrees_course)
         })
     return degrees_json
 
@@ -143,7 +142,6 @@ def professors_to_json(db):
             "rank": professor[9],
             "personalPresentation": professor[10],
             "fieldsOfInterest": professor[11],
-            "courses": get_professor_course_units(professor, professor_courses)
         })
 
     return professors_json
