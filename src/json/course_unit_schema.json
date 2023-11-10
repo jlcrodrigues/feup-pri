@@ -1,7 +1,7 @@
 {
     "add-field-type": [
         {
-            "name": "text",
+            "name": "stringText",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
@@ -14,6 +14,19 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.StopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.HyphenatedWordsFilterFactory"
                     }
                 ]
             },
@@ -28,6 +41,16 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.SuggestStopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
                     }
                 ]
             }
@@ -37,7 +60,7 @@
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -51,7 +74,7 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -66,10 +89,16 @@
         },
         {
             "name": "int",
+            "class": "solr.IntPointField"
+        },
+        {
+            "name": "stringCode",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.NGramTokenizerFactory",
+                    "minGramSize": 2,
+                    "maxGramSize": 15
                 },
                 "filters": [
                     {
@@ -83,7 +112,9 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.NGramTokenizerFactory",
+                    "minGramSize": 2,
+                    "maxGramSize": 13
                 },
                 "filters": [
                     {
@@ -95,20 +126,16 @@
                     }
                 ]
             }
-        },
-        {
-            "name": "nestedDoc",
-            "class": "solr.NestPathField"
         }
     ],
     "add-field": [
         {
             "name": "id_db",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "name",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "url",
@@ -116,43 +143,44 @@
         },
         {
             "name": "code",
-            "type": "text"
+            "type": "stringCode"
         },
         {
             "name": "language",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "ects",
-            "type": "text"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "objective",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "results",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "workingMethod",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "preRequirements",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "program",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "evaluationType",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "passingRequirements",
-            "type": "text"
+            "type": "stringText"
         }
     ]
 }

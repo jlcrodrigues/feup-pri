@@ -1,7 +1,7 @@
 {
     "add-field-type": [
         {
-            "name": "text",
+            "name": "stringText",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
@@ -14,6 +14,19 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.StopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.HyphenatedWordsFilterFactory"
                     }
                 ]
             },
@@ -28,6 +41,16 @@
                     },
                     {
                         "class": "solr.LowerCaseFilterFactory"
+                    },
+                    {
+                        "class": "solr.SnowballPorterFilterFactory",
+                        "language": "Portuguese"
+                    },
+                    {
+                        "class": "solr.SuggestStopFilterFactory",
+                        "words": "lang/stopwords_pt.txt",
+                        "format": "snowball",
+                        "ignoreCase": true
                     }
                 ]
             }
@@ -37,7 +60,7 @@
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -51,7 +74,7 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.UAX29URLEmailTokenizerFactory"
                 },
                 "filters": [
                     {
@@ -66,10 +89,20 @@
         },
         {
             "name": "int",
+            "class": "solr.IntPointField"
+        },
+        {
+            "name": "nestedDoc",
+            "class": "solr.NestPathField"
+        },
+        {
+            "name": "stringAbbreviation",
             "class": "solr.TextField",
             "indexAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.NGramTokenizerFactory",
+                    "minGramSize": 2,
+                    "maxGramSize": 13
                 },
                 "filters": [
                     {
@@ -83,7 +116,9 @@
             },
             "queryAnalyzer": {
                 "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
+                    "class": "solr.NGramTokenizerFactory",
+                    "minGramSize": 2,
+                    "maxGramSize": 13
                 },
                 "filters": [
                     {
@@ -95,20 +130,16 @@
                     }
                 ]
             }
-        },
-        {
-            "name": "nestedDoc",
-            "class": "solr.NestPathField"
         }
     ],
     "add-field": [
         {
             "name": "id_db",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "name",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "personalWebsite",
@@ -120,35 +151,37 @@
         },
         {
             "name": "abbreviation",
-            "type": "text"
+            "type": "stringAbbreviation"
         },
         {
             "name": "status",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "code",
-            "type": "int"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "institutionalEmail",
-            "type": "urlEmail"
+            "type": "urlEmail",
+            "multiValued": false
         },
         {
             "name": "phone",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "rank",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "personalPresentation",
-            "type": "urlEmail"
+            "type": "stringText"
         },
         {
             "name": "fieldsOfInterest",
-            "type": "text"
+            "type": "stringText"
         },
         {
             "name": "courses",
@@ -157,11 +190,12 @@
         },
         {
             "name": "id_course",
-            "type": "int"
+            "type": "int",
+            "docValues": true
         },
         {
             "name": "type",
-            "type": "text"
+            "type": "stringText"
         }
     ]
 }
