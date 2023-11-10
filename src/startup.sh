@@ -27,7 +27,7 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
     curl -X DELETE "http://localhost:$SOLR_PORT/solr/admin/cores?action=UNLOAD&core=$core&deleteDataDir=true&deleteIndex=true&deleteInstanceDir=true"
 
     # Create core
-    docker exec -it my_solr solr create_core -c $core 
+    docker exec my_solr solr create_core -c $core 
     
     # Post schema
     curl -X POST -H 'Content-type:application/json' \
