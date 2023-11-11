@@ -8,7 +8,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Get a list of portuguese synonyms')
     parser.add_argument('--file_name', type=str, default='../../data/synonyms.txt',
                         help='file name')
-    parser.add_argument('--download_dependencies', type=bool, default=False,
+    parser.add_argument('--download_dependencies', type=bool, default=True,
                         help='Download the text corpus and the wordnet')
     return parser.parse_args()
 
@@ -19,6 +19,7 @@ def download_dependencies():
     nltk.download('mac_morpho')
     nltk.download('machado')
     nltk.download('omw')
+
 
 def get_synonyms_word(word):
     sysnets = nltk.corpus.wordnet.synsets(word, lang='por')
