@@ -92,10 +92,6 @@
             "class": "solr.IntPointField"
         },
         {
-            "name": "nestedDoc",
-            "class": "solr.NestPathField"
-        },
-        {
             "name": "stringAbbreviation",
             "class": "solr.TextField",
             "indexAnalyzer": {
@@ -181,20 +177,6 @@
         },
         {
             "name": "fieldsOfInterest",
-            "type": "stringText"
-        },
-        {
-            "name": "courses",
-            "type": "nestedDoc",
-            "multiValued": true
-        },
-        {
-            "name": "id_course",
-            "type": "int",
-            "docValues": true
-        },
-        {
-            "name": "type",
             "type": "stringText"
         }
     ]

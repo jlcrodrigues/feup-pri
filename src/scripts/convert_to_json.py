@@ -93,7 +93,6 @@ def degrees_to_json(db):
             "outings": degree[4],
             "typeOfCourse": degree[5],
             "duration": degree[6],
-            "courseUnits": get_degree_course_units(degree, degrees_course)
         })
     return degrees_json
 
@@ -143,7 +142,6 @@ def professors_to_json(db):
             "rank": professor[9],
             "personalPresentation": professor[10],
             "fieldsOfInterest": professor[11],
-            "courses": get_professor_course_units(professor, professor_courses)
         })
 
     return professors_json
@@ -157,11 +155,11 @@ def main(args):
     professors_json = professors_to_json(db)
     db.disconnect()
 
-    with open("json/degrees.json", "w") as outfile:
+    with open("../json/degrees.json", "w") as outfile:
         outfile.write(json.dumps(degrees_json))
-    with open("json/course_units.json", "w") as outfile:
+    with open("../json/course_units.json", "w") as outfile:
         outfile.write(json.dumps(course_units_json))
-    with open("json/professors.json", "w") as outfile:
+    with open("../json/professors.json", "w") as outfile:
         outfile.write(json.dumps(professors_json))
     print("JSON files created. Exiting...")
     exit(0)

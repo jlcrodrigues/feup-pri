@@ -90,10 +90,6 @@
         {
             "name": "int",
             "class": "solr.IntPointField"
-        },
-        {
-            "name": "nestedDoc",
-            "class": "solr.NestPathField"
         }
     ],
     "add-field": [
@@ -124,21 +120,6 @@
         {
             "name": "duration",
             "type": "stringText"
-        },
-        {
-            "name": "course_units",
-            "type": "nestedDoc",
-            "multiValued": true
-        },
-        {
-            "name": "id_course",
-            "type": "int",
-            "docValues": true
-        },
-        {
-            "name": "year",
-            "type": "int",
-            "docValues": true
         }
     ]
 }
