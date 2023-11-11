@@ -1,183 +1,205 @@
 {
-    "add-field-type": [
-        {
-            "name": "stringText",
-            "class": "solr.TextField",
-            "indexAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    },
-                    {
-                        "class": "solr.SnowballPorterFilterFactory",
-                        "language": "Portuguese"
-                    },
-                    {
-                        "class": "solr.StopFilterFactory",
-                        "words": "lang/stopwords_pt.txt",
-                        "format": "snowball",
-                        "ignoreCase": true
-                    },
-                    {
-                        "class": "solr.HyphenatedWordsFilterFactory"
-                    }
-                ]
-            },
-            "queryAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.StandardTokenizerFactory"
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    },
-                    {
-                        "class": "solr.SnowballPorterFilterFactory",
-                        "language": "Portuguese"
-                    },
-                    {
-                        "class": "solr.SuggestStopFilterFactory",
-                        "words": "lang/stopwords_pt.txt",
-                        "format": "snowball",
-                        "ignoreCase": true
-                    }
-                ]
-            }
+  "add-field-type": [
+    {
+      "name": "stringText",
+      "class": "solr.TextField",
+      "indexAnalyzer": {
+        "tokenizer": {
+          "class": "solr.StandardTokenizerFactory"
         },
-        {
-            "name": "urlEmail",
-            "class": "solr.TextField",
-            "indexAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.UAX29URLEmailTokenizerFactory"
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    }
-                ]
-            },
-            "queryAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.UAX29URLEmailTokenizerFactory"
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    }
-                ]
-            }
+        "filters": [
+          {
+            "class": "solr.ASCIIFoldingFilterFactory",
+            "preserveOriginal": true
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          },
+          {
+            "class": "solr.StopFilterFactory",
+            "words": "stopwords_pt.txt",
+            "ignoreCase": true
+          },
+          {
+            "class": "solr.SynonymGraphFilterFactory",
+            "synonyms": "synonyms_pt.txt",
+            "ignoreCase": true
+          },
+          {
+            "class": "solr.FlattenGraphFilterFactory"
+          },
+          {
+            "class": "solr.RemoveDuplicatesTokenFilterFactory"
+          },
+          {
+            "class": "solr.HyphenatedWordsFilterFactory"
+          },
+          {
+            "class": "solr.SnowballPorterFilterFactory",
+            "language": "Portuguese"
+          }
+        ]
+      },
+      "queryAnalyzer": {
+        "tokenizer": {
+          "class": "solr.StandardTokenizerFactory"
         },
-        {
-            "name": "int",
-            "class": "solr.IntPointField"
+        "filters": [
+          {
+            "class": "solr.ASCIIFoldingFilterFactory",
+            "preserveOriginal": true
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          },
+          {
+            "class": "solr.SuggestStopFilterFactory",
+            "words": "stopwords_pt.txt",
+            "ignoreCase": true
+          },
+          {
+            "class": "solr.SynonymGraphFilterFactory",
+            "synonyms": "synonyms_pt.txt",
+            "ignoreCase": true
+          },
+          {
+            "class": "solr.RemoveDuplicatesTokenFilterFactory"
+          },
+          {
+            "class": "solr.SnowballPorterFilterFactory",
+            "language": "Portuguese"
+          }
+        ]
+      }
+    },
+    {
+      "name": "int",
+      "class": "solr.IntPointField"
+    },
+    {
+      "name": "urlEmail",
+      "class": "solr.TextField",
+      "indexAnalyzer": {
+        "tokenizer": {
+          "class": "solr.UAX29URLEmailTokenizerFactory"
         },
-        {
-            "name": "stringAbbreviation",
-            "class": "solr.TextField",
-            "indexAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.NGramTokenizerFactory",
-                    "minGramSize": 2,
-                    "maxGramSize": 13
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    }
-                ]
-            },
-            "queryAnalyzer": {
-                "tokenizer": {
-                    "class": "solr.NGramTokenizerFactory",
-                    "minGramSize": 2,
-                    "maxGramSize": 13
-                },
-                "filters": [
-                    {
-                        "class": "solr.ASCIIFoldingFilterFactory",
-                        "preserveOriginal": true
-                    },
-                    {
-                        "class": "solr.LowerCaseFilterFactory"
-                    }
-                ]
-            }
-        }
-    ],
-    "add-field": [
-        {
-            "name": "id_db",
-            "type": "stringText"
+        "filters": [
+          {
+            "class": "solr.ASCIIFoldingFilterFactory",
+            "preserveOriginal": true
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          }
+        ]
+      },
+      "queryAnalyzer": {
+        "tokenizer": {
+          "class": "solr.UAX29URLEmailTokenizerFactory"
         },
-        {
-            "name": "name",
-            "type": "stringText"
+        "filters": [
+          {
+            "class": "solr.ASCIIFoldingFilterFactory",
+            "preserveOriginal": true
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          }
+        ]
+      }
+    },
+    {
+      "name": "stringCode",
+      "class": "solr.TextField",
+      "indexAnalyzer": {
+        "tokenizer": {
+          "class": "solr.NGramTokenizerFactory",
+          "minGramSize": 2,
+          "maxGramSize": 15
         },
-        {
-            "name": "personalWebsite",
-            "type": "urlEmail"
+        "filters": [
+          {
+            "class": "solr.ASCIIFoldingFilterFactory",
+            "preserveOriginal": true
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          }
+        ]
+      },
+      "queryAnalyzer": {
+        "tokenizer": {
+          "class": "solr.NGramTokenizerFactory",
+          "minGramSize": 2,
+          "maxGramSize": 13
         },
-        {
-            "name": "institutionalWebsite",
-            "type": "urlEmail"
-        },
-        {
-            "name": "abbreviation",
-            "type": "stringAbbreviation"
-        },
-        {
-            "name": "status",
-            "type": "stringText"
-        },
-        {
-            "name": "code",
-            "type": "int",
-            "docValues": true
-        },
-        {
-            "name": "institutionalEmail",
-            "type": "urlEmail",
-            "multiValued": false
-        },
-        {
-            "name": "phone",
-            "type": "stringText"
-        },
-        {
-            "name": "rank",
-            "type": "stringText"
-        },
-        {
-            "name": "personalPresentation",
-            "type": "stringText"
-        },
-        {
-            "name": "fieldsOfInterest",
-            "type": "stringText"
-        }
-    ]
+        "filters": [
+          {
+            "class": "solr.ASCIIFoldingFilterFactory",
+            "preserveOriginal": true
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          }
+        ]
+      }
+    }
+  ],
+  "add-field": [
+    {
+      "name": "id_db",
+      "type": "stringText"
+    },
+    {
+      "name": "name",
+      "type": "stringText"
+    },
+    {
+      "name": "personalWebsite",
+      "type": "urlEmail",
+      "indexed": false
+    },
+    {
+      "name": "institutionalWebsite",
+      "type": "urlEmail",
+      "indexed": false
+    },
+    {
+      "name": "abbreviation",
+      "type": "stringCode",
+      "indexed": false
+    },
+    {
+      "name": "status",
+      "type": "stringText"
+    },
+    {
+      "name": "code",
+      "type": "int",
+      "docValues": true,
+      "indexed": false
+    },
+    {
+      "name": "institutionalEmail",
+      "type": "urlEmail",
+      "indexed": false
+    },
+    {
+      "name": "phone",
+      "type": "stringText",
+      "indexed": false
+    },
+    {
+      "name": "rank",
+      "type": "stringText"
+    },
+    {
+      "name": "personalPresentation",
+      "type": "stringText"
+    },
+    {
+      "name": "fieldsOfInterest",
+      "type": "stringText"
+    }
+  ]
 }
