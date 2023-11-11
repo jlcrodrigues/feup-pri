@@ -1,0 +1,1 @@
+http://localhost:8983/solr/degree/query?q=(name:%22ensino%20secundario%22~5)%5E3%20OR%20(outings:%22ensino%20secundario%22~5)%5E2%20OR%20(description:%22ensino%20secundario%22~5)&q.op=OR&indent=true&rows=10&wt=json&sort=duration%20asc&fq=typeOfCourse:Mestrado%20%2B%20typeOfCourse:%22Mestrado%20Integrado%22&useParams=
