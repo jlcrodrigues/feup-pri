@@ -1,0 +1,1 @@
+http://localhost:8983/solr/degree/query?q=(name:biologia~)%5E3%20OR%20(description:biologia~)&q.op=OR&indent=true&rows=10&wt=json&fq=outings:investiga%C3%A7ao&useParams=
