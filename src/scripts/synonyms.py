@@ -46,7 +46,7 @@ def get_synonyms(file_name):
 
     with open(file_name, 'w') as file:
         for synonym_line in synonyms:
-            file.write(reduce(lambda x, y: x + ', ' + y, synonym_line, '')[2:] + '\n')
+            file.write(reduce(lambda x, y: x + ',' + y, synonym_line, '')[1:] + '\n')
 
 
 def main():

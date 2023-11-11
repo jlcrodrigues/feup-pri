@@ -1,0 +1,7 @@
+psycopg2
+goslate
+setuptools
+requests
+bs4
+beautifulsoup4
+nltk

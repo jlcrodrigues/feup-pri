@@ -21,12 +21,22 @@
                     },
                     {
                         "class": "solr.StopFilterFactory",
-                        "words": "lang/stopwords_pt.txt",
-                        "format": "snowball",
+                        "words": "stopwords_pt.txt",
                         "ignoreCase": true
                     },
                     {
                         "class": "solr.HyphenatedWordsFilterFactory"
+                    },
+                    {
+                        "class": "solr.SynonymGraphFilterFactory",
+                        "synonyms": "synonyms_pt.txt",
+                        "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.FlattenGraphFilterFactory"
+                    },
+                    {
+                        "class": "solr.RemoveDuplicatesTokenFilterFactory"
                     }
                 ]
             },
@@ -48,9 +58,16 @@
                     },
                     {
                         "class": "solr.SuggestStopFilterFactory",
-                        "words": "lang/stopwords_pt.txt",
-                        "format": "snowball",
+                        "words": "stopwords_pt.txt",
                         "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.SynonymGraphFilterFactory",
+                        "synonyms": "synonyms_pt.txt",
+                        "ignoreCase": true
+                    },
+                    {
+                        "class": "solr.RemoveDuplicatesTokenFilterFactory"
                     }
                 ]
             }
