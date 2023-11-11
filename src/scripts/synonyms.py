@@ -6,7 +6,7 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Get a list of portuguese synonyms')
-    parser.add_argument('--file_name', type=str, default='../../data/synonyms.txt',
+    parser.add_argument('--file_name', type=str, default='../../data/synonyms_pt.txt',
                         help='file name')
     parser.add_argument('--download_dependencies', type=bool, default=True,
                         help='Download the text corpus and the wordnet')
@@ -46,7 +46,7 @@ def get_synonyms(file_name):
 
     with open(file_name, 'w') as file:
         for synonym_line in synonyms:
-            file.write(reduce(lambda x, y: x + ',' + y, synonym_line, '')[1:] + '\n')
+            file.write(reduce(lambda x, y: x + ', ' + y, synonym_line, '')[2:] + '\n')
 
 
 def main():

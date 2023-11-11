@@ -6,7 +6,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Get stopwords')
     parser.add_argument('--language', type=str, default='portuguese',
                         help='language')
-    parser.add_argument('--file_name', type=str, default='../../data/stopwords.txt',
+    parser.add_argument('--file_name', type=str, default='../../data/stopwords_pt.txt',
                         help='file name')
     return parser.parse_args()
 

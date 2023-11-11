@@ -9,6 +9,8 @@ else
 fi
 
 docker compose up -d
+docker cp ../data/stopwords_pt.txt "$CONTAINER_ID":/opt/solr/server/solr/configsets/_default/conf/stopwords_pt.txt
+docker cp ../data/synonyms_pt.txt "$CONTAINER_ID":/opt/solr/server/solr/configsets/_default/conf/synonyms_pt.txt
 
 # Use environment variables to set ports and core name
 SOLR_PORT="${SOLR_PORT:-8983}"  # Default to 8983 if not set in .env
@@ -27,7 +29,7 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
     curl -X DELETE "http://localhost:$SOLR_PORT/solr/admin/cores?action=UNLOAD&core=$core&deleteDataDir=true&deleteIndex=true&deleteInstanceDir=true"
 
     # Create core
-    docker exec my_solr solr create_core -c $core 
+    docker exec my_solr solr create_core -c $core
     
     # Post schema
     curl -X POST -H 'Content-type:application/json' \
@@ -37,6 +39,6 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
     # Post data
     curl -X POST -H 'Content-type:application/json' \
         --data-binary "@./json/$file" \
-        http://localhost:$SOLR_PORT/solr/$core/update?commit=true
+        "http://localhost:$SOLR_PORT/solr/$core/update?commit=true"
 done
 
