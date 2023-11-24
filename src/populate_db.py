@@ -4,11 +4,10 @@ from fetchers.teachers import *
 from fetchers.course_plan import *
 from fetchers.course_unit import *
 from db.database import *
-
+import json
 from db import database
 import psycopg2
 import re
-import sys
 
 
 def arguments():
@@ -71,6 +70,27 @@ def arguments():
         help="The path to the SQL schema file. Default is 'db/schema.sql'.",
         default="db/schema.sql",
     )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="If this flag is provided, the database will be populated with the data from the JSON files.",
+        default=False,
+    )
+    parser.add_argument(
+        "--json_degree",
+        help="The path to the JSON file containing the degrees. Default is '../data/degrees.json'.",
+        default="../data/degrees.json",
+    )
+    parser.add_argument(
+        "--json_course",
+        help="The path to the JSON file containing the courses. Default is '../data/courses.json'.",
+        default="../data/courses.json",
+    )
+    parser.add_argument(
+        "--json_professor",
+        help="The path to the JSON file containing the professors. Default is '../data/professors.json'.",
+        default="../data/professors.json",
+    )
     return parser.parse_args()
 
 
@@ -101,8 +121,15 @@ def insert_university(db, name, url):
 def insert_degree(db, university_id, degree):
     try:
         degree_id = db.execute(
-            "INSERT INTO Degree (url, name, description, outings, academic_degree, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id",
-            (degree.url, degree.title, degree.description, degree.exits, degree.course_type, degree.duration, 1),
+            "INSERT INTO Degree (url, name, description, outings, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+            (
+                degree.url,
+                degree.title,
+                degree.description,
+                degree.exits,
+                degree.course_type,
+                degree.duration,
+            ),
             "one",
         )[0]
 
@@ -167,7 +194,7 @@ def insert_courses(db, degree_id, degree_url):
                     course.pre_requirements,
                     course.program,
                     course.evaluation_type,
-                    course.passing_requirements
+                    course.passing_requirements,
                 ),
                 "one",
             )[0]
@@ -202,7 +229,7 @@ def insert_courses(db, degree_id, degree_url):
                 link_professor_course(db, teacher_url, course_id, "Seminário")
 
         except psycopg2.errors.UniqueViolation:
-            #print("Course " + course.name + " already exists")
+            # print("Course " + course.name + " already exists")
             db.execute(
                 "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id) VALUES (%s, (SELECT id FROM CourseUnit WHERE url = %s)) RETURNING course_unit_id",
                 (degree_id, url_course),
@@ -254,22 +281,123 @@ def link_professor_course(db, url_professor, course_id, type):
         "none",
     )
 
+def insert_degrees_json(db, university_id, json_degree):
+    for degree in json_degree:
+        db.execute(
+            "INSERT INTO Degree (id, url, name, description, outings, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (
+                degree["id"],
+                degree["url"],
+                degree["name"],
+                degree["description"],
+                degree["outings"],
+                degree["typeOfCourse"],
+                degree["duration"],
+            ),
+            "none",
+        )
+
+        db.execute(
+            "INSERT INTO UniversityDegree (university_id, degree_id) VALUES (%s, %s)",
+            (university_id, degree["id"]),
+            "none",
+        )
+
+        for course in degree["courses"]:
+            db.execute(
+                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
+                (degree["id"], course["id_course"], course["year"]),
+                "none",
+            )
+
+def insert_courses_json(db, json_course):
+    for course in json_course:
+        db.execute(
+            "INSERT INTO CourseUnit (id, name, url, code, language, ects, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s)",
+            (
+                course["id"],
+                course["name"],
+                course["url"],
+                course["code"],
+                course["language"],
+                course["ects"],
+                course["objectives"],
+                course["results"],
+                course["workingMethod"],
+                course["preRequirements"],
+                course["program"],
+                course["evaluationType"],
+                course["passingRequirements"],
+            ),
+            "none",
+        )
+
+        for professor in course["professors"]:
+            db.execute(
+                "INSERT INTO ProfessorCourseUnit (professor_id, course_unit_id, type) VALUES (%s, %s, %s)",
+                (professor["id_professor"], course["id"], professor["type"]),
+                "none",
+            )
+
+def insert_professors_json(db, json_professor):
+    for professor in json_professor:
+        db.execute(
+            "INSERT INTO Professor (id, name, personal_website, institutional_website, abbreviation, status, code, institutional_email, phone, rank, personal_presentation, fields_of_interest) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s)",
+            (
+                professor["id"],
+                professor["name"],
+                professor["personalWebsite"],
+                professor["institutionalWebsite"],
+                professor["abbreviation"],
+                professor["status"],
+                professor["code"],
+                professor["institutionalEmail"],
+                professor["phone"],
+                professor["rank"],
+                professor["personalPresentation"],
+                professor["fieldsOfInterest"],
+            ),
+            "none",
+        )
+
+
+def populate_db_from_json(db, university_id, json_degree, json_course, json_professor):
+    insert_degrees_json(db, university_id, json_degree)
+    insert_courses_json(db, json_course)
+    insert_professors_json(db, json_professor)
+
+
 def main(args):
     db = database.Database(args.host, args.port, args.user, args.pwd, args.db)
     db.connect()
     if args.reset:
         db.exec_file(args.schema)
-    
+
     university_id = insert_university(db, args.university_name, args.university_url)
-    degrees = fetch_degrees(args.url, args.university_url)
-    counter = 0
-    for degree in degrees:
-        print(f"Inserting degree {counter} of {len(degrees)}")
-        degree_id = insert_degree(db, university_id, degree)
-        if degree_id == -1:
-            continue
-        insert_courses(db, degree_id, degree.url)
-        counter += 1
+
+    if args.json:
+        with open(args.json_degree) as json_file:
+            degrees = json.load(json_file)
+        with open(args.json_course) as json_file:
+            courses = json.load(json_file)
+        with open(args.json_professor) as json_file:
+            professors = json.load(json_file)
+
+        populate_db_from_json(db, university_id, degrees, courses, professors)
+    else:    
+        counter = 0
+        degrees = fetch_degrees(args.url, args.university_url)
+        for degree in degrees:
+            print(f"Inserting degree {counter} of {len(degrees)}")
+            degree_id = insert_degree(db, university_id, degree)
+            if degree_id == -1:
+                continue
+            insert_courses(db, degree_id, degree.url)
+            counter += 1
+            
+    print("Database populated successfully!")
+
 
 if __name__ == "__main__":
     args = arguments()
