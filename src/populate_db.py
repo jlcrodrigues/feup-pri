@@ -84,7 +84,7 @@ def arguments():
     parser.add_argument(
         "--json_course",
         help="The path to the JSON file containing the courses. Default is '../data/courses.json'.",
-        default="../data/courses.json",
+        default="../data/course_units.json",
     )
     parser.add_argument(
         "--json_professor",
@@ -303,7 +303,7 @@ def insert_degrees_json(db, university_id, json_degree):
             "none",
         )
 
-        for course in degree["courses"]:
+        for course in degree["courseUnits"]:
             db.execute(
                 "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
                 (degree["id"], course["id_course"], course["year"]),
