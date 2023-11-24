@@ -159,8 +159,7 @@
     },
     {
       "name": "institutionalWebsite",
-      "type": "urlEmail",
-      "indexed": false
+      "type": "urlEmail"
     },
     {
       "name": "abbreviation",
