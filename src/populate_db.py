@@ -281,7 +281,8 @@ def link_professor_course(db, url_professor, course_id, type):
         "none",
     )
 
-def insert_degrees_json(db, university_id, json_degree):
+
+def populate_db_from_json(db, university_id, json_degree, json_course, json_professor):
     for degree in json_degree:
         db.execute(
             "INSERT INTO Degree (id, url, name, description, outings, type_of_course, duration) VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -303,14 +304,6 @@ def insert_degrees_json(db, university_id, json_degree):
             "none",
         )
 
-        for course in degree["courseUnits"]:
-            db.execute(
-                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
-                (degree["id"], course["id_course"], course["year"]),
-                "none",
-            )
-
-def insert_courses_json(db, json_course):
     for course in json_course:
         db.execute(
             "INSERT INTO CourseUnit (id, name, url, code, language, ects, objectives, results, working_method, pre_requirements, program, evaluation_type, passing_requirements) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s)",
@@ -332,14 +325,6 @@ def insert_courses_json(db, json_course):
             "none",
         )
 
-        for professor in course["professors"]:
-            db.execute(
-                "INSERT INTO ProfessorCourseUnit (professor_id, course_unit_id, type) VALUES (%s, %s, %s)",
-                (professor["id_professor"], course["id"], professor["type"]),
-                "none",
-            )
-
-def insert_professors_json(db, json_professor):
     for professor in json_professor:
         db.execute(
             "INSERT INTO Professor (id, name, personal_website, institutional_website, abbreviation, status, code, institutional_email, phone, rank, personal_presentation, fields_of_interest) "
@@ -361,11 +346,21 @@ def insert_professors_json(db, json_professor):
             "none",
         )
 
+    for degree in json_degree:
+        for course in degree["courseUnits"]:
+            db.execute(
+                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
+                (degree["id"], course["id_course"], course["year"]),
+                "none",
+            )
 
-def populate_db_from_json(db, university_id, json_degree, json_course, json_professor):
-    insert_degrees_json(db, university_id, json_degree)
-    insert_courses_json(db, json_course)
-    insert_professors_json(db, json_professor)
+    for course in json_course:
+        for professor in course["professors"]:
+            db.execute(
+                "INSERT INTO ProfessorCourseUnit (professor_id, course_unit_id, type) VALUES (%s, %s, %s)",
+                (professor["id_professor"], course["id"], professor["type"]),
+                "none",
+            )
 
 
 def main(args):
@@ -385,7 +380,7 @@ def main(args):
             professors = json.load(json_file)
 
         populate_db_from_json(db, university_id, degrees, courses, professors)
-    else:    
+    else:
         counter = 0
         degrees = fetch_degrees(args.url, args.university_url)
         for degree in degrees:
@@ -395,7 +390,7 @@ def main(args):
                 continue
             insert_courses(db, degree_id, degree.url)
             counter += 1
-            
+
     print("Database populated successfully!")
 
 
