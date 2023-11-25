@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTextField } from 'vuetify/components';
-import useApiStore from '@/stores/store'
-import Degree from '@/model/customTypes'
-import DegreeCard from '@/components/DegreeCard.vue';
+import SearchBar from '@/components/SearchBar.vue';
 import { useRouter } from 'vue-router';
 
 let search = ref('')
@@ -20,8 +17,7 @@ const getSearch = async () => {
     <h1 class="tw-text-7xl tw-font-medium"><span class="tw-text-secondary">Academic</span><span class="tw-text-primary">Quest</span>
     </h1>
     <div class="md:tw-w-3/4 tw-m-5">
-      <v-text-field v-model="search" label="Search" @keydown.enter="getSearch">
-      </v-text-field>
+      <search-bar v-model="search" @keydown.enter="getSearch()"></search-bar>
     </div>
   </div>
 </template>

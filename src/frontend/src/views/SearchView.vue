@@ -4,7 +4,9 @@ import { VTextField } from 'vuetify/components';
 import useApiStore from '@/stores/store'
 import Degree from '@/model/customTypes'
 import DegreeCard from '@/components/DegreeCard.vue';
+import SearchBar from '@/components/SearchBar.vue';
 import { useRoute } from 'vue-router';
+import { watch } from 'fs';
 
 const route = useRoute()
 const search = ref(route.query.text as string)
@@ -25,13 +27,14 @@ const getSearch = async () => {
 if (search.value) {
   getSearch()
 }
+
+
 </script>
 
 <template>
   <div class="tw-flex tw-align-center tw-flex-col">
     <div class="tw-md:w-3/4 tw-m-5">
-      <v-text-field v-model="search" label="Search" @keydown.enter="getSearch">
-      </v-text-field>
+      <search-bar v-model="search" @input="getSearch()"></search-bar>
     </div>
     <degree-card v-for="degree in degrees" :degree="degree"></degree-card>
   </div>
