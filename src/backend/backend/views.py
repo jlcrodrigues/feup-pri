@@ -20,9 +20,12 @@ def search(request, *args, **kwargs):
     found_objects = [
         {
             'id': result['id'],
+            'url': result['url'],
             'name': result.get('name', ''),
             'description': result.get('description', ''),
-            # Add more fields as needed
+            'outings': result.get('outings', ''),
+            'typeOfCourse': result.get('typeOfCourse', ''),
+            'duration': result.get('duration', ''),
         }
         for result in results
     ]

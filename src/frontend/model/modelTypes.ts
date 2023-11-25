@@ -1,4 +1,3 @@
-// define degree type
 
 export interface Degree {
     id: number;
