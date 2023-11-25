@@ -44,6 +44,14 @@ services:
     volumes:
       - ./backend:/app
 
+  myvue:
+    build: ./frontend
+    ports:
+     - "3000:3000"
+    container_name: pri_vue
+    volumes:
+      - ./frontend:/app
+
 volumes:
   data:
   pg_data:

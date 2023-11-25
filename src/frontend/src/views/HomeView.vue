@@ -9,7 +9,7 @@
        Welcome!
      </p>
      <p class="text-primary text-lg">
-       Vue and Tailwind CSS in actionsdlkfjsk 
+       Vue and Tailwind CSS in action!
      </p>
   </div>
   </main>
