@@ -145,10 +145,6 @@
   ],
   "add-field": [
     {
-      "name": "id_db",
-      "type": "stringText"
-    },
-    {
       "name": "name",
       "type": "stringText"
     },

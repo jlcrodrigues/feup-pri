@@ -113,7 +113,7 @@
       "class": "solr.TextField",
       "indexAnalyzer": {
         "tokenizer": {
-          "class": "solr.StandardTokenizerFactory",
+          "class": "solr.NGramTokenizerFactory",
           "minGramSize": 2,
           "maxGramSize": 15
         },
@@ -145,10 +145,6 @@
   ],
   "add-field": [
     {
-      "name": "id_db",
-      "type": "stringText"
-    },
-    {
       "name": "name",
       "type": "stringText"
     },
@@ -172,7 +168,7 @@
       "docValues": true
     },
     {
-      "name": "objective",
+      "name": "objectives",
       "type": "stringText"
     },
     {

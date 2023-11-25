@@ -111,10 +111,6 @@
   ],
   "add-field": [
     {
-      "name": "id_db",
-      "type": "stringText"
-    },
-    {
       "name": "url",
       "type": "urlEmail",
       "indexed": false
