@@ -13,7 +13,7 @@ const getSearch = async () => {
 </script>
 
 <template>
-  <div class="tw-flex tw-align-center tw-flex-col tw-items-center tw-justify-center tw-h-screen">
+  <div class="tw-bg-background tw-flex tw-align-center tw-flex-col tw-items-center tw-justify-center tw-h-screen">
     <h1 class="tw-text-7xl tw-font-medium"><span class="tw-text-secondary">Academic</span><span class="tw-text-primary">Quest</span>
     </h1>
     <div class="md:tw-w-3/4 tw-m-5">

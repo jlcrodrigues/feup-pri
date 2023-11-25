@@ -16,9 +16,9 @@ const customTheme = {
   disable: true,
   dark: false,
   colors: {
-    //primary: '#8c2d19',
-    //primary: '#0f0',
-    secondary: '#3b5249',
+    primary: "#8c2d19",
+    secondary: "#2a3c24",
+    backgroud: "#f1e0c5"
   },
 }
 

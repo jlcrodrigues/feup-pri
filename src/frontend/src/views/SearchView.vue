@@ -33,7 +33,7 @@ if (search.value) {
 
 <template>
   <div class="tw-flex tw-align-center tw-flex-col">
-    <div class="tw-md:w-3/4 tw-m-5">
+    <div class="tw-md:w-3/4 tw-m-5 tw-mt-9">
       <search-bar v-model="search" @input="getSearch()"></search-bar>
     </div>
     <degree-card v-for="degree in degrees" :degree="degree"></degree-card>

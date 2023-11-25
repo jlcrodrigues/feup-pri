@@ -6,11 +6,18 @@ module.exports = {
     extend: {
       colors: {
         primary: "#8c2d19",
-        secondary: "#3b5249",
+        secondary: {
+          DEFAULT: "#2a3c24",
+          light: "#566551"
+        },
+        background: "#fff1de"
       },
       textColors: {
         primary: "#8c2d19",
-        secondary: "#3b5249",
+        secondary: {
+          DEFAULT: "#2a3c24",
+          light: "#566551"
+        },
       },
     },
   },
@@ -18,7 +25,7 @@ module.exports = {
   safelist: [
     {
       pattern:
-        /(bg|text|border)-(transparent|current|white|purple|midnight|metal|tahiti|silver|bermuda)/,
+        /(bg|text|border)-(background|transparent|current|white|purple|midnight|metal|tahiti|silver|bermuda)/,
     },
   ],
 };
