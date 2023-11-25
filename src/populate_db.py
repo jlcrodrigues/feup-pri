@@ -138,10 +138,8 @@ def insert_degree(db, university_id, degree):
             (university_id, degree_id),
             "none",
         )
-    except psycopg2.errors.UniqueViolation:
-        return -1
     except Exception as e:
-        terminate(db, e)
+        return -1
 
     return degree_id
 
@@ -348,11 +346,15 @@ def populate_db_from_json(db, university_id, json_degree, json_course, json_prof
 
     for degree in json_degree:
         for course in degree["courseUnits"]:
-            db.execute(
-                "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
-                (degree["id"], course["id_course"], course["year"]),
-                "none",
-            )
+            try:
+                db.execute(
+                    "INSERT INTO DegreeCourseUnit (degree_id, course_unit_id, year) VALUES (%s, %s, %s)",
+                    (degree["id"], course["id_course"], course["year"]),
+                    "none",
+                )
+            except:
+                print("Error adding course!")
+                pass
 
     for course in json_course:
         for professor in course["professors"]:
