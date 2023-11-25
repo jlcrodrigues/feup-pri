@@ -1,20 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.htm", "./src/**/*.{vue,html,js}"],
-    theme: {
-    fontFamily: {
-      sans: ['Graphik', 'sans-serif'],
-      serif: ['Merriweather', 'serif'],
-    },
+  prefix: "tw-",
+  theme: {
     extend: {
       colors: {
-        'primary': '#f00',
+        primary: "#8c2d19",
+        secondary: "#3b5249",
       },
       textColors: {
-        'primary': '#f00',
+        primary: "#8c2d19",
+        secondary: "#3b5249",
       },
-    }
+    },
   },
   plugins: [],
-}
-
+  safelist: [
+    {
+      pattern:
+        /(bg|text|border)-(transparent|current|white|purple|midnight|metal|tahiti|silver|bermuda)/,
+    },
+  ],
+};

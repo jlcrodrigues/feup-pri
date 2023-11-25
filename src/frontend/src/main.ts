@@ -11,9 +11,25 @@ import * as directives from 'vuetify/directives'
 import App from './App.vue'
 import router from './router'
 
+const customTheme = {
+  disable: true,
+  dark: false,
+  colors: {
+    //primary: '#8c2d19',
+    //primary: '#0f0',
+    secondary: '#3b5249',
+  },
+}
+
 const vuetify = createVuetify({
   components,
   directives,
+  theme: {
+    defaultTheme: 'customTheme',
+    themes: {
+      customTheme,
+    },
+  },
 })
 
 const app = createApp(App)

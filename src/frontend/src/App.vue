@@ -2,12 +2,12 @@
 import { RouterLink, RouterView } from 'vue-router'
 
 import HomeView from './views/HomeView.vue'
+import AppHeader from './components/app/AppHeader.vue';
 
 </script>
 
 <template>
-  <header>
-  </header>
+  <app-header></app-header>
 
   <RouterView />
 </template>
