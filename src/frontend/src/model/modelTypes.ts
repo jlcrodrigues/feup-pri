@@ -5,6 +5,6 @@ export interface Degree {
     name: string;
     description: string;
     outings: string;
-    typeOfCourse: string;
+    type_of_course: string;
     duration: string;
 }

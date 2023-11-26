@@ -1,6 +1,11 @@
+import django
+from django.forms import model_to_dict
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 import pysolr
+
+from backend.models import Degree
 
 def index(request):
     return HttpResponse("Hello, world. Welcome to the index.")
@@ -31,3 +36,8 @@ def search(request, *args, **kwargs):
     ]
 
     return JsonResponse({'results': found_objects})
+
+def degree(request, *args, **kwargs):
+    degree_id = request.GET.get('id', '')
+    degree = get_object_or_404(Degree, id=degree_id)
+    return JsonResponse(model_to_dict(degree))
