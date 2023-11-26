@@ -2,14 +2,19 @@
 import { ref } from 'vue'
 import { VTextField } from 'vuetify/components';
 import useApiStore from '@/stores/store'
-import Degree from '@/model/customTypes'
+import { Degree } from '@/model/modelTypes';
 import DegreeCard from '@/components/DegreeCard.vue';
 import SearchBar from '@/components/SearchBar.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { watch } from 'fs';
 
 const route = useRoute()
 const search = ref(route.query.text as string)
+
+const router = useRouter()
+if (!search.value) {
+  router.push({ name: 'home' })
+}
 
 const degrees = ref([] as Degree[])
 

@@ -12,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
 
   # pgAdmin service
   pgadmin:
@@ -35,6 +37,8 @@ services:
       - ./startup.sh:/bin/startup.sh
       - ./.env:/bin/.env
       - ./json:/data
+    networks:
+      - mynetwork
 
   django:
     build: ./backend
@@ -43,6 +47,9 @@ services:
     container_name: pri_django
     volumes:
       - ./backend:/app
+    networks:
+      - mynetwork
+    restart: always
 
   myvue:
     build: ./frontend
@@ -55,3 +62,7 @@ services:
 volumes:
   data:
   pg_data:
+
+networks:
+  mynetwork:
+    driver: bridge
