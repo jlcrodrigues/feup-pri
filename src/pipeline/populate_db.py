@@ -1,9 +1,8 @@
 import argparse
-from fetchers.degrees import *
-from fetchers.teachers import *
-from fetchers.course_plan import *
-from fetchers.course_unit import *
-from db.database import *
+from src.pipeline.fetchers.degrees import *
+from src.pipeline.fetchers.teachers import *
+from src.pipeline.fetchers.course_plan import *
+from src.pipeline.fetchers.course_unit import *
 import json
 from db import database
 import psycopg2
