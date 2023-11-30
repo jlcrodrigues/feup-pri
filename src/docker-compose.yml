@@ -34,7 +34,7 @@ services:
      - "8983:8983"
     volumes:
       - data:/var/solr
-      - ./startup.sh:/bin/startup.sh
+      - ./solr/startup.sh:/bin/startup.sh
       - ./.env:/bin/.env
       - ./json:/data
     networks:
