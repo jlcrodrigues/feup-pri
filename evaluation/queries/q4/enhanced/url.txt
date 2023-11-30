@@ -1,0 +1,1 @@
+http://localhost:8983/solr/course_unit/query?q=(name:python%20AND%20name:introduçao)%5E5%20OR%20(program:python%20AND%20program:introduçao)&q.op=OR&indent=true&sort=ects%20desc&rows=26&wt=json&useParams=

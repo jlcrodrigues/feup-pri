@@ -1,0 +1,1 @@
+http://localhost:8983/solr/course_unit/query?q=((name:logica)%20OR%20(name:matematica))%20AND%20(program:matematica)&q.op=OR&indent=true&rows=24&wt=json&fq=language:portugues&useParams=
