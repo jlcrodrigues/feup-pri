@@ -58,6 +58,7 @@ services:
     container_name: pri_vue
     volumes:
       - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   data:
