@@ -113,9 +113,7 @@
       "class": "solr.TextField",
       "indexAnalyzer": {
         "tokenizer": {
-          "class": "solr.NGramTokenizerFactory",
-          "minGramSize": 2,
-          "maxGramSize": 15
+          "class": "solr.StandardTokenizerFactory"
         },
         "filters": [
           {
