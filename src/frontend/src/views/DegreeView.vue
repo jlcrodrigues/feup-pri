@@ -9,7 +9,7 @@ import { onBeforeMount } from 'vue';
 import { onMounted } from 'vue';
 
 const route = useRoute()
-const id = ref(route.query.id as string)
+const id = ref(route.params.id as string)
 
 const degree = ref({} as Degree)
 

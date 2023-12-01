@@ -35,6 +35,5 @@ def searchDegrees(request, *args, **kwargs):
     return JsonResponse({'results': found_objects})
 
 def getDegree(request, *args, **kwargs):
-    degree_id = request.GET.get('id', '')
-    degree = get_object_or_404(Degree, id=degree_id)
+    degree = get_object_or_404(Degree, id=kwargs['id'])
     return JsonResponse(model_to_dict(degree))

@@ -41,6 +41,5 @@ def searchProfessors(request, *args, **kwargs):
 
 
 def getProfessor(request, *args, **kwargs):
-    professor_id = request.GET.get('id', '')
-    professor = get_object_or_404(Professor, id=professor_id)
+    professor = get_object_or_404(Professor, id=kwargs['id'])
     return JsonResponse(model_to_dict(professor))

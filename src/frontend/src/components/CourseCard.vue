@@ -15,8 +15,7 @@ const descriptionMax = 200
 
 const router = useRouter()
 const openPage = () => {
-    // TODO: course page
-  //router.push({ name: 'degree', query: { id: props.degree.id } })
+  router.push({ name: 'course', params: { id: props.course.id } })
 }
 
 </script>

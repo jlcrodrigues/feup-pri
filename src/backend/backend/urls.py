@@ -27,6 +27,7 @@ urlpatterns = [
     path("search/degrees", searchDegrees, name="searchDegrees"),
     path("search/courses", searchCourses, name="searchCourses"),
     path("search/professors", searchProfessors, name="searchProfessors"),
-    path("degree", getDegree, name="getDegree"),
-    path("course", getCourse, name="getCourse"),
+    path("degree/<int:id>", getDegree, name="getDegree"),
+    path("course/<int:id>", getCourse, name="getCourse"),
+    path("professor/<int:id>", getProfessor, name="getProfessor"),
 ]

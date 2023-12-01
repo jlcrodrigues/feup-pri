@@ -5,6 +5,7 @@ import SearchCoursesView from "@/views/SearchCoursesView.vue";
 import SearchDegreesView from "@/views/SearchDegreesView.vue";
 import SearchProfessorsView from "@/views/SearchProfessorsView.vue";
 import DegreeView from "@/views/DegreeView.vue";
+import CourseView from "@/views/CourseView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,9 +36,14 @@ const router = createRouter({
       component: SearchProfessorsView,
     },
     {
-      path: "/degree",
+      path: "/degree/:id",
       name: "degree",
       component: DegreeView,
+    },
+    {
+      path: "/course/:id",
+      name: "course",
+      component: CourseView,
     },
   ],
 });
