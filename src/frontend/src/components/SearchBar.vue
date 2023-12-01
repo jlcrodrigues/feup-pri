@@ -1,6 +1,10 @@
 <script setup lang="ts">
 defineProps(['modelValue'])
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue', 'clickIcon'])
+
+const te = () => {
+    console.log('te')
+}
 
 </script>
 
@@ -12,6 +16,7 @@ defineEmits(['update:modelValue'])
         @update:model-value="$emit('update:modelValue', $event)"
         variant="solo"
         append-inner-icon="mdi-magnify"
+        @click:append-inner="$emit('clickIcon')"
         >
     </v-text-field>
 </template>

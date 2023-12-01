@@ -20,7 +20,7 @@ const getSearch = async () => {
       {{ $t('slogan') }}
     </h6>
     <div class="md:tw-w-3/4 tw-m-5">
-      <search-bar v-model="search" @keydown.enter="getSearch()"></search-bar>
+      <search-bar v-model="search" @keydown.enter="getSearch()" @clickIcon="getSearch()"></search-bar>
     </div>
   </div>
 </template>

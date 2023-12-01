@@ -15,7 +15,7 @@ def searchDegrees(request, *args, **kwargs):
 
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
-    results = solr.search('name:'+search_query, **{
+    results = solr.search(f"name:{search_query}~", **{
         'wt': 'json',  
     })
 

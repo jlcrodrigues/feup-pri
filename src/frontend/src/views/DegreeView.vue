@@ -29,7 +29,7 @@ onMounted(() => {
     <v-card-title>
       <div class="tw-flex tw-justify-start tw-gap- tw-items-baseline">
         <h2 class="tw-text-primary tw-text-3xl">{{ degree.name }}</h2>
-        <v-btn variant="text" density="compact" :href="degree.url" target="_blank">
+        <v-btn v-if="degree.url" variant="text" density="compact" :href="degree.url" target="_blank">
           <v-icon class="tw-text-secondary">mdi-open-in-new</v-icon>
         </v-btn>
       </div>
@@ -43,7 +43,7 @@ onMounted(() => {
         <section class="tw-mb-5">
           {{ degree.description }}
         </section>
-        <section>
+        <section v-if="degree.outings">
           <h5 class="tw-text-2xl tw-text-secondary">{{ $t('outings') }}</h5>
           <p>{{ degree.outings }}</p>
         </section>
