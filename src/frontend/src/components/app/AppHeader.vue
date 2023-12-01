@@ -11,7 +11,7 @@ const links = [
   },
   {
     name: 'Professors',
-    path: '/professors'
+    path: '/search/professors'
   }
 ]
 

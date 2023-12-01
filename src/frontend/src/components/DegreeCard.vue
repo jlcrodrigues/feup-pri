@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import Degree from '@/model/customTypes'
+import Degree from '@/model/types'
 import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 

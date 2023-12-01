@@ -24,3 +24,16 @@ export interface CourseUnit {
     evaluationType: string;
     passingRequirements: string;
 }
+
+export interface Professor {
+    id: number;
+    institutionalWebsite: string;
+    abbreviation: string;
+    status: string;
+    code: string;
+    institutionalEmail: string;
+    phone: string;
+    rank: string;
+    personalPresentation: string;
+    fieldsOfInterest: string;
+}

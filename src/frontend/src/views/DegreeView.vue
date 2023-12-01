@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VTextField } from 'vuetify/components';
-import useApiStore from '@/stores/store'
-import Degree from '@/model/customTypes'
+import useApiStore from '@/stores/api'
+import Degree from '@/model/types'
 import { useRoute } from 'vue-router';
 import { watch } from 'fs';
 import { onBeforeMount } from 'vue';
@@ -13,15 +13,9 @@ const id = ref(route.query.id as string)
 
 const degree = ref({} as Degree)
 
+const apiStore = useApiStore()
 const getDegree = async () => {
-  const response = await fetch(`${useApiStore().url}/degree?id=${id.value}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/text'
-    },
-  })
-  const results = await response.json()
-  degree.value = results
+  degree.value = await apiStore.getDegree(id.value)
 }
 
 onMounted(() => {

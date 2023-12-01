@@ -3,6 +3,7 @@ import HomeView from "@/views/HomeView.vue";
 import SearchView from "@/views/SearchView.vue";
 import SearchCoursesView from "@/views/SearchCoursesView.vue";
 import SearchDegreesView from "@/views/SearchDegreesView.vue";
+import SearchProfessorsView from "@/views/SearchProfessorsView.vue";
 import DegreeView from "@/views/DegreeView.vue";
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: "/search/courses",
       name: "courses",
       component: SearchCoursesView,
+    },
+    {
+      path: "/search/professors",
+      name: "professors",
+      component: SearchProfessorsView,
     },
     {
       path: "/degree",
