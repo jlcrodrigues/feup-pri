@@ -1,9 +1,9 @@
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VTextField } from 'vuetify/components';
 import useApiStore from '@/stores/store'
 import { CourseUnit, Degree } from '@/model/modelTypes';
-import CourseCard from '@/components/CourseCard.vue';
 import DegreeCard from '@/components/DegreeCard.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -13,16 +13,11 @@ const route = useRoute()
 const search = ref(route.query.text as string)
 
 const router = useRouter()
-if (!search.value) {
-  router.push({ name: 'home' })
-}
 
 const degrees = ref([] as Degree[])
-const courses = ref([] as CourseUnit[])
 
 const getSearch = async () => {
   getDegrees()
-  getCourses()
 }
 
 const getDegrees = async () => {
@@ -34,17 +29,6 @@ const getDegrees = async () => {
   })
   const results = await response.json()
   degrees.value = results.results
-}
-
-const getCourses = async () => {
-  const response = await fetch(`${useApiStore().url}/search/courses?text=${search.value}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/text'
-    },
-  })
-  const results = await response.json()
-  courses.value = results.results
 }
 
 if (search.value) {
@@ -60,16 +44,10 @@ if (search.value) {
       <search-bar v-model="search" @input="getSearch()"></search-bar>
     </div>
     <nav class="tw-flex tw-gap-2">
-      <v-chip variant="outlined" @click="router.push({ name: 'degrees', query: {text: search }})">Degrees</v-chip>
-      <v-chip variant="outlined" @click="router.push({ name: 'courses', query: {text: search }})">Course Units</v-chip>
+      <v-chip variant="elevated" @click="router.push({ name: 'search', query: {text: search }})">Degrees</v-chip>
     </nav>
     <div class="tw-mt-5">
-      <h2 class="tw-text-xl tw-font-semibold">Degrees</h2>
       <degree-card v-for="degree in degrees" :degree="degree"></degree-card>
-    </div>
-    <div>
-      <h2 class="tw-text-xl tw-font-semibold">Courses Units</h2>
-      <course-card v-for="course in courses" :course="course"></course-card>
     </div>
   </div>
 </template>

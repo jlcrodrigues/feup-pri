@@ -7,13 +7,10 @@ import pysolr
 
 from backend.models import Degree
 
-def index(request):
-    return HttpResponse("Hello, world. Welcome to the index.")
-
 SOLR_SERVER = 'http://solr:8983/solr/'
 SOLR_CORE = 'degree' 
 
-def search(request, *args, **kwargs):
+def searchDegrees(request, *args, **kwargs):
     search_query = request.GET.get('text', '')
 
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
@@ -37,7 +34,7 @@ def search(request, *args, **kwargs):
 
     return JsonResponse({'results': found_objects})
 
-def degree(request, *args, **kwargs):
+def getDegree(request, *args, **kwargs):
     degree_id = request.GET.get('id', '')
     degree = get_object_or_404(Degree, id=degree_id)
     return JsonResponse(model_to_dict(degree))

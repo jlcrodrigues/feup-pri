@@ -2,16 +2,12 @@
 
 const links = [
   {
-    name: 'Search',
-    path: '/search'
-  },
-  {
     name: 'Degrees',
-    path: '/degrees'
+    path: '/search/degrees'
   },
   {
     name: 'Courses',
-    path: '/courses'
+    path: '/search/courses'
   },
   {
     name: 'Professors',

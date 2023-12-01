@@ -17,11 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from . import views
+from .views import views
+from .views.degrees import *
+from .views.courses import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path("", views.index, name="index"),
-    path("search", views.search, name="search"),
-    path("degree", views.degree, name="degree"),
+    path("search/degrees", searchDegrees, name="searchDegrees"),
+    path("search/courses", searchCourses, name="searchCourses"),
+    path("degree", getDegree, name="getDegree"),
+    path("course", getCourse, name="getCourse"),
 ]
