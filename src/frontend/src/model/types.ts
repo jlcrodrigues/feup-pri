@@ -27,6 +27,7 @@ export interface CourseUnit {
 
 export interface Professor {
     id: number;
+    name: string;
     institutionalWebsite: string;
     abbreviation: string;
     status: string;

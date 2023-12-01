@@ -6,6 +6,7 @@ import SearchDegreesView from "@/views/SearchDegreesView.vue";
 import SearchProfessorsView from "@/views/SearchProfessorsView.vue";
 import DegreeView from "@/views/DegreeView.vue";
 import CourseView from "@/views/CourseView.vue";
+import ProfessorView from "@/views/ProfessorView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path: "/course/:id",
       name: "course",
       component: CourseView,
+    },
+    {
+      path: "/professor/:id",
+      name: "professor",
+      component: ProfessorView,
     },
   ],
 });
