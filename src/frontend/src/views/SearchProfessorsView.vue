@@ -32,7 +32,7 @@ if (search.value) {
         <search-bar v-model="search" @input="getSearch()"></search-bar>
       </div>
       <nav class="tw-flex tw-gap-2">
-        <v-chip variant="elevated" @click="router.push({ name: 'search', query: { text: search } })">Professors</v-chip>
+        <v-chip variant="elevated" @click="router.push({ name: 'search', query: { text: search } })">{{ $t('professors') }}</v-chip>
       </nav>
     </div>
     <div class="tw-m-5">

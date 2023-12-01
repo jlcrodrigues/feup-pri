@@ -6,9 +6,9 @@ defineEmits(['update:modelValue'])
 
 <template>
     <v-text-field 
-        label="Search"
+        :label="$t('search')"
         :value="modelValue" 
-        :focused="true"
+        :autofocus="true"
         @update:model-value="$emit('update:modelValue', $event)"
         variant="solo"
         append-inner-icon="mdi-magnify"

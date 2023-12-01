@@ -45,29 +45,29 @@ const resultsEmpty = computed(() => {
         <search-bar v-model="search" @input="getSearch()"></search-bar>
       </div>
       <nav class="tw-flex tw-gap-2">
-        <v-chip variant="outlined" @click="router.push({ name: 'degrees', query: { text: search } })">Degrees</v-chip>
-        <v-chip variant="outlined" @click="router.push({ name: 'courses', query: { text: search } })">Course
-          Units</v-chip>
-        <v-chip variant="outlined"
-          @click="router.push({ name: 'professors', query: { text: search } })">Professors</v-chip>
+        <v-chip variant="outlined" @click="router.push({ name: 'degrees', query: { text: search } })">{{ $t('degrees')
+        }}</v-chip>
+        <v-chip variant="outlined" @click="router.push({ name: 'courses', query: { text: search } })">{{ $t('courses')
+        }}</v-chip>
+        <v-chip variant="outlined" @click="router.push({ name: 'professors', query: { text: search } })">{{
+          $t('professors') }}</v-chip>
       </nav>
     </div>
     <div v-if="resultsEmpty" class="tw-flex tw-text-xl tw-mt-5 tw-justify-center">
-      No results were found for your query.
+      {{ $t('noResults') }}
     </div>
     <div v-else class="tw-mx-5">
       <div v-if="degrees.length != 0" class="tw-mt-5">
-        <h2 class="tw-text-xl tw-font-semibold">Degrees</h2>
+        <h2 class="tw-text-xl tw-font-semibold">{{ $t('degrees') }}</h2>
         <degree-card v-for="degree in degrees" :degree="degree"></degree-card>
       </div>
       <div v-if="courses.length != 0" class="tw-mt-5">
-        <h2 class="tw-text-xl tw-font-semibold">Courses Units</h2>
+        <h2 class="tw-text-xl tw-font-semibold">{{ $t('courses') }}</h2>
         <course-card v-for="course in courses" :course="course"></course-card>
       </div>
       <div v-if="professors.length != 0" class="tw-mt-5">
-        <h2 class="tw-text-xl tw-font-semibold">Professors</h2>
-        <professor-card v-for="professor in professors"
-          :professor="professor"></professor-card>
+        <h2 class="tw-text-xl tw-font-semibold">{{ $t('professors') }}</h2>
+        <professor-card v-for="professor in professors" :professor="professor"></professor-card>
       </div>
     </div>
   </div>

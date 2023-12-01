@@ -44,7 +44,7 @@ onMounted(() => {
           {{ degree.description }}
         </section>
         <section>
-          <h5 class="tw-text-2xl tw-text-secondary">Saídas Profissionais</h5>
+          <h5 class="tw-text-2xl tw-text-secondary">{{ $t('outings') }}</h5>
           <p>{{ degree.outings }}</p>
         </section>
       </article>

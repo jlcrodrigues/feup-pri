@@ -17,7 +17,7 @@ const getSearch = async () => {
     <h1 class="tw-text-8xl tw-font-thin tw-mb-0"><span class="tw-text-secondary">Academic</span><span class="tw-text-primary">Quest</span>
     </h1>
     <h6 class="tw-text-2xl tw-mt-1 tw-font-thin tw-italic">
-      Connecting you to knowledge. Where dreams take shape.
+      {{ $t('slogan') }}
     </h6>
     <div class="md:tw-w-3/4 tw-m-5">
       <search-bar v-model="search" @keydown.enter="getSearch()"></search-bar>

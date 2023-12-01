@@ -10,5 +10,7 @@ body {
   white-space: normal !important;
 }
 
-.shadow-bot {
+.v-btn--size-default {
+  min-width: 2px !important;
+  padding: 2px !important;
 }
