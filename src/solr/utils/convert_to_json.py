@@ -1,7 +1,10 @@
 import argparse
-from db import database
 import json
 import pandas as pd
+
+import sys
+sys.path.append("../../pipeline/db")
+import database as database
 
 
 def arguments():
@@ -187,11 +190,11 @@ def main(args):
 
     if not args.csv:
         with open(args.output + "degrees.json", "w") as outfile:
-            outfile.write(json.dumps(degrees_json))
+            json.dump(degrees_json, outfile, indent=4, ensure_ascii=False)
         with open(args.output + "course_units.json", "w") as outfile:
-            outfile.write(json.dumps(course_units_json))
+            json.dump(course_units_json, outfile, indent=4, ensure_ascii=False)
         with open(args.output + "professors.json", "w") as outfile:
-            outfile.write(json.dumps(professors_json))
+            json.dump(professors_json, outfile, indent=4, ensure_ascii=False)
         print("JSON files created. Exiting...")
     else:
         df1 = pd.DataFrame(degrees_json)

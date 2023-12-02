@@ -107,6 +107,13 @@
           }
         ]
       }
+    },
+    {
+      "name": "courseVector",
+      "class": "solr.DenseVectorField",
+      "vectorDimension": 384,
+      "similarityFunction": "cosine",
+      "knnAlgorithm": "hnsw"
     }
   ],
   "add-field": [
@@ -134,6 +141,12 @@
     {
       "name": "duration",
       "type": "stringText"
+    },
+    {
+      "name": "vector",
+      "type": "courseVector",
+      "indexed": true,
+      "stored": true
     }
   ]
 }
