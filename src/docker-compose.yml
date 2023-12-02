@@ -15,18 +15,6 @@ services:
     networks:
       - mynetwork
 
-  # pgAdmin service
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: my_pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pri@outlook.com
-      PGADMIN_DEFAULT_PASSWORD: pri
-    ports:
-      - "8080:80"
-    depends_on:
-      - db
-
   solr:
     image: solr
     container_name: my_solr
