@@ -7,7 +7,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Search for similar documents")
     parser.add_argument("--solr-endpoint", default="http://localhost:8983/solr")
     parser.add_argument("--collection", default="course_unit")
-    parser.add_argument("--query-text", required=True)
+    parser.add_argument("--query-text", "--q", required=True)
     parser.add_argument("--num-results", default=10, type=int)
     return parser.parse_args()
 
@@ -25,8 +25,8 @@ def solr_knn_query(endpoint, collection, embedding, num_results=10):
     url = f"{endpoint}/{collection}/select"
 
     data = {
-        "q": f"{{!knn f=vector topK=10}}{embedding}",
-        "fl": "name",
+        "q": f"{{!knn f=vector topK={num_results}}}{embedding}",
+        "fl": "*,score",
         "rows": num_results,
         "wt": "json"
     }
@@ -46,7 +46,7 @@ def display_results(results):
 
     print(f"Found {len(docs)} results:")
     for doc in docs:
-        print(f"* {doc.get('id')} {doc.get('name')} [score: {doc.get('score'):.2f}]")
+        print(f"* {doc.get('id')} {doc.get('name')}[score: {doc.get('score'):.2f}]")
         
 
 def search(solr_endpoint, collection, query_text, num_results=10):

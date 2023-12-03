@@ -1,4 +1,3 @@
-import sys
 import json
 from sentence_transformers import SentenceTransformer
 import argparse
@@ -33,37 +32,36 @@ def get_embeddings_degrees(data):
         name = document.get("name", "")
         description = document.get("description", "")
         outings = document.get("outings", "")
-        typeOfCourse = document.get("typeOfCourse", "")
+        type_of_course = document.get("typeOfCourse", "")
         duration = document.get("duration", "")
-        combined = f"{name} {description} {outings} {typeOfCourse} {duration}"
-        document["embedding"] = get_embedding(combined)
+        combined = f"{name} {description} {outings} {type_of_course} {duration}"
+        document["vector"] = get_embedding(combined)
 
 
 def get_embeddings_course_units(data):
     for document in data:
         name = document.get("name", "")
-        print(name)
-        #language = document.get("language", "")
-        #ects = document.get("ects", 0)
-        #objectives = document.get("objectives", "")
-        #results = document.get("results", "")
-        #workingMethod = document.get("workingMethod", "")
-        #program = document.get("program", "")
-        #evaluationType = document.get("evaluationType", "")
-        #combined = f"{name} {language} {ects} {objectives} {results} {workingMethod} {program} {evaluationType}"
-        combined = f"{name}"
-        document["embedding"] = get_embedding(combined)
+        language = document.get("language", "")
+        ects = document.get("ects", 0)
+        objectives = document.get("objectives", "")
+        results = document.get("results", "")
+        working_method = document.get("workingMethod", "")
+        program = document.get("program", "")
+        evaluation_type = document.get("evaluationType", "")
+
+        combined = f"{name} {language} {ects} {objectives} {results} {working_method} {program} {evaluation_type}"
+        document["vector"] = get_embedding(combined)
 
 
 def get_embeddings_professors(data):
     for document in data:
         name = document.get("name", "")
-        institutionalWebsite = document.get("institutionalWebsite", "")
+        institutional_website = document.get("institutionalWebsite", "")
         rank = document.get("rank", "")
-        personalPresentation = document.get("personalPresentation", "")
-        fieldsOfInterest = document.get("fieldsOfInterest", "")
-        combined = f"{name} {institutionalWebsite} {rank} {personalPresentation} {fieldsOfInterest}"
-        document["embedding"] = get_embedding(combined)
+        personal_presentation = document.get("personalPresentation", "")
+        fields_of_interest = document.get("fieldsOfInterest", "")
+        combined = f"{name} {institutional_website} {rank} {personal_presentation} {fields_of_interest}"
+        document["vector"] = get_embedding(combined)
 
 
 def get_embeddings_from_file(input_file, data):
