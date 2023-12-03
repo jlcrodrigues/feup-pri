@@ -42,14 +42,16 @@ def get_embeddings_degrees(data):
 def get_embeddings_course_units(data):
     for document in data:
         name = document.get("name", "")
-        language = document.get("language", "")
-        ects = document.get("ects", 0)
-        objectives = document.get("objectives", "")
-        results = document.get("results", "")
-        workingMethod = document.get("workingMethod", "")
-        program = document.get("program", "")
-        evaluationType = document.get("evaluationType", "")
-        combined = f"{name} {language} {ects} {objectives} {results} {workingMethod} {program} {evaluationType}"
+        print(name)
+        #language = document.get("language", "")
+        #ects = document.get("ects", 0)
+        #objectives = document.get("objectives", "")
+        #results = document.get("results", "")
+        #workingMethod = document.get("workingMethod", "")
+        #program = document.get("program", "")
+        #evaluationType = document.get("evaluationType", "")
+        #combined = f"{name} {language} {ects} {objectives} {results} {workingMethod} {program} {evaluationType}"
+        combined = f"{name}"
         document["embedding"] = get_embedding(combined)
 
 
