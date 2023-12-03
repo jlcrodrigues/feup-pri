@@ -381,5 +381,9 @@ pyrightconfig.json
 .history
 .ionide
 
+course_units_embeddings.json
+degrees_embeddings.json
+professors_embeddings.json
+
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm+all,pycharm,visualstudiocode
 
