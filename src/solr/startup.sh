@@ -8,8 +8,8 @@ else
     exit 1
 fi
 
-docker cp ../../data/stopwords_pt.txt "$CONTAINER_ID":/opt/solr/server/solr/configsets/_default/conf/stopwords_pt.txt
-docker cp ../../data/synonyms_pt.txt "$CONTAINER_ID":/opt/solr/server/solr/configsets/_default/conf/synonyms_pt.txt
+docker cp ../../data/stopwords_pt.txt "$CONTAINER_NAME":/opt/solr/server/solr/configsets/_default/conf/stopwords_pt.txt
+docker cp ../../data/synonyms_pt.txt "$CONTAINER_NAME":/opt/solr/server/solr/configsets/_default/conf/synonyms_pt.txt
 
 # Use environment variables to set ports and core name
 SOLR_PORT="${SOLR_PORT:-8983}"  # Default to 8983 if not set in .env
