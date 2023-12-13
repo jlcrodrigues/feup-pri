@@ -21,9 +21,13 @@ export const pt = {
     professors: "Professores",
     personalPresentation: "Apresentação Pessoal",
     fieldsOfInterest: "Áreas de Interesse",
+    status: "Estado",
+    rank: "Categoria",
 
     studyCycle: "Ciclo de Estudos",
     bachelor: "Licenciatura",
     masters: "Mestrado",
     integratedMasters: "Mestrado Integrado",
+
+    language: "Língua",
 }

@@ -21,9 +21,13 @@ export const en = {
     professors: "Professors",
     personalPresentation: "Personal Presentation",
     fieldsOfInterest: "Fields of Interest",
+    status: "Status",
+    rank:"Rank",
 
     studyCycle: "Study Cycle",
     bachelor: "Bachelor",
     masters: "Master's",
     integratedMasters: "Integrated Master's",
+
+    language: "Language",
 }

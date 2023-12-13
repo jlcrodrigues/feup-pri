@@ -9,13 +9,12 @@ import { useRoute, useRouter } from 'vue-router';
 import useApiStore from '@/stores/api';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
-const { t } = useI18n()
 
 const route = useRoute()
 const search = ref(route.query.text as string)
 
-const typesOfCourse = computed(() => ['Licenciatura', 'Mestrado', 'Mestrado Integrado'])
-const typeOfCourse = ref([] as Array<string>)
+const typesOfCourse = ['Licenciatura', 'Mestrado', 'Mestrado Integrado']
+const typeOfCourse = ref(route.query.typeOfCourse as Array<string>)
 
 const router = useRouter()
 
@@ -24,7 +23,7 @@ const degrees = ref([] as Degree[])
 const apiStore = useApiStore()
 const getSearch = async () => {
   degrees.value = await apiStore.searchDegrees({text: search.value, typeOfCourse: typeOfCourse.value})
-  router.push({ name: 'degrees', query: { text: search.value } })
+  router.push({ name: 'degrees', query: { text: search.value, typeOfCourse: typeOfCourse.value } })
 }
 
 getSearch()

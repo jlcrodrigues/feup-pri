@@ -14,7 +14,7 @@ const useApiStore = defineStore("search", () => {
       }
     }
 
-  const response = await fetch(`${apiUrl}/search/degrees?text=${params.text}${(queryParams != '?' ? queryParams : '')}`, {
+  const response = await fetch(`${apiUrl}/search/degrees?text=${params.text}${(queryParams != '&' ? queryParams : '')}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/text",
@@ -24,11 +24,16 @@ const useApiStore = defineStore("search", () => {
     return responseJson.results;
   };
 
-  const searchCourses = async (text: String) => {
-    if (text.length === 0) {
-      return [];
+  const searchCourses = async (params: any) => {
+    let queryParams = "&"
+    if (params.text == null) params.text = ""
+    if (params.language) {
+      for (const type of params.language) {
+        queryParams += `&language=${type}`
+      }
     }
-    const response = await fetch(`${apiUrl}/search/courses?text=${text}`, {
+
+    const response = await fetch(`${apiUrl}/search/courses?text=${params.text}${(queryParams != '&' ? queryParams : '')}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/text",
@@ -38,11 +43,21 @@ const useApiStore = defineStore("search", () => {
     return responseJson.results;
   };
 
-  const searchProfessors = async (text: String) => {
-    if (text.length === 0) {
-      return [];
+  const searchProfessors = async (params: any) => {
+    let queryParams = "&"
+    if (params.text == null) params.text = ""
+    if (params.status) {
+      for (const type of params.status) {
+        queryParams += `&status=${type}`
+      }
     }
-    const response = await fetch(`${apiUrl}/search/professors?text=${text}`, {
+    if (params.rank) {
+      for (const type of params.rank) {
+        queryParams += `&rank=${type}`
+      }
+    }
+
+    const response = await fetch(`${apiUrl}/search/professors?text=${params.text}${(queryParams != '&' ? queryParams : '')}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/text",
