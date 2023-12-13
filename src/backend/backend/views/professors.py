@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import pysolr
+from backend.utils import snake_to_camel_case
 
 from backend.models import Degree, Professor
 
@@ -42,4 +43,9 @@ def searchProfessors(request, *args, **kwargs):
 
 def getProfessor(request, *args, **kwargs):
     professor = get_object_or_404(Professor, id=kwargs['id'])
-    return JsonResponse(model_to_dict(professor))
+    professor_dict = model_to_dict(professor)
+    professorDict = {}
+    for key in professor_dict:
+        professorDict[snake_to_camel_case(key)] = professor_dict[key]
+    
+    return JsonResponse(professorDict)
