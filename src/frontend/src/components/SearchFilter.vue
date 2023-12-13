@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { arrayBuffer } from 'stream/consumers';
-import { watch } from 'vue';
 import { ref } from 'vue';
 
 const isOpen = ref(false);

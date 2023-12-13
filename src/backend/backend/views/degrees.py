@@ -16,11 +16,15 @@ def searchDegrees(request, *args, **kwargs):
     search_query = '*:*' if search_query == '' else f"name:{search_query}~"
     typeOfCourse = request.GET.getlist('typeOfCourse')
 
+    sortKey = request.GET.get('sortKey')
+    sortOrder = request.GET.get('sortOrder')
+
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
     results = solr.search(search_query, **{
         'wt': 'json',
         'fq': getFilter(typeOfCourse),
+        'sort': f'{sortKey} {sortOrder}' if sortKey != None and sortOrder != None else ''
     })
 
     found_objects = [

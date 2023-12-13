@@ -6,6 +6,7 @@ export const pt = {
     /* Degrees */
     degrees: "Cursos",
     outings: "Saídas Profissionais",
+    duration: "Duração",
 
     /* courses */
     courses: "Cadeiras",
@@ -30,4 +31,8 @@ export const pt = {
     integratedMasters: "Mestrado Integrado",
 
     language: "Língua",
+
+    sort: "Ordenar por",
+    sortKey: "Critério",
+    sortOrder: "Ordem",
 }

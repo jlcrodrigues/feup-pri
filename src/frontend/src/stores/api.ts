@@ -3,18 +3,23 @@ import { ref } from "vue";
 
 const useApiStore = defineStore("search", () => {
   const apiUrl = import.meta.env.VITE_BACKEND_URI;
-  console.log(apiUrl);
 
   const searchDegrees = async (params: any) => {
-    let queryParams = "&"
+    let queryParams = ""
     if (params.text == null) params.text = ""
     if (params.typeOfCourse) {
       for (const type of params.typeOfCourse) {
         queryParams += `&typeOfCourse=${type}`
       }
     }
+    if (params.sortKey) {
+      queryParams += `&sortKey=${params.sortKey}`
+    }
+    if (params.sortOrder) {
+      queryParams += `&sortOrder=${params.sortOrder}`
+    }
 
-  const response = await fetch(`${apiUrl}/search/degrees?text=${params.text}${(queryParams != '&' ? queryParams : '')}`, {
+  const response = await fetch(`${apiUrl}/search/degrees?text=${params.text}${(queryParams != '' ? queryParams : '')}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/text",
@@ -25,7 +30,7 @@ const useApiStore = defineStore("search", () => {
   };
 
   const searchCourses = async (params: any) => {
-    let queryParams = "&"
+    let queryParams = ""
     if (params.text == null) params.text = ""
     if (params.language) {
       for (const type of params.language) {
@@ -33,7 +38,7 @@ const useApiStore = defineStore("search", () => {
       }
     }
 
-    const response = await fetch(`${apiUrl}/search/courses?text=${params.text}${(queryParams != '&' ? queryParams : '')}`, {
+    const response = await fetch(`${apiUrl}/search/courses?text=${params.text}${(queryParams != '' ? queryParams : '')}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/text",
@@ -44,7 +49,7 @@ const useApiStore = defineStore("search", () => {
   };
 
   const searchProfessors = async (params: any) => {
-    let queryParams = "&"
+    let queryParams = ""
     if (params.text == null) params.text = ""
     if (params.status) {
       for (const type of params.status) {
@@ -57,7 +62,7 @@ const useApiStore = defineStore("search", () => {
       }
     }
 
-    const response = await fetch(`${apiUrl}/search/professors?text=${params.text}${(queryParams != '&' ? queryParams : '')}`, {
+    const response = await fetch(`${apiUrl}/search/professors?text=${params.text}${(queryParams != '' ? queryParams : '')}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/text",

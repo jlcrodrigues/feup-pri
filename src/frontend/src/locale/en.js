@@ -6,6 +6,7 @@ export const en = {
 
     /* degrees */
     degrees: "Degrees",
+    duration: "Duration",
 
     /* courses */
     courses: "Course Units",
@@ -30,4 +31,8 @@ export const en = {
     integratedMasters: "Integrated Master's",
 
     language: "Language",
+
+    sort: "Sort by",
+    sortKey: "Criteria",
+    sortOrder: "Order",
 }
