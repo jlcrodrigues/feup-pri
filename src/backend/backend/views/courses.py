@@ -16,11 +16,15 @@ def searchCourses(request, *args, **kwargs):
     search_query = '*:*' if search_query == '' else f"name:{search_query}~"
     language = request.GET.getlist('language')
 
+    sortKey = request.GET.get('sortKey')
+    sortOrder = request.GET.get('sortOrder')
+
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
     results = solr.search(search_query, **{
         'wt': 'json',  
         'fq': getFilter(language),
+        'sort': f'{sortKey} {sortOrder}' if sortKey != None and sortOrder != None else ''
     })
 
     found_objects = [

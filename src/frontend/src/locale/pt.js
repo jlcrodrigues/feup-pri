@@ -17,6 +17,7 @@ export const pt = {
     program: "Programa",
     evaluationType: "Tipo de Avaliação",
     passingRequirements: "Obtenção de Frequência",
+    ects: "Créditos (ECTS)",
 
     /* professors */
     professors: "Professores",
@@ -35,4 +36,6 @@ export const pt = {
     sort: "Ordenar por",
     sortKey: "Critério",
     sortOrder: "Ordem",
+
+    name: "Nome",
 }

@@ -18,7 +18,7 @@ const search = ref(route.query.text as string)
 const typesOfCourse = ['Licenciatura', 'Mestrado', 'Mestrado Integrado']
 const typeOfCourse = ref(route.query.typeOfCourse as Array<string>)
 
-const keys = computed(() => ['duration'])
+const keys = ['duration', 'name']
 const key = ref(route.query.order as string)
 
 const order = ref(route.query.order as string)

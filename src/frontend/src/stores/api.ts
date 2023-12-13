@@ -37,6 +37,12 @@ const useApiStore = defineStore("search", () => {
         queryParams += `&language=${type}`
       }
     }
+    if (params.sortKey) {
+      queryParams += `&sortKey=${params.sortKey}`
+    }
+    if (params.sortOrder) {
+      queryParams += `&sortOrder=${params.sortOrder}`
+    }
 
     const response = await fetch(`${apiUrl}/search/courses?text=${params.text}${(queryParams != '' ? queryParams : '')}`, {
       method: "GET",
@@ -60,6 +66,12 @@ const useApiStore = defineStore("search", () => {
       for (const type of params.rank) {
         queryParams += `&rank=${type}`
       }
+    }
+    if (params.sortKey) {
+      queryParams += `&sortKey=${params.sortKey}`
+    }
+    if (params.sortOrder) {
+      queryParams += `&sortOrder=${params.sortOrder}`
     }
 
     const response = await fetch(`${apiUrl}/search/professors?text=${params.text}${(queryParams != '' ? queryParams : '')}`, {

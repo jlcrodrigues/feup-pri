@@ -18,11 +18,15 @@ def searchProfessors(request, *args, **kwargs):
     status = request.GET.getlist('status')
     ranks = request.GET.getlist('rank')
 
+    sortKey = request.GET.get('sortKey')
+    sortOrder = request.GET.get('sortOrder')
+
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
     results = solr.search(search_query, **{
         'wt': 'json',
         'fq': getFilter(status, ranks),
+        'sort': f'{sortKey} {sortOrder}' if sortKey != None and sortOrder != None else ''
     })
 
     found_objects = [
