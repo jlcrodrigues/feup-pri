@@ -7,6 +7,7 @@ export interface Degree {
     outings: string;
     type_of_course: string;
     duration: string;
+    courses: CourseUnit[];
 }
 
 export interface CourseUnit {
@@ -16,7 +17,7 @@ export interface CourseUnit {
     code: string;
     language: string;
     ects: number;
-    objective: string;
+    objectives: string;
     results: string;
     workingMethod: string;
     preRequirements: string;

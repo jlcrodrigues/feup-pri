@@ -12,6 +12,7 @@ const route = useRoute()
 const id = ref(route.params.id as string)
 
 const degree = ref({} as Degree)
+degree.value.courses = []
 
 const apiStore = useApiStore()
 const getDegree = async () => {
@@ -21,6 +22,11 @@ const getDegree = async () => {
 onMounted(() => {
   getDegree()
 })
+
+const descriptionMax = 150
+
+let page = ref(1);
+const coursesPerPage = 6;
 
 </script>
 
@@ -35,7 +41,8 @@ onMounted(() => {
       </div>
       <div class="tw-flex tw-text-lg tw-text-secondary-light tw-font-light tw-items-center">
         <span>{{ degree.duration }}</span>
-        <span class="tw-ml-2 tw-text-primary-lighth tw-font-normal tw-bg-background tw-px-2.5 tw-rounded">{{ degree.type_of_course }}</span>
+        <span class="tw-ml-2 tw-text-primary-lighth tw-font-normal tw-bg-background tw-px-2.5 tw-rounded">{{
+          degree.type_of_course }}</span>
       </div>
     </v-card-title>
     <v-card-text>
@@ -43,10 +50,30 @@ onMounted(() => {
         <section class="tw-mb-5">
           {{ degree.description }}
         </section>
-        <section v-if="degree.outings">
+
+        <section v-if="degree.outings" class="tw-mb-5">
           <h5 class="tw-text-2xl tw-text-secondary">{{ $t('outings') }}</h5>
           <p>{{ degree.outings }}</p>
         </section>
+
+        <!-- Courses -->
+        <section>
+          <h5 class="tw-text-2xl tw-text-center tw-text-secondary">{{ $t('courses') }}</h5>
+          <div class="tw-flex tw-flex-wrap tw-justify-center" style="min-height: 450px;">
+            <div v-for="course in degree.courses.slice((page - 1) * coursesPerPage, page * coursesPerPage)"
+              :key="course.id" class="tw-border tw-rounded tw-m-2 tw-p-2" style="width: 300px;">
+              <router-link :to="{ name: 'course', params: { id: course.id } }">
+                <p class="tw-text-xl tw-text-primary">
+                  {{ course.name }}
+                </p>
+              </router-link>
+              <p v-if="course.objectives.length < descriptionMax">{{ course.objectives }}</p>
+              <p v-else>{{ course.objectives.substring(0, descriptionMax) + "..." }}</p>
+            </div>
+          </div>
+          <v-pagination v-model="page" :length="Math.ceil(degree.courses.length / coursesPerPage)" :total-visible="5" />
+        </section>
+
       </article>
     </v-card-text>
   </v-card>

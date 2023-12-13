@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import pysolr
 
-from backend.models import Degree
+from backend.models import Degree, Degreecourseunit
 
 SOLR_SERVER = 'http://solr:8983/solr/'
 SOLR_CORE = 'degree' 
@@ -36,4 +36,11 @@ def searchDegrees(request, *args, **kwargs):
 
 def getDegree(request, *args, **kwargs):
     degree = get_object_or_404(Degree, id=kwargs['id'])
-    return JsonResponse(model_to_dict(degree))
+    degree_dict = model_to_dict(degree)
+    degree_dict['courses'] = getDegreeCourses(degree)
+    return JsonResponse(degree_dict)
+
+def getDegreeCourses(degree : Degree):
+    degree_courses = Degreecourseunit.objects.filter(degree=degree)
+    courses_for_degree = [model_to_dict(degree_course.course_unit) for degree_course in degree_courses]
+    return courses_for_degree
