@@ -127,6 +127,11 @@
       "type": "stringText"
     },
     {
+      "name": "name_suggest",
+      "type": "text_general",
+      "multiValued": false
+    },
+    {
       "name": "description",
       "type": "stringText"
     },
@@ -148,5 +153,11 @@
       "indexed": true,
       "stored": true
     }
-  ]
+  ],
+  "add-copy-field": {
+    "source": "name",
+    "dest": [
+      "name_suggest"
+    ]
+  }
 }
