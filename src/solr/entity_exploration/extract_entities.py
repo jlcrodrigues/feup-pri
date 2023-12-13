@@ -40,9 +40,12 @@ def extract_entities(text, nlp):
     wiki = wikipediaapi.Wikipedia('Daniel Rodrigues', 'pt')
     for ent in doc.ents:
         wiki_page = wiki.page(ent.text)
+        wiki_url = wiki_page.fullurl if wiki_page.exists() else None
+        entities.append({"text": ent.text, "label": ent.label_, "wiki_url": wiki_url})
+        #if ent.label_ in ["PER", "ORG", "LOC"] and len(ent.text) > 2 and wiki_page.exists():
+        #    entities.append(ent.text)
 
-        if ent.label_ in ["PER", "ORG", "LOC"] and len(ent.text) > 2 and wiki_page.exists():
-            entities.append(ent.text)
+
 
     return entities
 
@@ -62,7 +65,7 @@ def extract_entities_from_file(file_path, nlp, fields):
         text = clean_text(text)
 
         entities = extract_entities(text, nlp)
-        entities = list(set(entities))
+        #entities = list(set(entities))
         entry["entities"] = entities
 
     with open(file_path, "w") as f:
