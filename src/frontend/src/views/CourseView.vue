@@ -18,7 +18,7 @@ onMounted(async () => {
   course.value = await apiStore.getCourse(id.value)
 })
 
-const contents = ['objective', 'results', 'workingMethod', 'preRequirements', 'program', 'evaluationType', 'passingRequirements']
+const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', 'program', 'evaluationType', 'passingRequirements']
 
 </script>
 

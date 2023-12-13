@@ -4,8 +4,9 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import pysolr
+from backend.utils import snake_to_camel_case
 
-from backend.models import Courseunit, Degree
+from backend.models import Courseunit
 
 SOLR_SERVER = 'http://solr:8983/solr/'
 SOLR_CORE = 'course_unit' 
@@ -41,5 +42,11 @@ def searchCourses(request, *args, **kwargs):
     return JsonResponse({'results': found_objects})
 
 def getCourse(request, *args, **kwargs):
-    degree = get_object_or_404(Courseunit, id=kwargs['id'])
-    return JsonResponse(model_to_dict(degree))
+    course = get_object_or_404(Courseunit, id=kwargs['id'])
+    course_dict = model_to_dict(course)
+
+    courseDict = {}
+    for key in course_dict:
+        courseDict[snake_to_camel_case(key)] = course_dict[key]
+    
+    return JsonResponse(courseDict)

@@ -16,6 +16,7 @@ const professor = ref({} as Professor)
 const apiStore = useApiStore()
 onMounted(async () => {
   professor.value = await apiStore.getProfessor(id.value)
+  console.log(professor.value)
 })
 
 const contents = ['personalPresentation', 'fieldsOfInterest']

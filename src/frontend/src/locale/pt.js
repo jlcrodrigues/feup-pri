@@ -9,7 +9,7 @@ export const pt = {
 
     /* courses */
     courses: "Cadeiras",
-    objective: "Objetivo",
+    objectives: "Objetivo",
     results: "Resultados",
     workingMethod: "Método de Trabalho",
     preRequirements: "Pre-Requisitos",

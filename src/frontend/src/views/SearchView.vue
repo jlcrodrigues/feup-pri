@@ -23,6 +23,7 @@ const professors = ref([] as Professor[])
 
 const apiStore = useApiStore()
 const getSearch = async () => {
+  router.push({ name: 'search', query: { text: search.value } })
   degrees.value = (await apiStore.searchDegrees(search.value)).slice(0, 3)
   courses.value = (await apiStore.searchCourses(search.value)).slice(0, 3)
   professors.value = (await apiStore.searchProfessors(search.value)).slice(0, 3)

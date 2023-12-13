@@ -9,7 +9,7 @@ export const en = {
 
     /* courses */
     courses: "Course Units",
-    objective: "Objective",
+    objectives: "Objective",
     results: "Results",
     workingMethod: "Working Method",
     preRequirements: "Pre-Requirements",
