@@ -28,7 +28,7 @@ const openPage = () => {
     <v-card-subtitle>
     {{ course.code }} - {{ course.ects }} ECTS
     </v-card-subtitle>
-    <v-card-text>
+    <v-card-text v-if="course.objectives">
       <p v-if="course.objectives.length < descriptionMax">{{ course.objectives }}</p>
       <p v-else>{{ course.objectives.substring(0, descriptionMax) + "..." }}</p>
     </v-card-text>

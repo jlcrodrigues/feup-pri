@@ -17,6 +17,7 @@ const degrees = ref([] as Degree[])
 const apiStore = useApiStore()
 const getSearch = async () => {
   degrees.value = await apiStore.searchDegrees(search.value)
+  router.push({ name: 'degrees', query: { text: search.value } })
 }
 
 if (search.value) {

@@ -2,10 +2,6 @@
 defineProps(['modelValue'])
 defineEmits(['update:modelValue', 'clickIcon'])
 
-const te = () => {
-    console.log('te')
-}
-
 </script>
 
 <template>

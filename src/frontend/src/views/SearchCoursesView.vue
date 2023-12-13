@@ -16,6 +16,7 @@ const courses = ref([] as CourseUnit[])
 
 const apiStore = useApiStore()
 const getSearch = async () => {
+  router.push({ name: 'degrees', query: { text: search.value } })
   courses.value = await apiStore.searchCourses(search.value)
 }
 
