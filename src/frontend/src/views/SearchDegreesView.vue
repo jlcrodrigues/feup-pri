@@ -3,12 +3,19 @@
 import { ref } from 'vue'
 import { Degree } from '@/model/types';
 import DegreeCard from '@/components/DegreeCard.vue';
+import SearchFilter from '@/components/SearchFilter.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import { useRoute, useRouter } from 'vue-router';
 import useApiStore from '@/stores/api';
+import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
+const { t } = useI18n()
 
 const route = useRoute()
 const search = ref(route.query.text as string)
+
+const typesOfCourse = computed(() => ['Licenciatura', 'Mestrado', 'Mestrado Integrado'])
+const typeOfCourse = ref([] as Array<string>)
 
 const router = useRouter()
 
@@ -16,13 +23,11 @@ const degrees = ref([] as Degree[])
 
 const apiStore = useApiStore()
 const getSearch = async () => {
-  degrees.value = await apiStore.searchDegrees(search.value)
+  degrees.value = await apiStore.searchDegrees({text: search.value, typeOfCourse: typeOfCourse.value})
   router.push({ name: 'degrees', query: { text: search.value } })
 }
 
-if (search.value) {
-  getSearch()
-}
+getSearch()
 
 </script>
 
@@ -34,6 +39,7 @@ if (search.value) {
       </div>
       <nav class="tw-flex tw-gap-2">
         <v-chip variant="elevated" @click="router.push({ name: 'search', query: { text: search } })">{{ $t('degrees') }}</v-chip>
+        <search-filter :name="$t('studyCycle')" :list="typesOfCourse" v-model="typeOfCourse" @update:model-value="getSearch()"></search-filter>
       </nav>
     </div>
     <div class="tw-m-5">

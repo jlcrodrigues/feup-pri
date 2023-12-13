@@ -20,5 +20,10 @@ export const en = {
     /* professors */
     professors: "Professors",
     personalPresentation: "Personal Presentation",
-    fieldsOfInterest: "Fields of Interest"
+    fieldsOfInterest: "Fields of Interest",
+
+    studyCycle: "Study Cycle",
+    bachelor: "Bachelor",
+    masters: "Master's",
+    integratedMasters: "Integrated Master's",
 }

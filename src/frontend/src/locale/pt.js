@@ -20,5 +20,10 @@ export const pt = {
     /* professors */
     professors: "Professores",
     personalPresentation: "Apresentação Pessoal",
-    fieldsOfInterest: "Áreas de Interesse"
+    fieldsOfInterest: "Áreas de Interesse",
+
+    studyCycle: "Ciclo de Estudos",
+    bachelor: "Licenciatura",
+    masters: "Mestrado",
+    integratedMasters: "Mestrado Integrado",
 }
