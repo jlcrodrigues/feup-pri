@@ -4,7 +4,9 @@
         "class": "solr.MoreLikeThisHandler",
         "defaults": {
             "mlt.fl": "fieldsOfInterest personalPresentation",
-            "mlt.qf": "fieldsOfInterest^3 personalPresentation"
+            "mlt.qf": "fieldsOfInterest^5 personalPresentation",
+            "mlt.mintf": "1",
+            "mlt.mindf": "2"
         }
     }
 }
