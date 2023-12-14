@@ -1,23 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { VTextField } from 'vuetify/components';
 import useApiStore from '@/stores/api'
 import Degree from '@/model/types'
-import { useRoute } from 'vue-router';
-import { watch } from 'fs';
+import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
 import { onMounted } from 'vue';
 
 const route = useRoute()
+const router = useRouter()
 const id = ref(route.params.id as string)
 
 const degree = ref({} as Degree)
 degree.value.courses = []
 
+const related = ref([] as Degree[])
+
 const apiStore = useApiStore()
 const getDegree = async () => {
   degree.value = await apiStore.getDegree(id.value)
+  getRelated()
 }
+
+const getRelated = async () => {
+  related.value = await apiStore.getRelatedDegrees(id.value)
+}
+
+watch(() => route.params.id, () => {
+  router.go(0)
+})
 
 onMounted(() => {
   getDegree()
@@ -77,4 +88,28 @@ const coursesPerPage = 6;
       </article>
     </v-card-text>
   </v-card>
+
+  <!-- Related -->
+  <div class="tw-m-10" v-show="related.length > 0">
+    <h2 class="tw-text-primary tw-text-2xl">{{ $t('related') }}</h2>
+    <v-slide-group show-arrows>
+      <v-slide-group-item v-for="degree in related" :key="degree.id">
+        <v-card class="tw-m-2" style="width: 300px;">
+          <v-card-title>
+            <h3 class="tw-text-primary tw-text-xl">{{ degree.name }}</h3>
+          </v-card-title>
+          <v-card-text>
+            <p v-if="degree.description.length < 80">{{ degree.description }}</p>
+            <p v-else>{{ degree.description.substring(0, 80) + "..." }}</p>
+          </v-card-text>
+          <v-card-actions>
+            <router-link :to="{ params: { id: degree.id } }" :key="degree.id">
+              <v-btn variant="text" @click="router.replace({ params: { id: degree.id } })">{{ $t('more') }}</v-btn>
+            </router-link>
+          </v-card-actions>
+        </v-card>
+      </v-slide-group-item>
+    </v-slide-group>
+  </div>
+  
 </template>

@@ -58,3 +58,27 @@ def getDegreeCourses(degree : Degree):
     degree_courses = Degreecourseunit.objects.filter(degree=degree)
     courses_for_degree = [model_to_dict(degree_course.course_unit) for degree_course in degree_courses]
     return courses_for_degree
+
+def getRelatedDegrees(request, *args, **kwargs):
+    degree_id = kwargs['id']
+
+    solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
+
+    results = solr.search(f"*:*", **{
+        'wt': 'json',
+    })
+
+    found_objects = [
+        {
+            'id': result['id'],
+            'url': result['url'],
+            'name': result.get('name', ''),
+            'description': result.get('description', ''),
+            'outings': result.get('outings', ''),
+            'typeOfCourse': result.get('typeOfCourse', ''),
+            'duration': result.get('duration', ''),
+        }
+        for result in results
+    ]
+
+    return JsonResponse({'results': found_objects})

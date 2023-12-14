@@ -38,4 +38,7 @@ export const en = {
     sortOrder: "Order",
 
     name: "Name",
+
+    more: "More",
+    related: "Related",
 }
