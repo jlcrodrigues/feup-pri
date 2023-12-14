@@ -1,8 +1,10 @@
 import argparse
-from src.pipeline.fetchers.degrees import *
-from src.pipeline.fetchers.teachers import *
-from src.pipeline.fetchers.course_plan import *
-from src.pipeline.fetchers.course_unit import *
+import sys
+sys.path.append("..")
+from fetchers.degrees import *
+from fetchers.teachers import *
+from fetchers.course_plan import *
+from fetchers.course_unit import *
 import json
 from db import database
 import psycopg2
@@ -78,17 +80,17 @@ def arguments():
     parser.add_argument(
         "--json_degree",
         help="The path to the JSON file containing the degrees. Default is '../data/degrees.json'.",
-        default="../data/degrees.json",
+        default="../../data/degrees.json",
     )
     parser.add_argument(
         "--json_course",
         help="The path to the JSON file containing the courses. Default is '../data/courses.json'.",
-        default="../data/course_units.json",
+        default="../../data/course_units.json",
     )
     parser.add_argument(
         "--json_professor",
         help="The path to the JSON file containing the professors. Default is '../data/professors.json'.",
-        default="../data/professors.json",
+        default="../../data/professors.json",
     )
     return parser.parse_args()
 
