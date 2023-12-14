@@ -82,7 +82,7 @@ const loadEntities = async () => {
         </div>
 
         <!-- Courses -->
-        <section v-if="degree.courses">
+        <section v-if="degree.courses" class="tw-my-5">
           <h5 class="tw-text-2xl tw-text-center tw-text-secondary">{{ $t('courses') }}</h5>
           <div class="tw-flex tw-flex-wrap tw-justify-center" style="min-height: 450px;">
             <div v-for="course in degree.courses.slice((page - 1) * coursesPerPage, page * coursesPerPage)"

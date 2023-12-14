@@ -5,16 +5,30 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import pysolr
+from backend.utils import text_to_embedding
 
 from backend.models import Degree, Degreecourseunit
 
 SOLR_SERVER = "http://solr:8983/solr/"
 SOLR_CORE = "degree"
 
+num_results = 10
 
 def searchDegrees(request, *args, **kwargs):
-    search_query = request.GET.get("text", "")
-    search_query = "*:*" if search_query == "" else f"name:{search_query}~"
+    search_text = request.GET.get("text", "")
+    search_query = "*:*"
+    if search_text != "":
+        search_query = f"(name:{search_text})^10"
+        search_query += f"OR (description:{search_text})^4"
+        search_query += f"OR (outings:{search_text})^3"
+
+        # Semantic Search
+        semantic_search = ""
+        embedding = text_to_embedding(search_text)
+        semantic_search = "{!knn f=vector topK=10}" + embedding
+        search_query = search_query + " OR " + semantic_search
+
+
     typeOfCourse = request.GET.getlist("typeOfCourse")
 
     sortKey = request.GET.get("sortKey")
@@ -23,8 +37,8 @@ def searchDegrees(request, *args, **kwargs):
     solr = pysolr.Solr(f"{SOLR_SERVER}{SOLR_CORE}", timeout=10)
 
     results = solr.search(
-        search_query,
         **{
+            "q": search_query,
             "wt": "json",
             "fq": getFilter(typeOfCourse),
             "sort": f"{sortKey} {sortOrder}"

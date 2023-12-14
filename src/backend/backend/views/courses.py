@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import pysolr
 from backend.utils import snake_to_camel_case
+from backend.utils import text_to_embedding
 
 from backend.models import Courseunit
 
@@ -13,8 +14,24 @@ SOLR_CORE = "course_unit"
 
 
 def searchCourses(request, *args, **kwargs):
-    search_query = request.GET.get("text", "")
-    search_query = "*:*" if search_query == "" else f"name:{search_query}~"
+    search_text = request.GET.get("text", "")
+    search_query = "*:*"
+    if search_text != "":
+        search_query = f"(name:{search_text})^10"
+        search_query += f"OR (objectives:{search_text})^5"
+        search_query += f"OR (program:{search_text})^5"
+        search_query += f"OR (results:{search_text})^4"
+        search_query += f"OR (preRequirements:{search_text})^3"
+        search_query += f"OR (evaluationType:{search_text})^3"
+        search_query += f"OR (passingRequirements:{search_text})^3"
+
+        # Semantic Search
+        semantic_search = ""
+        embedding = text_to_embedding(search_text)
+        semantic_search = "{!knn f=vector topK=10}" + embedding
+        search_query = search_query + " OR " + semantic_search
+
+
     language = request.GET.getlist("language")
 
     sortKey = request.GET.get("sortKey")

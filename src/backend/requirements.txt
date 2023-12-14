@@ -2,3 +2,4 @@ Django
 pysolr
 django-cors-headers
 psycopg2-binary
+sentence-transformers
