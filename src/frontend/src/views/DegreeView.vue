@@ -71,8 +71,15 @@ const loadEntities = async () => {
 
         <section v-if="degree.outings" class="tw-mb-5">
           <h5 class="tw-text-2xl tw-text-secondary">{{ $t('outings') }}</h5>
-          <p>{{ degree.outings }}</p>
+          <p v-html="degree.outings"></p>
         </section>
+
+        <div v-if="degree.entities">
+          <p>
+            <span class="tw-text tw-font-bold tw-text-secondary">{{ $t('entities') }}:</span>
+            <span v-for = "(entity, index) in degree.entities" :key="index" class="tw-font-thin tw-ml-0.5">{{ entity }},</span>
+          </p>
+        </div>
 
         <!-- Courses -->
         <section v-if="degree.courses">

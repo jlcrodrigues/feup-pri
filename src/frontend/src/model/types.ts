@@ -8,6 +8,7 @@ export interface Degree {
     type_of_course: string;
     duration: string;
     courses?: CourseUnit[];
+    entities?: String[];
 }
 
 export interface CourseUnit {
@@ -24,6 +25,7 @@ export interface CourseUnit {
     program: string;
     evaluationType: string;
     passingRequirements: string;
+    entities?: String[];
 }
 
 export interface Professor {
@@ -38,4 +40,5 @@ export interface Professor {
     rank: string;
     personalPresentation: string;
     fieldsOfInterest: string;
+    entities?: String[];
 }

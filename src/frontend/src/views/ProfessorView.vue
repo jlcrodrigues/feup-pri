@@ -89,6 +89,13 @@ const loadEntities = async () => {
         </section>
       </article>
     </v-card-text>
+
+    <div v-if="professor.entities" class="tw-m-3">
+      <p>
+        <span class="tw-text tw-font-bold tw-text-secondary">{{ $t('entities') }}:</span>
+        <span v-for = "(entity, index) in professor.entities" :key="index" class="tw-font-thin tw-ml-0.5">{{ entity }},</span>
+      </p>
+    </div>
   </v-card>
 
   <!-- Related -->

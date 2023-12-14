@@ -41,4 +41,6 @@ export const pt = {
 
     more: "Ver Mais",   
     related: "Relacionados",
+
+    entities: "Palavras-Chave",
 }

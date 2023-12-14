@@ -29,6 +29,7 @@ const useEntityStore = defineStore("entity", () => {
       },
     });
     const documentEntities = (await response.json())[0];
+    degree.entities = documentEntities;
     degree.description = replaceEntities(degree.description, documentEntities);
     degree.outings= replaceEntities(degree.outings, documentEntities);
     return degree;
@@ -42,6 +43,7 @@ const useEntityStore = defineStore("entity", () => {
       },
     });
     const documentEntities = (await response.json())[0];
+    course.entities = documentEntities;
     course.objectives = replaceEntities(course.objectives, documentEntities);
     course.results = replaceEntities(course.results, documentEntities);
     course.workingMethod = replaceEntities(course.workingMethod, documentEntities);
@@ -58,6 +60,7 @@ const useEntityStore = defineStore("entity", () => {
       },
     });
     const documentEntities = (await response.json())[0];
+    professor.entities = documentEntities;
     professor.personalPresentation = replaceEntities(professor.personalPresentation, documentEntities);
     professor.fieldsOfInterest = replaceEntities(professor.fieldsOfInterest, documentEntities);
     return professor;
@@ -69,7 +72,7 @@ const useEntityStore = defineStore("entity", () => {
     for (const entity of entityList) {
       replacedText = replacedText.replace(
         entity,
-        `<a class="tw-underline" href="${entities.value[entity]}">${entity}</a>`
+        `<a class="tw-bg-background tw-rounded tw-p-1.5" href="${entities.value[entity]}">${entity}</a>`
       );
     }
     return replacedText;

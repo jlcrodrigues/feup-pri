@@ -41,4 +41,5 @@ export const en = {
 
     more: "More",
     related: "Related",
+    entities: "Keywords",
 }
