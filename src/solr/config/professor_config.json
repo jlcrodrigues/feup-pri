@@ -3,10 +3,8 @@
         "name": "/mlt",
         "class": "solr.MoreLikeThisHandler",
         "defaults": {
-            "mlt.fl": "fieldsOfInterest,personalPresentation",
-            "mlt.qf": "fieldsOfInterest^3 personalPresentation",
-            "mlt.minwl": "4",
-            "mlt.maxdf": "15"
+            "mlt.fl": "fieldsOfInterest personalPresentation",
+            "mlt.qf": "fieldsOfInterest^3 personalPresentation"
         }
     }
 }
