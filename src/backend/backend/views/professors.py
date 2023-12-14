@@ -12,7 +12,6 @@ from backend.models import Degree, Professor
 SOLR_SERVER = "http://solr:8983/solr/"
 SOLR_CORE = "professor"
 
-
 def searchProfessors(request, *args, **kwargs):
     search_text = request.GET.get("text", "")
     search_query = "*:*"
@@ -24,7 +23,7 @@ def searchProfessors(request, *args, **kwargs):
         # Semantic Search
         semantic_search = ""
         embedding = text_to_embedding(search_text)
-        semantic_search = "{!knn f=vector topK=10}" + embedding
+        semantic_search = "{!knn f=vector topK=100}" + embedding
         search_query = search_query + " OR " + semantic_search
 
 
@@ -96,7 +95,7 @@ def getRelatedProfessors(request, *args, **kwargs):
 
     mlt_query = {
         "q": f"id:{professor_id}",
-        "rows": 5,
+        "rows": 10,
         "mltfl": "fieldsOfInterest, personalPresentation",
     }
 

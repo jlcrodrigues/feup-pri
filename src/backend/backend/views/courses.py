@@ -25,13 +25,6 @@ def searchCourses(request, *args, **kwargs):
         search_query += f"OR (evaluationType:{search_text})^3"
         search_query += f"OR (passingRequirements:{search_text})^3"
 
-        # Semantic Search
-        semantic_search = ""
-        embedding = text_to_embedding(search_text)
-        semantic_search = "{!knn f=vector topK=10}" + embedding
-        search_query = search_query + " OR " + semantic_search
-
-
     language = request.GET.getlist("language")
 
     sortKey = request.GET.get("sortKey")
@@ -97,7 +90,7 @@ def getRelatedCourses(request, *args, **kwargs):
 
     mlt_query = {
         "q": f"id:{course_id}",
-        "rows": 5,
+        "rows": 10,
         "mltfl": "name,objectives,results,program",
     }
 

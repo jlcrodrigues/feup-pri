@@ -12,8 +12,6 @@ from backend.models import Degree, Degreecourseunit
 SOLR_SERVER = "http://solr:8983/solr/"
 SOLR_CORE = "degree"
 
-num_results = 10
-
 def searchDegrees(request, *args, **kwargs):
     search_text = request.GET.get("text", "")
     search_query = "*:*"
@@ -25,7 +23,7 @@ def searchDegrees(request, *args, **kwargs):
         # Semantic Search
         semantic_search = ""
         embedding = text_to_embedding(search_text)
-        semantic_search = "{!knn f=vector topK=10}" + embedding
+        semantic_search = "{!knn f=vector topK=100}" + embedding
         search_query = search_query + " OR " + semantic_search
 
 
@@ -94,7 +92,7 @@ def getRelatedDegrees(request, *args, **kwargs):
 
     mlt_query = {
         "q": f"id:{degree_id}",
-        "rows": 5,
+        "rows": 10,
         "mltfl": "name,outings,description",
     }
 
