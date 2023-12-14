@@ -1,0 +1,13 @@
+{
+	"add-requesthandler": 
+	{
+    "name": "/mlt",
+    "class": "solr.MoreLikeThisHandler",
+    "defaults": {				
+		"mlt.fl":"name,objectives,results,program",
+		"mlt.qf": "results^3 objectives^2 program^3 name",
+		"mlt.minwl": "4",
+		"mlt.maxdf": "15"
+		}
+	}
+}

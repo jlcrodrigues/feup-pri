@@ -23,6 +23,7 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
     core="${cores[i]}"
     schema="${schemas[i]}"
     file="${files[i]}"
+    config="${configs[i]}"
 
     # Delete core
     curl -X DELETE "http://localhost:$SOLR_PORT/solr/admin/cores?action=UNLOAD&core=$core&deleteDataDir=true&deleteIndex=true&deleteInstanceDir=true"
@@ -34,6 +35,11 @@ for ((i = 0; i < ${#cores[@]}; i++)); do
     curl -X POST -H 'Content-type:application/json' \
         --data-binary "@./schema/$schema" \
         "http://localhost:$SOLR_PORT/solr/$core/schema"
+
+    # Post Config
+    curl -X POST -H 'Content-type:application/json' \
+        --data-binary "@./config/$config" \
+        "http://localhost:$SOLR_PORT/solr/$core/config"
 
     # Post data
     curl -X POST -H 'Content-type:application/json' \
