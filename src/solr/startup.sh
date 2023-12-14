@@ -18,6 +18,7 @@ SOLR_PORT="${SOLR_PORT:-8983}"  # Default to 8983 if not set in .env
 IFS=',' read -ra cores <<< "$CORES"
 IFS=',' read -ra schemas <<< "$SCHEMA_FILES"
 IFS=',' read -ra files <<< "$DATA_FILES"
+IFS=',' read -ra configs <<< "$CONFIG_FILES"
 
 for ((i = 0; i < ${#cores[@]}; i++)); do
     core="${cores[i]}"

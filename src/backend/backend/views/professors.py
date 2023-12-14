@@ -65,3 +65,36 @@ def getProfessor(request, *args, **kwargs):
         professorDict[snake_to_camel_case(key)] = professor_dict[key]
     
     return JsonResponse(professorDict)
+
+def getRelatedProfessors(request, *args, **kwargs):
+    professor_id = kwargs['id']
+
+    solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
+
+    mlt_query = {
+        'q': f"id:{professor_id}",
+        'rows': 10,
+        'mltfl': 'fieldsOfInterest,personalPresentation',
+        'mlt.mintf': 1,
+    }
+
+    results = solr.more_like_this(**mlt_query)
+
+    found_objects = [
+        {
+            'id': result['id'],
+            'name': result.get('name', ''),
+            'institutionalWebsite': result.get('institutionalWebsite', ''),
+            'abbrevitaion': result.get('abbrevitaion', ''),
+            'status': result.get('status', ''),
+            'code': result.get('code', ''),
+            'institutionalEmail': result.get('institutionalEmail', ''),
+            'phone': result.get('phone', ''),
+            'rank': result.get('rank', ''),
+            'personalPresentation': result.get('personalPresentation', ''),
+            'fieldsOfInterest': result.get('fieldsOfInterest', ''),
+        }
+        for result in results
+    ]
+
+    return JsonResponse({'results': found_objects})

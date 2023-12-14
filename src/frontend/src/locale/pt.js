@@ -38,4 +38,7 @@ export const pt = {
     sortOrder: "Ordem",
 
     name: "Nome",
+
+    more: "Ver Mais",   
+    related: "Relacionados",
 }

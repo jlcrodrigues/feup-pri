@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 
 const useApiStore = defineStore("search", () => {
   const apiUrl = import.meta.env.VITE_BACKEND_URI;
@@ -114,6 +114,36 @@ const useApiStore = defineStore("search", () => {
     return await response.json();
   };
 
+  const getRelatedDegrees = async (id: String) => {
+    const response = await fetch(`${apiUrl}/degree/related/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/text",
+      },
+    });
+    return toRaw(await response.json()).results;
+  }
+
+  const getRelatedCourses = async (id: String) => {
+    const response = await fetch(`${apiUrl}/course/related/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/text",
+      },
+    });
+    return toRaw(await response.json()).results;
+  }
+
+  const getRelatedProfessors = async (id: String) => {
+    const response = await fetch(`${apiUrl}/professor/related/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/text",
+      },
+    });
+    return toRaw(await response.json()).results;
+  }
+
   return {
     searchDegrees,
     searchCourses,
@@ -121,6 +151,9 @@ const useApiStore = defineStore("search", () => {
     getDegree,
     getCourse,
     getProfessor,
+    getRelatedDegrees,
+    getRelatedCourses,
+    getRelatedProfessors,
   };
 });
 
