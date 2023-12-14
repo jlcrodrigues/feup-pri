@@ -63,7 +63,7 @@ const coursesPerPage = 6;
             <div v-for="course in degree.courses.slice((page - 1) * coursesPerPage, page * coursesPerPage)"
               :key="course.id" class="tw-border tw-rounded tw-m-2 tw-p-2" style="width: 300px;">
               <router-link :to="{ name: 'course', params: { id: course.id } }">
-                <p class="tw-text-xl tw-text-primary">
+                <p class="tw-text-xl tw-text-primary tw-whitespace-pre-wrap">
                   {{ course.name }}
                 </p>
               </router-link>

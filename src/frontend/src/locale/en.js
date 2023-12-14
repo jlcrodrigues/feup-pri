@@ -6,6 +6,7 @@ export const en = {
 
     /* degrees */
     degrees: "Degrees",
+    duration: "Duration",
 
     /* courses */
     courses: "Course Units",
@@ -16,9 +17,25 @@ export const en = {
     program: "Program",
     evaluationType: "Evaluation Type",
     passingRequirements: "Passing Requirements",
+    ects: "Credits (ECTS)",
 
     /* professors */
     professors: "Professors",
     personalPresentation: "Personal Presentation",
-    fieldsOfInterest: "Fields of Interest"
+    fieldsOfInterest: "Fields of Interest",
+    status: "Status",
+    rank:"Rank",
+
+    studyCycle: "Study Cycle",
+    bachelor: "Bachelor",
+    masters: "Master's",
+    integratedMasters: "Integrated Master's",
+
+    language: "Language",
+
+    sort: "Sort by",
+    sortKey: "Criteria",
+    sortOrder: "Order",
+
+    name: "Name",
 }

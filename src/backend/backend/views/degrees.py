@@ -1,3 +1,4 @@
+from urllib.parse import urlencode
 import django
 from django.forms import model_to_dict
 from django.http import HttpResponse
@@ -12,11 +13,18 @@ SOLR_CORE = 'degree'
 
 def searchDegrees(request, *args, **kwargs):
     search_query = request.GET.get('text', '')
+    search_query = '*:*' if search_query == '' else f"name:{search_query}~"
+    typeOfCourse = request.GET.getlist('typeOfCourse')
+
+    sortKey = request.GET.get('sortKey')
+    sortOrder = request.GET.get('sortOrder')
 
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
-    results = solr.search(f"name:{search_query}~", **{
-        'wt': 'json',  
+    results = solr.search(search_query, **{
+        'wt': 'json',
+        'fq': getFilter(typeOfCourse),
+        'sort': f'{sortKey} {sortOrder}' if sortKey != None and sortOrder != None else ''
     })
 
     found_objects = [
@@ -33,6 +41,12 @@ def searchDegrees(request, *args, **kwargs):
     ]
 
     return JsonResponse({'results': found_objects})
+    
+def getFilter(typeOfCourse):
+    fq = ""
+    if typeOfCourse != None:
+        fq += " OR ".join([f"typeOfCourse:\"{typeOfCourse}\"" for typeOfCourse in typeOfCourse])
+    return fq
 
 def getDegree(request, *args, **kwargs):
     degree = get_object_or_404(Degree, id=kwargs['id'])

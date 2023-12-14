@@ -4,11 +4,22 @@ import { ref } from 'vue'
 import { CourseUnit, Degree } from '@/model/types';
 import CourseCard from '@/components/CourseCard.vue';
 import SearchBar from '@/components/SearchBar.vue';
+import SearchFilter from '@/components/SearchFilter.vue';
 import { useRoute, useRouter } from 'vue-router';
 import useApiStore from '@/stores/api';
+import SearchOrder from '@/components/SearchOrder.vue';
 
 const route = useRoute()
+
 const search = ref(route.query.text as string)
+const languages = ['Português', 'Inglês']
+const language = ref(route.query.language as Array<string>)
+
+const keys = ['ects', 'name']
+const key = ref(route.query.order as string)
+
+const order = ref(route.query.order as string)
+if (!order.value) order.value = 'asc'
 
 const router = useRouter()
 
@@ -16,14 +27,11 @@ const courses = ref([] as CourseUnit[])
 
 const apiStore = useApiStore()
 const getSearch = async () => {
-  router.push({ name: 'degrees', query: { text: search.value } })
-  courses.value = await apiStore.searchCourses(search.value)
+  router.push({ name: 'courses', query: { text: search.value, language: language.value, sortKey: key.value, sortOrder: order.value } })
+  courses.value = await apiStore.searchCourses({text: search.value, language: language.value, sortKey: key.value, sortOrder: order.value})
 }
 
-if (search.value) {
-  getSearch()
-}
-
+getSearch()
 
 </script>
 
@@ -35,6 +43,9 @@ if (search.value) {
       </div>
       <nav class="tw-flex tw-gap-2">
         <v-chip variant="elevated" @click="router.push({ name: 'search', query: { text: search } })">{{ $t('courses') }}</v-chip>
+        <search-filter :name="$t('language')" :list="languages" v-model="language" @update:model-value="getSearch()"></search-filter>
+        <search-order :name="$t('sort')" :list="keys" v-model:criteria="key" v-model:order="order"
+          @update="getSearch()"></search-order>
       </nav>
     </div>
     <div class="tw-m-5">
