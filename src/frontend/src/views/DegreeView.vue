@@ -104,7 +104,7 @@ const coursesPerPage = 6;
           </v-card-text>
           <v-card-actions>
             <router-link :to="{ params: { id: degree.id } }" :key="degree.id">
-              <v-btn variant="text" @click="router.replace({ params: { id: degree.id } })">{{ $t('more') }}</v-btn>
+              <v-btn variant="text">{{ $t('more') }}</v-btn>
             </router-link>
           </v-card-actions>
         </v-card>

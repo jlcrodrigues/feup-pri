@@ -30,5 +30,7 @@ urlpatterns = [
     path("degree/<int:id>", getDegree, name="getDegree"),
     path("degree/related/<int:id>", getRelatedDegrees, name="getRelatedDegrees"),
     path("course/<int:id>", getCourse, name="getCourse"),
+    path("course/related/<int:id>", getRelatedCourses, name="getRelatedCourses"),
     path("professor/<int:id>", getProfessor, name="getProfessor"),
+    path("professor/related/<int:id>", getRelatedProfessors, name="getRelatedProfessors"),
 ]

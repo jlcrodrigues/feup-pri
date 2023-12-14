@@ -63,3 +63,33 @@ def getCourse(request, *args, **kwargs):
         courseDict[snake_to_camel_case(key)] = course_dict[key]
     
     return JsonResponse(courseDict)
+
+def getRelatedCourses(request, *args, **kwargs):
+    course_id = kwargs['id']
+
+    solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
+
+    results = solr.search("*:*", **{
+        'wt': 'json',  
+    })
+
+    found_objects = [
+        {
+            'id': result['id'],
+            'name': result.get('name', ''),
+            'url': result['url'],
+            'code': result['code'],
+            'language': result.get('language', ''),
+            'ects': result.get('ects', ''),
+            'objectives': result.get('objectives', ''),
+            'results': result.get('results', ''),
+            'workingMethod': result.get('workingMethod', ''),
+            'preRequirements': result.get('preRequirements', ''),
+            'program': result.get('program', ''),
+            'evaluationType': result.get('evaluationType', ''),
+            'passingRequirements': result.get('passingRequirements', '')
+        }
+        for result in results
+    ]
+
+    return JsonResponse({'results': found_objects})

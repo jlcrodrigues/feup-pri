@@ -1,22 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { VTextField } from 'vuetify/components';
 import useApiStore from '@/stores/api'
 import Course from '@/model/types'
-import { useRoute } from 'vue-router';
-import { watch } from 'fs';
+import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
 import { onMounted } from 'vue';
 
+const router = useRouter()
 const route = useRoute()
 const id = ref(route.params.id as string)
 
 const course = ref({} as Course)
+const related = ref([] as Course[])
 
 const apiStore = useApiStore()
+
 onMounted(async () => {
   course.value = await apiStore.getCourse(id.value)
-console.log(course)
+  getRelated()
+})
+
+const getRelated = async () => {
+  related.value = await apiStore.getRelatedCourses(id.value)
+}
+
+watch(() => route.params.id, () => {
+  router.go(0)
 })
 
 const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', 'program', 'evaluationType', 'passingRequirements']
@@ -49,4 +59,27 @@ const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', '
       </article>
     </v-card-text>
   </v-card>
+
+  <!-- Related -->
+  <div class="tw-m-10" v-show="related.length > 0">
+    <h2 class="tw-text-primary tw-text-2xl">{{ $t('related') }}</h2>
+    <v-slide-group show-arrows>
+      <v-slide-group-item v-for="course in related" :key="course.id">
+        <v-card class="tw-m-2" style="width: 300px;">
+          <v-card-title>
+            <h3 class="tw-text-primary tw-text-xl">{{ course.name }}</h3>
+          </v-card-title>
+          <v-card-text>
+            <p v-if="course.objectives.length < 80">{{ course.objectives }}</p>
+            <p v-else>{{ course.objectives.substring(0, 80) + "..." }}</p>
+          </v-card-text>
+          <v-card-actions>
+            <router-link :to="{ params: { id: course.id } }" :key="course.id">
+              <v-btn variant="text">{{ $t('more') }}</v-btn>
+            </router-link>
+          </v-card-actions>
+        </v-card>
+      </v-slide-group-item>
+    </v-slide-group>
+  </div>
 </template>
