@@ -127,11 +127,6 @@
       "type": "stringText"
     },
     {
-      "name": "name_suggest",
-      "type": "text_general",
-      "multiValued": false
-    },
-    {
       "name": "description",
       "type": "stringText"
     },
@@ -152,12 +147,12 @@
       "type": "courseVector",
       "indexed": true,
       "stored": true
+    },
+    {
+      "name": "entities",
+      "type": "text_general",
+      "indexed": false,
+      "multiValued": true
     }
-  ],
-  "add-copy-field": {
-    "source": "name",
-    "dest": [
-      "name_suggest"
-    ]
-  }
+  ]
 }

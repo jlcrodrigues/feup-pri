@@ -206,6 +206,12 @@
       "type": "courseVector",
       "indexed": true,
       "stored": true
+    },
+    {
+      "name": "entities",
+      "type": "text_general",
+      "indexed": false,
+      "multiValued": true
     }
   ]
 }

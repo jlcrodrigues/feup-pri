@@ -61,7 +61,7 @@ def parse_teacher_page(url):
         phone = None
 
     try:
-        rank = soup.find(class_="informacao-pessoal-funcoes").find_all("td")[2].text.strip()
+        rank = soup.find("td", string="Categoria:").find_next_sibling().text.strip()
     except:
         rank = None
 
@@ -85,7 +85,8 @@ def get_teachers_csv(links):
             my_file.write(parse_teacher_page(link).to_csv())
 
 def main():
-    get_teachers_csv(['https://sigarra.up.pt/fcup/pt/FUNC_GERAL.FORMVIEW?p_codigo=202851'])
+    professor = parse_teacher_page("https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=618714")
+    print(professor.rank)
 
 if __name__ == '__main__':
     main()
