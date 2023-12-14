@@ -98,3 +98,19 @@ def getRelatedProfessors(request, *args, **kwargs):
     ]
 
     return JsonResponse({'results': found_objects})
+
+def getProfessorEntities(request, *args, **kwargs):
+    professor_id = kwargs['id']
+
+    solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
+
+    results = solr.search(f"id:{professor_id}", **{
+        'wt': 'json',
+        'fl': 'entities',
+    })
+
+
+    for result in results:
+        entities = result.get('entities', ''),
+
+    return JsonResponse(entities, safe=False)

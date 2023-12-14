@@ -27,10 +27,16 @@ urlpatterns = [
     path("search/degrees", searchDegrees, name="searchDegrees"),
     path("search/courses", searchCourses, name="searchCourses"),
     path("search/professors", searchProfessors, name="searchProfessors"),
+
     path("degree/<int:id>", getDegree, name="getDegree"),
     path("degree/related/<int:id>", getRelatedDegrees, name="getRelatedDegrees"),
+    path("degree/entities/<int:id>", getDegreeEntities, name="getDegreeEntities"),
+
     path("course/<int:id>", getCourse, name="getCourse"),
     path("course/related/<int:id>", getRelatedCourses, name="getRelatedCourses"),
+    path("course/entities/<int:id>", getCourseEntities, name="getCourseEntities"),
+
     path("professor/<int:id>", getProfessor, name="getProfessor"),
     path("professor/related/<int:id>", getRelatedProfessors, name="getRelatedProfessors"),
+    path("professor/entities/<int:id>", getProfessorEntities, name="getProfessorEntities"),
 ]

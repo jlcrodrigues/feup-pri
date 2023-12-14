@@ -6,6 +6,9 @@ import Course from '@/model/types'
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
 import { onMounted } from 'vue';
+import useEntityStore from '@/stores/entitities';
+
+const entityStore = useEntityStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -19,6 +22,7 @@ const apiStore = useApiStore()
 onMounted(async () => {
   course.value = await apiStore.getCourse(id.value)
   getRelated()
+  loadEntities();
 })
 
 const getRelated = async () => {
@@ -30,6 +34,10 @@ watch(() => route.params.id, () => {
 })
 
 const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', 'program', 'evaluationType', 'passingRequirements']
+
+const loadEntities = async () => {
+  course.value = await entityStore.replaceCourseEntities(course.value)
+}
 
 </script>
 
@@ -53,7 +61,7 @@ const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', '
         <section v-for="content in contents" :key="content" class="tw-mt-5">
           <template v-if="course[content]">
             <h5 class="tw-text-2xl tw-text-secondary">{{ $t(content) }}</h5>
-            <p class="tw-whitespace-pre-wrap">{{ course[content] }}</p>
+            <p class="tw-whitespace-pre-wrap" v-html="course[content]"></p>
           </template>
         </section>
       </article>

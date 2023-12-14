@@ -6,6 +6,9 @@ import Degree from '@/model/types'
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
 import { onMounted } from 'vue';
+import useEntityStore from '@/stores/entitities';
+
+const entityStore = useEntityStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -20,6 +23,7 @@ const apiStore = useApiStore()
 const getDegree = async () => {
   degree.value = await apiStore.getDegree(id.value)
   getRelated()
+  loadEntities()
 }
 
 const getRelated = async () => {
@@ -38,6 +42,10 @@ const descriptionMax = 150
 
 let page = ref(1);
 const coursesPerPage = 6;
+
+const loadEntities = async () => {
+  degree.value = await entityStore.replaceDegreeEntities(degree.value)
+}
 
 </script>
 
@@ -58,8 +66,7 @@ const coursesPerPage = 6;
     </v-card-title>
     <v-card-text>
       <article>
-        <section class="tw-mb-5">
-          {{ degree.description }}
+        <section class="tw-mb-5" v-html="degree.description">
         </section>
 
         <section v-if="degree.outings" class="tw-mb-5">
@@ -68,7 +75,7 @@ const coursesPerPage = 6;
         </section>
 
         <!-- Courses -->
-        <section>
+        <section v-if="degree.courses">
           <h5 class="tw-text-2xl tw-text-center tw-text-secondary">{{ $t('courses') }}</h5>
           <div class="tw-flex tw-flex-wrap tw-justify-center" style="min-height: 450px;">
             <div v-for="course in degree.courses.slice((page - 1) * coursesPerPage, page * coursesPerPage)"

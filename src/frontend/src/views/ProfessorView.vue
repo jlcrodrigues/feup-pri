@@ -6,6 +6,9 @@ import Professor from '@/model/types'
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
 import { onMounted } from 'vue';
+import useEntityStore from '@/stores/entitities';
+
+const entityStore = useEntityStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -18,6 +21,7 @@ const apiStore = useApiStore()
 onMounted(async () => {
   professor.value = await apiStore.getProfessor(id.value)
   getRelated()
+  loadEntities()
 })
 
 const getRelated = async () => {
@@ -36,6 +40,10 @@ const copyEmail = () => {
 
 const copyPhone = () => {
   navigator.clipboard.writeText(professor.value.phone)
+}
+
+const loadEntities = async () => {
+  professor.value = await entityStore.replaceProfessorEntities(professor.value)
 }
 
 </script>
@@ -76,7 +84,7 @@ const copyPhone = () => {
         <section v-for="content in contents" :key="content" class="tw-mt-5">
           <template v-if="professor[content]">
             <h5 class="tw-text-2xl tw-text-secondary">{{ $t(content) }}</h5>
-            <p class="tw-whitespace-pre-wrap">{{ professor[content] }}</p>
+            <p class="tw-whitespace-pre-wrap" v-html="professor[content]"></p>
           </template>
         </section>
       </article>

@@ -37,6 +37,7 @@ def searchDegrees(request, *args, **kwargs):
             'outings': result.get('outings', ''),
             'typeOfCourse': result.get('typeOfCourse', ''),
             'duration': result.get('duration', ''),
+            'entities': result.get('entities', ''),
         }
         for result in results
     ]
@@ -94,3 +95,19 @@ def getRelatedDegrees(request, *args, **kwargs):
     ]
 
     return JsonResponse({'results': found_objects})
+
+def getDegreeEntities(request, *args, **kwargs):
+    degree_id = kwargs['id']
+
+    solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
+
+    results = solr.search(f"id:{degree_id}", **{
+        'wt': 'json',
+        'fl': 'entities',
+    })
+
+
+    for result in results:
+        entities = result.get('entities', ''),
+
+    return JsonResponse(entities, safe=False)
