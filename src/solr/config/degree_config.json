@@ -3,10 +3,10 @@
         "name": "/mlt",
         "class": "solr.MoreLikeThisHandler",
         "defaults": {
-            "mlt.fl": "name,outings,description",
-            "mlt.qf": "name^4 outings description",
-            "mlt.minwl": "4",
-            "mlt.maxdf": "15"
+            "mlt.fl": "name,description,outings^2",
+            "mlt.qf": "name^4 description,outings^2",
+            "mlt.maxdf": "7",
+						"mlt.mindf": "3"
         }
     }
 }
