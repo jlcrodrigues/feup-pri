@@ -67,7 +67,7 @@ const copyPhone = () => {
         <section v-for="content in contents" :key="content" class="tw-mt-5">
           <template v-if="professor[content]">
             <h5 class="tw-text-2xl tw-text-secondary">{{ $t(content) }}</h5>
-            <p>{{ professor[content] }}</p>
+            <p class="tw-whitespace-pre-wrap">{{ professor[content] }}</p>
           </template>
         </section>
       </article>

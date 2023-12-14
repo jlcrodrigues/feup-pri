@@ -16,6 +16,7 @@ const course = ref({} as Course)
 const apiStore = useApiStore()
 onMounted(async () => {
   course.value = await apiStore.getCourse(id.value)
+console.log(course)
 })
 
 const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', 'program', 'evaluationType', 'passingRequirements']
@@ -42,7 +43,7 @@ const contents = ['objectives', 'results', 'workingMethod', 'preRequirements', '
         <section v-for="content in contents" :key="content" class="tw-mt-5">
           <template v-if="course[content]">
             <h5 class="tw-text-2xl tw-text-secondary">{{ $t(content) }}</h5>
-            <p>{{ course[content] }}</p>
+            <p class="tw-whitespace-pre-wrap">{{ course[content] }}</p>
           </template>
         </section>
       </article>
