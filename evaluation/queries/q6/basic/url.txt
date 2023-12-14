@@ -1,0 +1,1 @@
+http://localhost:8983/solr/professor/query?q=(fieldsOfInterest:engenharia%20AND%20%0A(fieldsOfInterest:ambiente))%0Astatus:Ativo&q.op=AND&indent=true&wt=json&useParams=

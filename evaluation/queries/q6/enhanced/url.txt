@@ -1,0 +1,1 @@
+http://localhost:8983/solr/professor/query?q=(fieldsOfInterest:%22Tecnologia%20ambiental%22%20OR%0A(fieldsOfInterest:%22ci%C3%AAncias%20do%20ambiente%22)%5E5)%0Astatus:Ativo&q.op=AND&indent=true&wt=json&useParams=

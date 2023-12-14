@@ -1,0 +1,1 @@
+http://localhost:8983/solr/professor/query?q=institutionalWebsite:*feup*%0Arank:%22Professor%20Auxiliar%22&q.op=AND&indent=true&wt=json&useParams=
