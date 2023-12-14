@@ -94,7 +94,7 @@ const coursesPerPage = 6;
     <h2 class="tw-text-primary tw-text-2xl">{{ $t('related') }}</h2>
     <v-slide-group show-arrows>
       <v-slide-group-item v-for="degree in related" :key="degree.id">
-        <v-card class="tw-m-2" style="width: 300px;">
+        <v-card class="tw-m-2" style="width: 300px">
           <v-card-title>
             <h3 class="tw-text-primary tw-text-xl">{{ degree.name }}</h3>
           </v-card-title>

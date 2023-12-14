@@ -69,9 +69,14 @@ def getRelatedCourses(request, *args, **kwargs):
 
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
-    results = solr.search("*:*", **{
-        'wt': 'json',  
-    })
+    mlt_query = {
+        'q': f"id:{course_id}",
+        'rows': 10,
+        'mltfl': 'name,objectives,results,program',
+        'mlt.mintf': 2,
+    }
+
+    results = solr.more_like_this(**mlt_query)
 
     found_objects = [
         {

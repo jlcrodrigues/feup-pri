@@ -9,7 +9,8 @@ import pysolr
 from backend.models import Degree, Degreecourseunit
 
 SOLR_SERVER = 'http://solr:8983/solr/'
-SOLR_CORE = 'degree' 
+SOLR_CORE = 'degree'
+
 
 def searchDegrees(request, *args, **kwargs):
     search_query = request.GET.get('text', '')
@@ -41,12 +42,15 @@ def searchDegrees(request, *args, **kwargs):
     ]
 
     return JsonResponse({'results': found_objects})
-    
+
+
 def getFilter(typeOfCourse):
     fq = ""
     if typeOfCourse != None:
-        fq += " OR ".join([f"typeOfCourse:\"{typeOfCourse}\"" for typeOfCourse in typeOfCourse])
+        fq += " OR ".join(
+            [f"typeOfCourse:\"{typeOfCourse}\"" for typeOfCourse in typeOfCourse])
     return fq
+
 
 def getDegree(request, *args, **kwargs):
     degree = get_object_or_404(Degree, id=kwargs['id'])
@@ -54,19 +58,27 @@ def getDegree(request, *args, **kwargs):
     degree_dict['courses'] = getDegreeCourses(degree)
     return JsonResponse(degree_dict)
 
-def getDegreeCourses(degree : Degree):
+
+def getDegreeCourses(degree: Degree):
     degree_courses = Degreecourseunit.objects.filter(degree=degree)
-    courses_for_degree = [model_to_dict(degree_course.course_unit) for degree_course in degree_courses]
+    courses_for_degree = [model_to_dict(
+        degree_course.course_unit) for degree_course in degree_courses]
     return courses_for_degree
+
 
 def getRelatedDegrees(request, *args, **kwargs):
     degree_id = kwargs['id']
 
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
-    results = solr.search(f"*:*", **{
-        'wt': 'json',
-    })
+    mlt_query = {
+        'q': f"id:{degree_id}",
+        'rows': 10,
+        'mltfl': 'name,outings,description',
+        'mlt.mintf': 3,
+    }
+
+    results = solr.more_like_this(**mlt_query)
 
     found_objects = [
         {

@@ -4,7 +4,7 @@
         "class": "solr.MoreLikeThisHandler",
         "defaults": {
             "mlt.fl": "name,outings,description",
-            "mlt.qf": "name^4 outings description",
+            "mlt.qf": "name^10 outings description^5",
             "mlt.minwl": "4",
             "mlt.maxdf": "15"
         }

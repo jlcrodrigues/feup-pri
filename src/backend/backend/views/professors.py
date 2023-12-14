@@ -71,9 +71,14 @@ def getRelatedProfessors(request, *args, **kwargs):
 
     solr = pysolr.Solr(f'{SOLR_SERVER}{SOLR_CORE}', timeout=10)
 
-    results = solr.search("*:*", **{
-        'wt': 'json',
-    })
+    mlt_query = {
+        'q': f"id:{professor_id}",
+        'rows': 10,
+        'mltfl': 'fieldsOfInterest,personalPresentation',
+        'mlt.mintf': 1,
+    }
+
+    results = solr.more_like_this(**mlt_query)
 
     found_objects = [
         {
