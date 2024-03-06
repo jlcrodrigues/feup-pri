@@ -12,8 +12,8 @@ This is done with the aid of web-scraping on the university website and posterio
 For more detailed information, check out the [full report](docs/report.pdf).
 
 <div align="center">
-  <img src="https://github.com/jlcrodrigues/feup-pri/assets/75942759/2e8e17f1-a0e4-4024-b951-f628d8048c81" alt="ui" width=500>
-  <img src="https://github.com/jlcrodrigues/feup-pri/assets/75942759/de60e381-ec2f-4485-8145-67b642c06acf" alt="ui" width=500>
+  <img src="https://github.com/jlcrodrigues/feup-pri/assets/75942759/2e8e17f1-a0e4-4024-b951-f628d8048c81" alt="ui" width=350>
+  <img src="https://github.com/jlcrodrigues/feup-pri/assets/75942759/de60e381-ec2f-4485-8145-67b642c06acf" alt="ui" width=350>
 </div>
 
 ## Demo
